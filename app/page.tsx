@@ -8,7 +8,7 @@ export default function Home() {
     <>
     <LandingPageNavbar/>
     <HeroSection/>
-    {/* <StatsSection/> */}
+    <StatsSection/>
     </>
   );
 }
