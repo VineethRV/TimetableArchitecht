@@ -8,7 +8,7 @@ import { VscWorkspaceTrusted } from "react-icons/vsc";
 const StatsSection = () => {
   return (
     <div className="grid grid-cols-4 gap-8 px-44 py-8">
-      <Card className="flex bg-[#F2F2FDFF] flex-col items-center">
+      <Card className="flex bg-[#F2F2FDFF] flex-col items-center hover:scale-105 transition-all duration-300">
         <div className="flex justify-center">
         <FaRegUserCircle className="text-[#636AE8FF]" fontSize={40}/>
         </div>
@@ -16,7 +16,7 @@ const StatsSection = () => {
         <h1  className="text-base">New Users</h1>
       </Card>
 
-      <Card className="flex flex-col bg-[#EFFCFAFF] items-center space-y-1">
+      <Card className="flex flex-col bg-[#EFFCFAFF] items-center space-y-1 hover:scale-105 transition-all duration-300">
         <div className="flex justify-center">
         <MdEventAvailable className="text-[#22CCB2FF]" fontSize={40}/>
         </div>
@@ -24,7 +24,7 @@ const StatsSection = () => {
         <h1 className="text-base">Timetables generated</h1>
       </Card>
 
-      <Card className="flex bg-[#FDF1F5FF] flex-col items-center space-y-1">
+      <Card className="flex bg-[#FDF1F5FF] flex-col items-center space-y-1 hover:scale-105 transition-all duration-300">
         <div className="flex justify-center">
         <VscWorkspaceTrusted className="text-[#E8618CFF]" fontSize={40}/>
         </div>
@@ -32,7 +32,7 @@ const StatsSection = () => {
         <h1  className="text-base">Trusted Universities</h1>
       </Card>
 
-      <Card className="flex bg-[#F5F2FDFF] flex-col items-center space-y-1">
+      <Card className="flex bg-[#F5F2FDFF] flex-col items-center space-y-1 hover:scale-105 transition-all duration-300">
         <div className="flex justify-center">
         <IoMdTime className="text-[#7F55E0FF]" fontSize={40}/>
         </div>
