@@ -5,6 +5,7 @@ import StatsSection from "./components/LandingPage/StatsSection";
 import ExploreSection from "./components/LandingPage/ExploreSection";
 import AskUniversity from "./components/LandingPage/AskUniversity";
 import FAQ from "./components/LandingPage/FAQ";
+import Footer from "./components/LandingPage/Footer";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
     <ExploreSection/>
     <AskUniversity/>
     <FAQ/>
+    <Footer/>
     </>
   );
 }

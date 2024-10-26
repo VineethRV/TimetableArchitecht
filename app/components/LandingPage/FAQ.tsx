@@ -59,8 +59,8 @@ const items: CollapseProps["items"] = [
 
 const FAQ = () => {
   return (
-    <div className="grid grid-cols-2 px-16 py-8">
-      <Image src={FAQIllus} alt="faq" className="h-[430px]" />
+    <div className="grid grid-cols-2 px-36 py-12">
+      <Image src={FAQIllus} alt="faq" className="h-[380px]" />
       <div className="flex flex-col space-y-8">
         <h1 className="font-bold text-3xl">FAQ?</h1>
         <Collapse items={items} defaultActiveKey={["2"]} />
