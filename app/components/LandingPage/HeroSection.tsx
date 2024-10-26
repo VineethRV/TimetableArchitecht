@@ -6,7 +6,7 @@ import Image from "next/image";
 import Scrum from '@/public/Illustrations/Scrum.png'
 const HeroSection = () => {
   return (
-    <div className="py-16 flex flex-col items-center">
+    <div className="py-16 flex mt-[60px] flex-col items-center">
       <div className="flex justify-around w-full">
         <Image className="w-20 h-20" alt="Avatar2" src={Avatar2} />
         <h1 className="text-5xl font-bold">Timetable Architect</h1>
@@ -23,7 +23,7 @@ const HeroSection = () => {
         Get Started
       </Button>
       </div>
-      <Image src={Scrum} className="w-[540px] h-[380px]" alt="Scrum"/>
+      <Image draggable={false} src={Scrum} className="w-[540px] h-[380px]" alt="Scrum"/>
     </div>
   );
 };

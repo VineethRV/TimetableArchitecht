@@ -19,8 +19,14 @@ const ExploreSection = () => {
           Learn more
         </Button>
       </div>
-      <Image alt="Teaching" className="w-[500px] h-[300px]" src={Teaching} />
       <Image
+        draggable={false}
+        alt="Teaching"
+        className="w-[500px] h-[300px]"
+        src={Teaching}
+      />
+      <Image
+        draggable={false}
         alt="TeamCollab"
         className="w-[500px] h-[300px]"
         src={TeamCollab}

@@ -17,15 +17,15 @@ const Footer = () => {
   return (
     <div className='flex flex-col space-y-4 px-36 bg-[#FAFAFBFF] pt-8 pb-2'>
         <div className='flex space-x-2 items-center'>
-        <Image className="w-8 h-8" alt="tta" src={Logo} />
+        <Image draggable={false} className="w-8 h-8" alt="tta" src={Logo} />
         <h1 className='font-bold text-base'>Timetable Architect</h1>
         </div>
         <p className={`text-gray-400 text-sm w-[300px] ${inter.className}`}>Streamline the process of creating, managing, and optimizing timetables for students and teachers</p>
         <div className='flex space-x-4'>
-            <Image src={FBIcon} alt='Facebook' className='w-6 h-6 hover:scale-110 hover:cursor-pointer transition-all duration-200'/>
-            <Image src={XIcon} alt='X' className='w-6 h-6 hover:scale-110 hover:cursor-pointer transition-all duration-200'/>
-            <Image src={YTIcon} alt='Youtube' className='w-6 h-6 hover:scale-110 hover:cursor-pointer transition-all duration-200'/>
-            <Image src={LinkedInIcon} alt='Linkedin' className='w-6 h-6 hover:scale-110 hover:cursor-pointer transition-all duration-200'/>
+            <Image draggable={false} src={FBIcon} alt='Facebook' className='w-6 h-6 hover:scale-110 hover:cursor-pointer transition-all duration-200'/>
+            <Image draggable={false} src={XIcon} alt='X' className='w-6 h-6 hover:scale-110 hover:cursor-pointer transition-all duration-200'/>
+            <Image draggable={false} src={YTIcon} alt='Youtube' className='w-6 h-6 hover:scale-110 hover:cursor-pointer transition-all duration-200'/>
+            <Image draggable={false} src={LinkedInIcon} alt='Linkedin' className='w-6 h-6 hover:scale-110 hover:cursor-pointer transition-all duration-200'/>
         </div>
         <Divider/>
         <div className={`flex justify-end ${inter.className}`} >
