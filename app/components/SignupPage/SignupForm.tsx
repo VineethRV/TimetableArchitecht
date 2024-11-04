@@ -5,6 +5,7 @@ import React from 'react'
 import { InterFont } from '@/app/fonts/fonts'
 
 const SignupForm = () => {
+  
   return (
     <div className='flex flex-col space-y-5 px-36'>
       

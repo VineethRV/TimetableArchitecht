@@ -8,8 +8,11 @@ import {
 import { Button, Card, Input } from "antd";
 import React from "react";
 import { Checkbox } from "antd";
+import { useRouter } from "next/navigation";
 
 const SigninFormCard = () => {
+  const router = useRouter();
+
   return (
     <Card className="flex flex-col w-[460px] px-8 rounded-2xl py-3 shadow-lg">
       <h1 className="font-bold text-3xl text-center">Welcome back 👋</h1>
@@ -40,7 +43,7 @@ const SigninFormCard = () => {
           <p className="text-[#636AE8FF] font-medium hover:cursor-pointer text-sm">Forget Password ?</p>
       </div>
       <Button className="mt-3 w-full bg-[#636AE8FF] font-bold py-4 text-white">Sign In</Button>
-      <p className="text-sm text-center mt-4">Not a member yet? <span className="text-[#636AE8FF] font-bold hover:cursor-pointer">Register now</span></p>
+      <p className="text-sm text-center mt-4">Not a member yet? <span onClick={()=>router.push('/signup')} className="text-[#636AE8FF] font-bold hover:cursor-pointer">Register now</span></p>
     </Card>
   );
 };
