@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Select } from "antd";
+import { OrganisationSchema } from "@/app/types/main";
 
 const OPTIONS = [
   "Aeronautical Engineering",
@@ -25,17 +26,26 @@ const OPTIONS = [
   "Computer Science and Data Science",
 ];
 
-const DeptSelect: React.FC = () => {
+const DeptSelect = ({
+  organisationDetails,
+  setOrganisationDetails,
+}: {
+  organisationDetails: OrganisationSchema;
+  setOrganisationDetails: Dispatch<SetStateAction<OrganisationSchema>>;
+}) => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-
   const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
 
   return (
     <Select
       mode="multiple"
       placeholder="Select your departments"
-      value={selectedItems}
-      onChange={setSelectedItems}
+      value={organisationDetails.depts_list}
+      onChange={(e) => {
+        const new_org = { ...organisationDetails };
+        new_org.depts_list = e;
+        setOrganisationDetails(new_org);
+      }}
       style={{ width: "100%" }}
       options={filteredOptions.map((item) => ({
         value: item,
