@@ -1,0 +1,161 @@
+
+.centered-icon-container {
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  padding: 20px;
+}
+
+.centered-buttons-container {
+  position: absolute;
+  top: 88px;
+  left: 0;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidepanel {
+  background-color: #FFFFFF;
+  height: 100vh;
+  width: 17vw; 
+  position: fixed; 
+  left: 5vw;
+  top: 0;
+  z-index: 100; 
+}
+
+.Sub-panel{
+  display: flex;
+  justify-content: left;
+  font: black bold;
+  align-items: center;
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+.Second-sub-panel-Heading{
+  padding-left: 10px;
+   font-size: 18px;
+  font-weight:700;
+   font-family: 'Archivo';
+  color: #171A1FFF;
+}
+
+.Second-sub-panel-Body{
+  padding-left: 10px;
+   font-size: 14px;
+   font-family: 'Inter';
+   height: 25vh;
+    display: flex;
+    flex-direction: column ;
+    justify-content: left
+}
+
+
+.item {
+  position: relative;
+  cursor: pointer;
+  color: #565E6CFF;
+  font-weight: 400;
+}
+
+.item-selected {
+  color: #636AE8FF;
+  font-weight: 700;
+}
+
+.item-selected::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 65%; /* Start from the middle */
+  transform: translateY(-50%); /* Center vertically */
+  width: 4px; /* Adjust width as needed */
+  height: 5vh;
+  background-color: #636AE8FF; /* Color matching selected label */
+  border-radius: 8px; /* Rounded top and bottom */
+}
+
+.Sub-panel-text{
+  padding-left: 10px;
+}
+
+.header{
+  position: fixed;
+  background-color: #FFFFFF;
+  color:#636AE8FF;
+  font-family: Archivo;
+  font-size: 32px; 
+  line-height: 48px; 
+  font-weight: 800;
+  top:0;
+  padding-top: 10px;
+  left:22vw;
+  height:10vh;
+  width:77vw;
+}
+
+.main-body {
+  position: fixed;
+  left: 22vw;
+  top: 10vh;
+  overflow-y: auto;
+  height: 90vh; 
+  width: 77vw;
+  padding: 15px;
+  background-color: #FFFFFF;
+}
+
+.back{
+  display: flex;
+  justify-content: space-between;
+  color: #636AE8FF;
+  font-family: Inter; 
+  font-size: 18px; 
+  line-height: 28px; 
+  font-weight: 700; 
+}
+
+.form{
+  font-family: Inter; 
+  font-size: 18px; 
+  line-height: 28px; 
+  font-weight: 700; 
+  color: #171A1FFF;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.button {
+  padding: 0 12px; 
+  width: 79px; 
+  height: 36px;
+  font-family: Inter; 
+  font-size: 14px; 
+  line-height: 22px; 
+  font-weight: 400; 
+  color: #636AE8FF;
+  background: #F2F2FDFF; 
+  opacity: 1; 
+  border: none; 
+  border-radius: 6px;
+  margin-top: 10px; /* border-m */
+  margin-bottom: 10px;
+}
+
+.button:hover {
+  color: #636AE8FF; /* primary-500 */
+  background-color: #636AE8FF; /* primary-150 */
+}
+/* Pressed */
+.button:hover:active {
+  color: #636AE8FF; /* primary-500 */
+  background-color: #636AE8FF; /* primary-150 */
+}
+/* Disabled */
+.button:disabled {
+  opacity: 0.4; 
+}
