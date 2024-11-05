@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Select } from "antd";
 import { OrganisationSchema } from "@/app/types/main";
 
@@ -33,8 +33,7 @@ const DeptSelect = ({
   organisationDetails: OrganisationSchema;
   setOrganisationDetails: Dispatch<SetStateAction<OrganisationSchema>>;
 }) => {
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
+  const filteredOptions = OPTIONS.filter((o) => !organisationDetails.depts_list.includes(o));
 
   return (
     <Select

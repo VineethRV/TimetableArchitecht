@@ -30,11 +30,11 @@ const items: CollapseProps["items"] = [
     label: "How do I apply for access to the Timetable Architect?",
     children: (
       <p>
-        To apply for access to the Timetable Architect, check if your
+       {` To apply for access to the Timetable Architect, check if your
         institution or organization provides it, as they may offer a sign-up
         link or invite. If it's independent, visit the official website, look
         for an "Apply" or "Request Access" section, and complete the application
-        form.
+        form.`}
       </p>
     ),
   },

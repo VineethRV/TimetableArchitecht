@@ -38,7 +38,7 @@ const ExploreSection = () => {
         </h1>
         <p className="text-gray-500">
           Sharing the event schedule allows attendees to be well-informed about
-          the event's agenda, timing
+          the event&apos;s agenda, timing
         </p>
         <Button className="w-fit bg-[#F2F2FDFF] text-[#636AE8FF]">
           Learn more
