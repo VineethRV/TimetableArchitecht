@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Progress } from "antd";
 import Illustration from "../components/OnBoardingProcess/Illustration";
 import LogoHeader from "../components/OnBoardingProcess/LogoHeader";
@@ -25,6 +25,16 @@ const Page = () => {
       students: 0,
       depts_list: [],
     });
+
+  const [backBtnDisable, setBackBtnDisable] = useState(false);
+  
+  // Disable back button when user is at pageNumber 0
+  useEffect(() => {
+    if (pageNumber <= 0) setBackBtnDisable(true);
+    else if (backBtnDisable == true) {
+      setBackBtnDisable(false);
+    }
+  }, [pageNumber]);
 
   const continueBtnDisableConditions = [
     // Reached End
@@ -81,13 +91,13 @@ const Page = () => {
                   />
                 );
               default:
-                return <ConfirmPage />;
+                return <ConfirmPage setBackBtnDisable={setBackBtnDisable} />;
             }
           })()}
         </div>
         <div className="flex justify-between pr-12">
           <Button
-            disabled={pageNumber <= 0}
+            disabled={backBtnDisable}
             onClick={() => setPageNumber((p) => p - 1)}
             className="bg-[#F3F4F6FF] rounded-xl"
           >
