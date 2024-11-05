@@ -22,7 +22,7 @@ const Form2 = ({
           onChange={(e) => {
             setOrganisationDetails((org) => {
               const new_org = { ...org };
-              new_org.sections = e.target.value as any as number;
+              new_org.sections = Number(e.target.value);
               return new_org;
             });
           }}
@@ -41,7 +41,7 @@ const Form2 = ({
           onChange={(e) => {
             setOrganisationDetails((org) => {
               const new_org = { ...org };
-              new_org.teachers = e.target.value as any as number;
+              new_org.teachers = Number(e.target.value);
               return new_org;
             });
           }}
@@ -60,7 +60,7 @@ const Form2 = ({
           onChange={(e) => {
             setOrganisationDetails((org) => {
               const new_org = { ...org };
-              new_org.students = e.target.value as any;
+              new_org.students = Number(e.target.value);
               return new_org;
             });
           }}
