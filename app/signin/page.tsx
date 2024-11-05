@@ -1,9 +1,11 @@
+"use client"
 import React from 'react';
 import Header from '../components/SigninPage/Header';
 import SigninFormCard from '../components/SigninPage/SigninFormCard';
 import SignInIllus1 from '@/public/Illustrations/Sign1.png';
 import SignInIllus2 from '@/public/Illustrations/Sign2.png';
 import Image from 'next/image';
+import { motion } from 'framer-motion'
 
 const Page = () => {
   return (
@@ -20,9 +22,15 @@ const Page = () => {
           alt="Signin2"
         />
         <Header />
-        <div className="flex justify-center items-center h-[86vh]">
+        <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.5,
+          ease: "easeInOut",
+        }} className="flex justify-center items-center h-[86vh]">
           <SigninFormCard />
-        </div>
+        </motion.div>
       </div>
     </>
   );
