@@ -60,7 +60,7 @@ const Form2 = ({
           onChange={(e) => {
             setOrganisationDetails((org) => {
               const new_org = { ...org };
-              new_org.students = e.target.value as any as number;
+              new_org.students = e.target.value as any;
               return new_org;
             });
           }}
