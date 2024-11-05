@@ -1,6 +1,6 @@
 import { OrganisationSchema } from "@/app/types/main";
 import { Input } from "antd";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 const Form1 = ({organisationDetails,setOrganisationDetails}:{
   organisationDetails: OrganisationSchema,

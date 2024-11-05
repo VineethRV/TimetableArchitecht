@@ -27,8 +27,8 @@ const Footer = () => {
         <Divider/>
         <div className={`flex justify-end ${InterFont.className}`} >
             <div className='flex space-x-12 text-gray-400 text-xs'>
-                <p>© 2024 TTA</p>
-                <p>• Privacy • Terms • Sitemap</p>
+                <p>&copy; 2024 TTA</p>
+                <p>&bull; Privacy &bull; Terms &bull; Sitemap</p>
             </div>
         </div>
     </div>
