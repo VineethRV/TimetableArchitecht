@@ -64,7 +64,7 @@ const Page = () => {
     <main className="grid grid-cols-2 h-screen">
       <div className="py-4 px-8 flex flex-col space-y-6">
         <LogoHeader />
-        <Progress percent={progressPercentage} />
+        <Progress percent={progressPercentage} strokeColor="#636AE8FF" />
         <div className="flex flex-col space-y-12 pr-12">
           <h1 className="font-bold text-2xl">Organization Registration</h1>
           {(() => {

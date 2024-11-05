@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Button, Card, Typography } from "antd";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import SuccessTick from "../../LottieComponents/SuccessTick";
@@ -24,12 +24,17 @@ const ConfirmPage = ({
       setLoading(false);
       setSubmitted(true);
       setBackBtnDisable(true);
-      const promise = () => new Promise((resolve) => setTimeout(() => router.push('/'), 5000));
+      const promise = () =>
+        new Promise((resolve) =>
+          setTimeout(() => {
+            router.push("/");
+            resolve("");
+          }, 5000)
+        );
 
       toast.promise(promise, {
-        loading: 'Redirecting...',
+        loading: "Redirecting...",
       });
-
     }, 4000);
   };
 
@@ -56,9 +61,9 @@ const ConfirmPage = ({
               Please click the button below to confirm your registration.
             </Paragraph>
             <Button
-              type="primary"
+              
               size="large"
-              className={`bg-green-600 border-green-600 text-white rounded-md w-full mt-4 ${
+              className={`bg-green-600 border-green-600 bg-primary text-white rounded-md w-full mt-4 ${
                 loading ? "cursor-not-allowed" : ""
               }`}
               onClick={handleSubmit}
