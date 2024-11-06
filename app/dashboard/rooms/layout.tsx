@@ -18,10 +18,10 @@ const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     { label: "Timeslot Dependent", icon: faCalendar },
   ];
 
-  // const handleButtonClick = () => {
-  //   setButtonClicked(true);
-  //   setSelected("");
-  // };
+  const handleButtonClick = () => {
+    setButtonClicked(true);
+    setSelected("");
+  };
 
   return (
     <Layout className='min-h-screen'>
