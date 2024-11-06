@@ -1,4 +1,3 @@
-// Timetable.js
 
 import React, { useState } from 'react';
 import { Table, Button } from 'antd';
