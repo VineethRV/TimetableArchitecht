@@ -2,13 +2,13 @@
 
 import React, { useState } from 'react';
 import { Layout, Divider, Button } from "antd"; 
-const { Sider, Content } = Layout;
+const { Sider, Content,Header } = Layout;
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBasketShopping,faFlask, faBook, faCirclePlus, faPenToSquare} from '@fortawesome/free-solid-svg-icons';
 import { useRouter,usePathname } from 'next/navigation';
 
 
-const Sidebar: React.FC = () => {
+const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const Router = useRouter();
   const pathname = usePathname();
   const [selected1, setSelected1] = useState("Core Courses");
@@ -65,6 +65,12 @@ const Sidebar: React.FC = () => {
             ))}
          </div>
       </Sider>
+      <Header className="fixed top-0 left-[20vw] h-[10vh] bg-white text-[#636AE8FF] text-2xl leading-[48px] font-extrabold pt-2" style={{ fontFamily:'Archivo', width: 'calc(100% - 20vw)' }}>Teachers</Header>
+      <Layout className="fixed left-[20vw] top-[10vh] overflow-y-auto h-[90vh] p-4 bg-white flex-grow" style={{ width: 'calc(100% - 20vw)' }} >
+        <Content>
+          {children}
+        </Content>
+      </Layout>
     </Layout>
   );
 };
