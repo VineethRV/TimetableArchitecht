@@ -15,7 +15,7 @@ import {
 
 const Sidebar: React.FC = () => {
   const [selected, setSelected] = useState("Modify Attributes");
-  const [buttonClicked, setButtonClicked] = useState(false);
+  // const [buttonClicked, setButtonClicked] = useState(false);
 
   const menuItems = [
     { label: "Add a Room", icon: faCirclePlus },
@@ -24,10 +24,11 @@ const Sidebar: React.FC = () => {
     { label: "Timeslot Dependent", icon: faCalendar },
   ];
 
-  const handleButtonClick = () => {
-    setButtonClicked(true);
-    setSelected("");
-  };
+  // const handleButtonClick = () => {
+  //   setButtonClicked(true);
+  //   setSelected("");
+  // };
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider className="sidepanel">
@@ -81,7 +82,7 @@ const Sidebar: React.FC = () => {
             }}
           >
             <Button
-              onClick={handleButtonClick}
+              // onClick={handleButtonClick}
               style={{
                 backgroundColor: "#636AE8FF",
                 display: "flex",
