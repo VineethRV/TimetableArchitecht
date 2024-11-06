@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { Layout, Divider, Button } from "antd";
-import '../styles/styles.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faUserPen, faUserPlus, faChalkboardTeacher, faClockRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';

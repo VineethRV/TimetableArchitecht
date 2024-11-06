@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { Layout, Divider, Button } from "antd"; 
 const { Sider,Header,Content } = Layout;
-import '../styles/styles.css'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar,faBuildingUser, faCirclePlus, faClockRotateLeft,faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
