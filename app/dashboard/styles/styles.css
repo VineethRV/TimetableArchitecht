@@ -26,6 +26,7 @@
   top: 0;
   z-index: 100; 
 }
+/*fixed left-[5vw] top-0 w-[17vw] h-screen bg-white z-[100]*/
 
 .Sub-panel{
   display: flex;
@@ -35,7 +36,7 @@
   padding-top: 20px;
   padding-left: 20px;
 }
-
+/*flex justify-left text-black-bold items-center pt-[20px] pl-[20px] h-[7vh]*/
 .Second-sub-panel-Heading{
   padding-left: 10px;
    font-size: 18px;
@@ -43,6 +44,7 @@
    font-family: 'Archivo';
   color: #171A1FFF;
 }
+/*pl-2 text-[18px] font-semibold text-[#171A1FFF]*/
 
 .Second-sub-panel-Body{
   padding-left: 10px;
@@ -53,7 +55,7 @@
     flex-direction: column ;
     justify-content: left
 }
-
+/*pl-[10px] font-[14px] font-family-inter h-[25vh] flex flex-col justify-left*/
 
 .item {
   position: relative;
@@ -83,79 +85,5 @@
   padding-left: 10px;
 }
 
-.header{
-  position: fixed;
-  background-color: #FFFFFF;
-  color:#636AE8FF;
-  font-family: Archivo;
-  font-size: 32px; 
-  line-height: 48px; 
-  font-weight: 800;
-  top:0;
-  padding-top: 10px;
-  left:22vw;
-  height:10vh;
-  width:77vw;
-}
 
-.main-body {
-  position: fixed;
-  left: 22vw;
-  top: 10vh;
-  overflow-y: auto;
-  height: 90vh; 
-  width: 77vw;
-  padding: 15px;
-  background-color: #FFFFFF;
-}
 
-.back{
-  display: flex;
-  justify-content: space-between;
-  color: #636AE8FF;
-  font-family: Inter; 
-  font-size: 18px; 
-  line-height: 28px; 
-  font-weight: 700; 
-}
-
-.form{
-  font-family: Inter; 
-  font-size: 18px; 
-  line-height: 28px; 
-  font-weight: 700; 
-  color: #171A1FFF;
-  margin-left: 20px;
-  margin-top: 20px;
-}
-
-.button {
-  padding: 0 12px; 
-  width: 79px; 
-  height: 36px;
-  font-family: Inter; 
-  font-size: 14px; 
-  line-height: 22px; 
-  font-weight: 400; 
-  color: #636AE8FF;
-  background: #F2F2FDFF; 
-  opacity: 1; 
-  border: none; 
-  border-radius: 6px;
-  margin-top: 10px; /* border-m */
-  margin-bottom: 10px;
-}
-
-.button:hover {
-  color: #636AE8FF; /* primary-500 */
-  background-color: #636AE8FF; /* primary-150 */
-}
-/* Pressed */
-.button:hover:active {
-  color: #636AE8FF; /* primary-500 */
-  background-color: #636AE8FF; /* primary-150 */
-}
-/* Disabled */
-.button:disabled {
-  opacity: 0.4; 
-}
