@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Layout, Divider, Button } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faUserPen, faUserPlus, faChalkboardTeacher, faClockRotateLeft } from '@fortawesome/free-solid-svg-icons';
@@ -11,12 +11,16 @@ const { Header, Content } = Layout;
 
 const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const Router = useRouter();
-  const [selected, setSelected] = useState('Modify Attributes'); 
+  const [selected, setSelected] = useState("Modify Attributes");
   const menuItems = [
-    { label: 'Add a Teacher', icon: faUserPlus, url: '/Add' },
-    { label: 'Modify Attributes', icon: faUserPen, url: '' },
-    { label: 'Rank Timewise', icon: faClockRotateLeft, url: '/Rank-timetable' },
-    { label: 'Timeslot Dependent', icon: faCalendar, url: '/Timeslot-dependent' }
+    { label: "Add a Teacher", icon: faUserPlus, url: "/Add" },
+    { label: "Modify Attributes", icon: faUserPen, url: "" },
+    { label: "Rank Timewise", icon: faClockRotateLeft, url: "/Rank-timetable" },
+    {
+      label: "Timeslot Dependent",
+      icon: faCalendar,
+      url: "/Timeslot-dependent",
+    },
   ];
 
   const handleClick = (label: string, url: string) => {

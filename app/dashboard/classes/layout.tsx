@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState } from 'react';
 import { Layout, Divider, Button } from "antd"; 
@@ -8,20 +8,19 @@ import { faCalendar, faChalkboardTeacher, faClockRotateLeft } from '@fortawesome
 
 
 
-const Sidebar: React.FC = () => { 
-
-  const [selected1, setSelected1] = useState('Core Courses'); 
-  const [selected2, setSelected2] = useState('Add a Course'); 
+const Sidebar: React.FC = () => {
+  const [selected1, setSelected1] = useState("Core Courses");
+  const [selected2, setSelected2] = useState("Add a Course");
 
   const menuItems1 = [
-    { label: 'Electives', icon: faChalkboardTeacher },
-    { label: 'Labs', icon: faChalkboardTeacher },
-    { label: 'Core Courses', icon: faClockRotateLeft }
+    { label: "Electives", icon: faChalkboardTeacher },
+    { label: "Labs", icon: faChalkboardTeacher },
+    { label: "Core Courses", icon: faClockRotateLeft },
   ];
 
   const menuItems2 = [
-    { label: 'Add a Course', icon: faCalendar },
-    { label: 'Modify Course', icon: faCalendar }
+    { label: "Add a Course", icon: faCalendar },
+    { label: "Modify Course", icon: faCalendar },
   ];
 
   return (
@@ -54,8 +53,8 @@ const Sidebar: React.FC = () => {
             ))}
          </div>
       </Sider>
-      </Layout>
+    </Layout>
   );
-}
+};
 
 export default Sidebar;

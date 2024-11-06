@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState } from 'react';
 import { Layout, Divider, Button } from "antd"; 
@@ -8,31 +8,31 @@ import { faBasketShopping,faFlask, faBook, faCirclePlus, faPenToSquare} from '@f
 import { useRouter,usePathname } from 'next/navigation';
 
 
-const Sidebar: React.FC = () => { 
-  const Router=useRouter();
+const Sidebar: React.FC = () => {
+  const Router = useRouter();
   const pathname = usePathname();
-  const [selected1, setSelected1] = useState('Core Courses'); 
-  const [selected2, setSelected2] = useState('Modify Course'); 
+  const [selected1, setSelected1] = useState("Core Courses");
+  const [selected2, setSelected2] = useState("Modify Course");
 
-  const handleClick1=(key:string,url:string)=>{
+  const handleClick1 = (key: string, url: string) => {
     setSelected1(key);
     Router.push(url);
-  }
+  };
 
-  const handleClick2=(key:string,url:string)=>{
+  const handleClick2 = (key: string, url: string) => {
     setSelected2(key);
     Router.push(`${pathname}${url}`);
-  }
+  };
 
   const menuItems1 = [
-    { label: 'Electives', icon: faBasketShopping,url:'/subjects/Electives' },
-    { label: 'Labs', icon: faFlask,url:'/subjects/Labs' },
-    { label: 'Core Courses', icon: faBook,url:'/subjects/CoreCourses'}
+    { label: "Electives", icon: faBasketShopping, url: "/subjects/Electives" },
+    { label: "Labs", icon: faFlask, url: "/subjects/Labs" },
+    { label: "Core Courses", icon: faBook, url: "/subjects/CoreCourses" },
   ];
 
   const menuItems2 = [
-    { label: 'Add a Course', icon: faCirclePlus,url:'/add' },
-    { label: 'Modify Course', icon: faPenToSquare ,url:''}
+    { label: "Add a Course", icon: faCirclePlus, url: "/add" },
+    { label: "Modify Course", icon: faPenToSquare, url: "" },
   ];
 
   return (
@@ -65,8 +65,8 @@ const Sidebar: React.FC = () => {
             ))}
          </div>
       </Sider>
-      </Layout>
+    </Layout>
   );
-}
+};
 
 export default Sidebar;

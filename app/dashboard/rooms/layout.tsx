@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState } from 'react';
 import { Layout, Divider, Button } from "antd"; 
@@ -12,16 +12,17 @@ const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [buttonClicked, setButtonClicked] = useState(false); 
 
   const menuItems = [
-    { label: 'Add a Room', icon: faCirclePlus },
-    { label: 'Modify Attributes', icon: faPenToSquare },
-    { label: 'Rank Timewise', icon: faClockRotateLeft },
-    { label: 'Timeslot Dependent', icon: faCalendar }
+    { label: "Add a Room", icon: faCirclePlus },
+    { label: "Modify Attributes", icon: faPenToSquare },
+    { label: "Rank Timewise", icon: faClockRotateLeft },
+    { label: "Timeslot Dependent", icon: faCalendar },
   ];
 
-  const handleButtonClick = () => {
-    setButtonClicked(true);
-    setSelected(''); 
-  };
+  // const handleButtonClick = () => {
+  //   setButtonClicked(true);
+  //   setSelected("");
+  // };
+
   return (
     <Layout className='min-h-screen'>
       <Sider className="fixed left-[5vw] top-0 w-[17vw] h-screen bg-white z-[100]">
@@ -61,6 +62,6 @@ const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       </Layout>
       </Layout>
   );
-}
+};
 
 export default Sidebar;
