@@ -54,7 +54,7 @@ const AddRoomForm: React.FC = () => {
           />
         </Form.Item>
         <Form.Item label="ClassRoom Capacity" required>
-          <InputNumber min={0} placeholder="Capacity" className='font-inter font-normal'/>
+        <InputNumber min={0} placeholder="Capacity" className='w-full font-inter font-normal' />
         </Form.Item>
         <Form.Item label="Is it a Lab?" required>
               <Radio.Group onChange={onChange} value={value}>
