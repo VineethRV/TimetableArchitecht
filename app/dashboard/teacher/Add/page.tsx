@@ -4,6 +4,7 @@ import { InfoCircleOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, message, Form, Input, Select, Tooltip, Upload } from "antd";
 import Timetable from "@/app/components/timetable";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -20,11 +21,20 @@ const AddTeacherpage: React.FC = () => {
   const success = () => {
     message.success("Teacher Added successfully!", 5);
   };
+  const router = useRouter();
 
   return (
-    <div className="font-inter text-[18px] leading-[28px] font-bold text-[#171A1F] ml-5 mt-5">
-      <div className="flex justify-between text-[#636AE8FF] font-inter text-[18px] leading-[28px] text-bold mr-8">
-        &#8592; Back
+    <div className="text-xl font-bold text-[#171A1F] pl-8 py-6 h-screen overflow-y-scroll">
+      <div className="flex px-2 items-center justify-between text-[#636AE8FF] font-inter text-xl text-bold">
+        <div
+          onClick={() => {
+            router.push("/dashboard/teacher");
+          }}
+          className="flex text-base w-fit cursor-pointer space-x-2"
+        >
+          <h1>&#8592;</h1>
+          <h1>Back</h1>
+        </div>
         <Upload>
           <Button
             icon={<UploadOutlined />}
@@ -41,7 +51,7 @@ const AddTeacherpage: React.FC = () => {
           duration: 0.5,
           ease: "easeInOut",
         }}
-        className="flex justify-left items-center h-[86vh] mt-[40vh] ml-4 "
+        className="flex mt-12 items-center pl-4"
       >
         <Form {...formItemLayout} form={form} layout="vertical" requiredMark>
           <Form.Item label="Teacher Name" required>
@@ -58,29 +68,27 @@ const AddTeacherpage: React.FC = () => {
           </Form.Item>
           <label>
             <span>Schedule</span>
-            <Tooltip
-              title="Click on the timeslots where to the teachers are busy to set them to busy"
-            >
+            <Tooltip title="Click on the timeslots where to the teachers are busy to set them to busy">
               <InfoCircleOutlined className="ml-2 text-[#636AE8FF]" />
             </Tooltip>
-          </label>
-          <div className="flex justify-left">
+          </label>          
             <Timetable />
-          </div>
-          <div className="flex justify-end w-[55vm]">
+            <div className="flex justify-end">
+          <div className="flex space-x-4">
             <Form.Item>
-              <Button className="border-[#636AE8FF] text-[#636AE8FF] mr-[30px] w-[75px] h-[32px]">
+              <Button className="border-[#636AE8FF] text-[#636AE8FF]">
                 Clear
               </Button>
             </Form.Item>
             <Form.Item>
               <Button
                 onClick={success}
-                className="bg-[#636AE8FF] text-[#FFFFFF] w-[75px] h-[32px]"
+                className="bg-primary text-[#FFFFFF]"
               >
                 Submit
               </Button>
             </Form.Item>
+          </div>
           </div>
         </Form>
       </motion.div>
