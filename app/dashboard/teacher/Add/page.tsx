@@ -59,8 +59,7 @@ const AddTeacherpage: React.FC = () => {
           <label>
             <span>Schedule</span>
             <Tooltip
-              title="Tooltip with customize icon"
-              icon={<InfoCircleOutlined />}
+              title="Click on the timeslots where to the teachers are busy to set them to busy"
             >
               <InfoCircleOutlined className="ml-2 text-[#636AE8FF]" />
             </Tooltip>
