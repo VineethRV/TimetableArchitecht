@@ -6,7 +6,6 @@ const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Satur
 const timeslots = ['8:00 AM', '10:00 AM', '12:00 PM', '2:00 PM', '4:00 PM', '6:00 PM'];
 
 const Timetable = () => {
-  // State to manage button statuses (Free or Busy)
   const [buttonStatus, setButtonStatus] = useState(
     weekdays.map(() => timeslots.map(() => 'Free'))
   );
@@ -55,7 +54,7 @@ const Timetable = () => {
   ];
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}> {/* Centering the table */}
+    <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
       <div style={{ maxWidth: '600px', width: '100%' }}>
         <Table
           dataSource={dataSource}
