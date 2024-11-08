@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Layout, Divider, Button } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -18,19 +18,9 @@ const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const Router = useRouter();
   const [selected, setSelected] = useState("Modify Attributes");
 
-  useEffect(() => {
-    const storedLabel = localStorage.getItem("selectedLabel");
-    const storedUrl = localStorage.getItem("selectedUrl");
-    if (storedLabel && storedUrl) {
-      setSelected(storedLabel);
-      Router.push(`/dashboard/teacher${storedUrl}`);
-    }
-  }, []);
 
   const handleClick = (label: string, url: string) => {
     setSelected(label);
-    localStorage.setItem("selectedLabel", label);
-    localStorage.setItem("selectedUrl", url);
     Router.push(`/dashboard/teacher${url}`);
   };
 
