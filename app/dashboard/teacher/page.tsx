@@ -12,7 +12,7 @@ function page() {
   return (
     <div className="h-screen px-8 py-4">
       <h1 className="text-3xl font-bold text-primary mt-2">Teachers</h1>
-      <div className="flex space-x-3 justify-end py-2">
+      <div className="flex space-x-3 justify-end py-1">
         <Button className="bg-[#F2F2FDFF] text-primary font-bold">
           <ImportOutlined />
           Import
