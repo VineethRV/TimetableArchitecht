@@ -4,7 +4,7 @@ import {
   ImportOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { Button, ConfigProvider, Divider, Input, Select } from "antd";
+import { Button, ConfigProvider, Input, Select } from "antd";
 import { TbTrash } from "react-icons/tb";
 import TeachersTable from '@/app/components/TeachersPage/TeachersTable'
 

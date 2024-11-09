@@ -1,6 +1,6 @@
 import Sider from "antd/es/layout/Sider";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,43 +11,51 @@ import {
   faChalkboardTeacher,
 } from "@fortawesome/free-solid-svg-icons";
 import { Menu } from "antd";
-import Logo from '@/public/Logo.png'
+import Logo from "@/public/Logo.png";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const DashboardSidebar = () => {
-  const [selectedKey, setSelectedKey] = useState("");
   const router = useRouter();
   const pathname = usePathname();
 
   const handleMenuClick = (key: string, page: string) => {
-    setSelectedKey(key);
     localStorage.setItem("selectedKey", key);
-    router.push(`/dashboard${page}`);
+    router.push(page);
   };
 
   const menuItems = [
-    { key: "1", title: "Settings", icon: faGear, path: "/" },
+    { key: "1", title: "Settings", icon: faGear, path: "/dashboard" },
     {
       key: "2",
       title: "Teaching",
       icon: faChalkboardTeacher,
-      path: "/teacher",
+      path: "/dashboard/teacher",
     },
-    { key: "3", title: "Departments", icon: faBuilding, path: "/rooms" },
+    {
+      key: "3",
+      title: "Departments",
+      icon: faBuilding,
+      path: "/dashboard/rooms",
+    },
     {
       key: "4",
       title: "Resources",
       icon: faBook,
-      path: "/courses",
+      path: "/dashboard//courses",
     },
-    { key: "5", title: "Students", icon: faUserGraduate, path: "/classes" },
+    {
+      key: "5",
+      title: "Students",
+      icon: faUserGraduate,
+      path: "/dashboard/classes",
+    },
   ];
 
   return (
     <Sider width="5%" className="h-screen bg-gray-800">
       <div className="flex justify-center items-center my-4">
-        <Image alt="Logo" src={Logo} className="w-8 h-8"/>
+        <Image alt="Logo" src={Logo} className="w-8 h-8" />
       </div>
       <motion.div
         initial={{ opacity: 0, x: -20 }}
@@ -61,7 +69,9 @@ const DashboardSidebar = () => {
         <Menu
           mode="vertical"
           className="bg-gray-800"
-          selectedKeys={[selectedKey]}
+          selectedKeys={[
+            menuItems.find((item) => item.path === pathname)?.key || "",
+          ]}
         >
           {menuItems.map(({ key, title, icon, path }) => (
             <Menu.Item
@@ -72,7 +82,7 @@ const DashboardSidebar = () => {
               <FontAwesomeIcon
                 icon={icon}
                 className={
-                  selectedKey === key ? "text-indigo-500" : "text-gray-400"
+                  pathname === path ? "text-indigo-500" : "text-gray-400"
                 }
               />
             </Menu.Item>
