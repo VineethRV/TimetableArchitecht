@@ -7,7 +7,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
         <Layout>
           <DashboardSidebar/>
-          <div className='ml-[5vw] w-full h-screen'>
+          <div className='w-full h-screen'>
             {children}
           </div>
         </Layout>
