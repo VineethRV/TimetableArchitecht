@@ -9,7 +9,7 @@ import { faCalendar,faBuildingUser, faCirclePlus, faClockRotateLeft,faPenToSquar
 const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const [selected, setSelected] = useState('Modify Attributes'); 
-  const [buttonClicked, setButtonClicked] = useState(false); 
+  // const [buttonClicked, setButtonClicked] = useState(false); 
 
   const menuItems = [
     { label: "Add a Room", icon: faCirclePlus },
@@ -19,7 +19,7 @@ const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   ];
 
   const handleButtonClick = () => {
-    setButtonClicked(true);
+    // setButtonClicked(true);
     setSelected("");
   };
 

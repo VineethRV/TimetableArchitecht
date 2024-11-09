@@ -433,7 +433,7 @@ const columns: TableColumnsType<TeacherType> = [
               (combo) => combo.backgroundColor === deptColors[dept]
             )?.textColor,
           }}
-          className="text-xs font-semibold w-fit px-2.5 py-0.5 rounded-xl"
+          className="text-xs opacity-85 font-semibold w-fit px-2.5 py-0.5 rounded-xl"
         >
           {dept}
         </h1>
