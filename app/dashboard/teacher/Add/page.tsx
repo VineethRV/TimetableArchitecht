@@ -5,6 +5,7 @@ import { Button, message, Form, Input, Select, Tooltip, Upload } from "antd";
 import Timetable from "@/app/components/timetable";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -71,24 +72,24 @@ const AddTeacherpage: React.FC = () => {
             <Tooltip title="Click on the timeslots where to the teachers are busy to set them to busy">
               <InfoCircleOutlined className="ml-2 text-[#636AE8FF]" />
             </Tooltip>
-          </label>          
-            <Timetable />
-            <div className="flex justify-end">
-          <div className="flex space-x-4">
-            <Form.Item>
-              <Button className="border-[#636AE8FF] text-[#636AE8FF]">
-                Clear
-              </Button>
-            </Form.Item>
-            <Form.Item>
-              <Button
-                onClick={success}
-                className="bg-primary text-[#FFFFFF]"
-              >
-                Submit
-              </Button>
-            </Form.Item>
-          </div>
+          </label>
+          <Timetable />
+          <div className="flex justify-end">
+            <div className="flex space-x-4">
+              <Form.Item>
+                <Button className="border-[#636AE8FF] text-[#636AE8FF]">
+                  Clear
+                </Button>
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  onClick={success}
+                  className="bg-primary text-[#FFFFFF]"
+                >
+                  Submit
+                </Button>
+              </Form.Item>
+            </div>
           </div>
         </Form>
       </motion.div>
