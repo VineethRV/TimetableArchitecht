@@ -1,7 +1,56 @@
 'use server'
-let jwt=require('jsonwebtoken')
+
+import jwt from 'jsonwebtoken';
+
 
 const secretKey = "bob"; // Secret key for signing JWT
+
+interface Room{
+    name: string;
+    department:string;
+    labornot:boolean;
+}
+interface Teacher {
+  name: string;
+  initials: string;
+  email: string;
+  dept: string;
+}
+interface Subject {
+  name: string;
+  code: string;
+  semester: number;
+  dept: string;
+}
+interface Lab {
+  name: string;
+  sem: number;
+  batches: string[];
+  dept: string;
+}
+
+
+interface RoomDetails {
+  name: string;
+  dept: string;
+  lab: number;
+  timetable: (string | null)[][];
+}
+interface TeacherDetails {
+  name: string;
+  initials: string;
+  email: string;
+  dept: string;
+  timetable: (string | null)[][];
+}
+interface SubjectDetails {
+  name: string;
+  code: string;
+  credits: number;
+  specialRooms: string[];
+  semester: number;
+  dept: string;
+}
 
 // Mock data for rooms, teachers, etc.
 const rooms = [
@@ -97,7 +146,7 @@ export const login = async (usrName: string, hashPass: number): Promise<string |
 };
 
 // **Get Rooms Function**: Checks authentication before returning room data
-export const getRooms = async (token: string): Promise<any[] | string> => {
+export const getRooms = async (token: string): Promise<Room[] | string> => {
   if (!checkAuthentication(token)) {
     throw new Error("User is not authenticated");
   }
@@ -105,7 +154,7 @@ export const getRooms = async (token: string): Promise<any[] | string> => {
 };
 
 // **Get Teachers Function**: Checks authentication before returning teacher data
-export const getTeachers = async (token: string): Promise<any[] | string> => {
+export const getTeachers = async (token: string): Promise<Teacher[] | string> => {
   if (!checkAuthentication(token)) {
     throw new Error("User is not authenticated");
   }
@@ -113,7 +162,7 @@ export const getTeachers = async (token: string): Promise<any[] | string> => {
 };
 
 // **Get Subjects Function**: Checks authentication before returning subject data
-export const getSubjects = async (token: string): Promise<any[] | string> => {
+export const getSubjects = async (token: string): Promise<Subject[] | string> => {
   if (!checkAuthentication(token)) {
     throw new Error("User is not authenticated");
   }
@@ -121,7 +170,7 @@ export const getSubjects = async (token: string): Promise<any[] | string> => {
 };
 
 // **Get Labs Function**: Checks authentication before returning lab data
-export const getLabs = async (token: string): Promise<any[] | string> => {
+export const getLabs = async (token: string): Promise<Lab[] | string> => {
   if (!checkAuthentication(token)) {
     throw new Error("User is not authenticated");
   }
@@ -129,7 +178,7 @@ export const getLabs = async (token: string): Promise<any[] | string> => {
 };
 
 // **Peek Room Function**: Checks authentication before returning room details
-export const peekRoom = async (token: string, roomName: string): Promise<any | string> => {
+export const peekRoom = async (token: string, roomName: string): Promise<RoomDetails | string> => {
   if (!checkAuthentication(token)) {
     throw new Error("User is not authenticated");
   }
@@ -151,7 +200,7 @@ export const peekRoom = async (token: string, roomName: string): Promise<any | s
 };
 
 // **Peek Teacher Function**: Checks authentication before returning teacher details
-export const peekTeacher = async (token: string, teacherName: string): Promise<any | string> => {
+export const peekTeacher = async (token: string, teacherName: string): Promise<TeacherDetails | string> => {
   if (!checkAuthentication(token)) {
     throw new Error("User is not authenticated");
   }
@@ -173,7 +222,7 @@ export const peekTeacher = async (token: string, teacherName: string): Promise<a
 };
 
 // **Peek Subject Function**: Checks authentication before returning subject details
-export const peekSubject = async (token: string, subjectCode: string): Promise<any | string> => {
+export const peekSubject = async (token: string, subjectCode: string): Promise<SubjectDetails | string> => {
   if (!checkAuthentication(token)) {
     throw new Error("User is not authenticated");
   }
