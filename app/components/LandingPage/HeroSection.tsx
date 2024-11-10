@@ -1,10 +1,30 @@
+"use client"
 import { Button } from "antd";
 import React from "react";
 import Avatar1 from "@/public/Avatars/avatar1.png";
 import Avatar2 from "@/public/Avatars/avatar2.png";
 import Image from "next/image";
 import Scrum from '@/public/Illustrations/Scrum.png'
+import { checkAuthentication } from "@/lib/actions/dummyActions";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+
 const HeroSection = () => {
+  const router = useRouter();
+
+  async function getStartedClickHandler() {
+    const auth = await checkAuthentication(localStorage.getItem('token') || "")
+    if(auth){
+        router.push('/dashboard');
+        toast.success("Welcome back !!");
+    }
+    else {
+      router.push('/signin');
+      toast.info("Please login to continue");
+    }
+  }
+  
   return (
     <div className="py-16 flex mt-[60px] flex-col items-center">
       <div className="flex justify-around w-full">
@@ -19,7 +39,7 @@ const HeroSection = () => {
         availability. It optimizes the schedule to avoid conflicts and make the
         best use of time and resources.
       </p>
-      <Button className="bg-primary px-10 w-fit text-lg py-6 text-white font-bold">
+      <Button onClick={getStartedClickHandler} className="bg-primary px-10 w-fit text-lg py-6 text-white font-bold">
         Get Started
       </Button>
       </div>

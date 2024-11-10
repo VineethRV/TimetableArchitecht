@@ -1,56 +1,11 @@
 'use server'
 
+import { Lab, Room, RoomDetails, Subject, SubjectDetails, Teacher, TeacherDetails } from '@/app/types/main';
 import jwt from 'jsonwebtoken';
 
 
-const secretKey = "bob"; // Secret key for signing JWT
+const secretKey = process.env.JWT_SECRET_KEY || "";
 
-interface Room{
-    name: string;
-    department:string;
-    labornot:boolean;
-}
-interface Teacher {
-  name: string;
-  initials: string;
-  email: string;
-  dept: string;
-}
-interface Subject {
-  name: string;
-  code: string;
-  semester: number;
-  dept: string;
-}
-interface Lab {
-  name: string;
-  sem: number;
-  batches: string[];
-  dept: string;
-}
-
-
-interface RoomDetails {
-  name: string;
-  dept: string;
-  lab: number;
-  timetable: (string | null)[][];
-}
-interface TeacherDetails {
-  name: string;
-  initials: string;
-  email: string;
-  dept: string;
-  timetable: (string | null)[][];
-}
-interface SubjectDetails {
-  name: string;
-  code: string;
-  credits: number;
-  specialRooms: string[];
-  semester: number;
-  dept: string;
-}
 
 // Mock data for rooms, teachers, etc.
 const rooms = [
@@ -122,7 +77,8 @@ const labs = [
 ];
 
 // **Authenticate User Function**: Verifies if the user is authenticated
-export const checkAuthentication = (token: string): boolean => {
+export const checkAuthentication = async (token: string): Promise<boolean> => {
+
   try {
     jwt.verify(token, secretKey); // Verifies the token using the secret key
     return true; // If token is valid, return true
@@ -132,13 +88,17 @@ export const checkAuthentication = (token: string): boolean => {
 };
 
 // **Login Function**: Generates JWT token if credentials are valid
-export const login = async (usrName: string, hashPass: number): Promise<string | null> => {
-  if (hashPass !== 123) {
+export const login = async (email: string, pass: string): Promise<string | null> => {
+
+  // Mocking api call
+  await new Promise((res,rej)=>setTimeout(res,3000))
+
+  if (pass !== "123") {
     throw new Error("Invalid password");
   }
 
   const token = jwt.sign(
-    { usrName, usrOrg: "RVCE", usrRole: "editor", usrDep: "CSE" },
+    { email, usrOrg: "RVCE", usrRole: "editor", usrDep: "CSE" },
     secretKey
   );
 
