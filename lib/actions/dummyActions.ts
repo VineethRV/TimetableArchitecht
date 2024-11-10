@@ -91,7 +91,7 @@ export const checkAuthentication = async (token: string): Promise<boolean> => {
 export const login = async (email: string, pass: string): Promise<string | null> => {
 
   // Mocking api call
-  await new Promise((res,rej)=>setTimeout(res,3000))
+  await new Promise((res)=>setTimeout(res,3000));
 
   if (pass !== "123") {
     throw new Error("Invalid password");
