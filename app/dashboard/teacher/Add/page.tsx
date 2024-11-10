@@ -69,10 +69,12 @@ const AddTeacherpage: React.FC = () => {
             <Select className="font-inter font-normal" />
           </Form.Item>
           <label>
+            <div className="flex items-center">
             <span>Schedule</span>
             <Tooltip title="Click on the timeslots where to the teachers are busy to set them to busy">
-              <IoIosInformationCircleOutline className="ml-2 text-[#636AE8FF]" />
+              <IoIosInformationCircleOutline className="ml-2 w-4 h-4 text-[#636AE8FF]" />
             </Tooltip>
+            </div>
           </label>
           <Timetable />
           <div className="flex justify-end">
