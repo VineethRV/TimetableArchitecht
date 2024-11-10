@@ -3,33 +3,33 @@ import React from "react";
 import { Divider, Button, Layout } from "antd";
 import {
   FaCalendar,
-  FaUserPen,
-  FaUserPlus,
-  FaChalkboardUser,
+  FaBuildingUser,
+  FaCirclePlus,
   FaClockRotateLeft,
+  FaPenToSquare,
 } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
 const { Sider } = Layout;
 
-const TeachersSidebar = () => {
+const roomssSidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
 
   const handleClick = (label: string, url: string) => {
-    router.push(`/dashboard/teacher${url}`);
+    router.push(`/dashboard/rooms${url}`);
   };
 
   return (
     <Sider className="h-screen bg-white border-r-[0.5px]">
       <div className="flex justify-left text-black-bold items-center pt-[20px] pl-[20px] space-x-2 h-[7vh]">
-      <FaChalkboardUser className="w-[30px] h-[40px]" />
+        <FaBuildingUser className="w-[30px] h-[40px]" />
         <span
           className="text-xl font-semibold text-[#171A1FFF]"
           style={{ fontFamily: "Archivo" }}
         >
-          Teachers
+          Rooms
         </span>
       </div>
       <Divider />
@@ -38,16 +38,16 @@ const TeachersSidebar = () => {
         style={{ fontFamily: "Inter" }}
       >
         <div
-          onClick={() => handleClick("Add a Teacher", "/add")}
+          onClick={() => handleClick("Add a rooms", "/add")}
           className={`flex relative space-x-2 p-2 cursor-pointer ${
-            pathname == "/dashboard/teacher/add"
+            pathname == "/dashboard/rooms/add"
               ? "text-[#636AE8FF] font-bold"
               : "text-[#565E6C]"
           }`}
         >
-          <FaUserPlus className="w-5 h-5" />
-          <span>Add a Teacher</span>
-          {pathname == "/dashboard/teacher/add" && (
+          <FaCirclePlus className="w-5 h-5" />
+          <span>Add a Room</span>
+          {pathname == "/dashboard/rooms/add" && (
             <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-[4px] h-[70%] bg-[#636AE8FF] rounded-full"></div>
           )}
         </div>
@@ -55,14 +55,14 @@ const TeachersSidebar = () => {
         <div
           onClick={() => handleClick("Modify Attributes", "")}
           className={`flex cursor-pointer relative space-x-2 p-2 ${
-            pathname == "/dashboard/teacher"
+            pathname == "/dashboard/rooms"
               ? "text-[#636AE8FF] font-bold"
               : "text-[#565E6C]"
           }`}
         >
-          <FaUserPen className="w-5 h-5" />
+          <FaPenToSquare className="w-5 h-5" />
           <span>Modify Attributes</span>
-          {pathname == "/dashboard/teacher" && (
+          {pathname == "/dashboard/rooms" && (
             <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-[4px] h-[70%] bg-[#636AE8FF] rounded-full"></div>
           )}
         </div>
@@ -104,7 +104,7 @@ const TeachersSidebar = () => {
       </div>
       <div className="flex justify-center">
         <Button
-          onClick={() => router.push(`/teacher/consolidated`)}
+          onClick={() => router.push(`/rooms/consolidated`)}
           className="mt-2 bg-[#636AE8FF] text-white"
         >
           Generate Consolidated
@@ -114,4 +114,4 @@ const TeachersSidebar = () => {
   );
 };
 
-export default TeachersSidebar;
+export default roomssSidebar;

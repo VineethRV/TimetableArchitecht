@@ -2,14 +2,13 @@ import Sider from "antd/es/layout/Sider";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { motion } from "framer-motion";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBook,
-  faGear,
-  faUserGraduate,
-  faBuilding,
-  faChalkboardTeacher,
-} from "@fortawesome/free-solid-svg-icons";
+  FaBook,
+  FaUserGraduate,
+  FaBuilding,
+  FaChalkboardUser,
+  FaGear,
+} from "react-icons/fa6";
 import { Menu } from "antd";
 import Logo from "@/public/Logo.png";
 import Image from "next/image";
@@ -25,29 +24,29 @@ const DashboardSidebar = () => {
   };
 
   const menuItems = [
-    { key: "1", title: "Settings", icon: faGear, path: "/dashboard" },
+    { key: "1", title: "Settings", icon: FaGear, path: "/dashboard" },
     {
       key: "2",
-      title: "Teaching",
-      icon: faChalkboardTeacher,
+      title: "Teachers",
+      icon: FaChalkboardUser,
       path: "/dashboard/teacher",
     },
     {
       key: "3",
-      title: "Departments",
-      icon: faBuilding,
+      title: "Rooms",
+      icon: FaBuilding,
       path: "/dashboard/rooms",
     },
     {
       key: "4",
-      title: "Resources",
-      icon: faBook,
+      title: "Courses",
+      icon: FaBook,
       path: "/dashboard//courses",
     },
     {
       key: "5",
-      title: "Students",
-      icon: faUserGraduate,
+      title: "Classes",
+      icon: FaUserGraduate,
       path: "/dashboard/classes",
     },
   ];
@@ -73,14 +72,13 @@ const DashboardSidebar = () => {
             menuItems.find((item) => item.path === pathname)?.key || "",
           ]}
         >
-          {menuItems.map(({ key, title, icon, path }) => (
+          {menuItems.map(({ key, title, icon:Icon, path }) => (
             <Menu.Item
               key={key}
               title={title}
               onClick={() => handleMenuClick(key, path)}
             >
-              <FontAwesomeIcon
-                icon={icon}
+              <Icon 
                 className={
                   pathname === path ? "text-indigo-500" : "text-gray-400"
                 }
