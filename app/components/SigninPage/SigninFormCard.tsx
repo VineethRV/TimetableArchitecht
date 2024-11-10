@@ -1,16 +1,12 @@
 "use client";
-import {
-  EyeInvisibleOutlined,
-  EyeTwoTone,
-  LockOutlined,
-  MailOutlined,
-} from "@ant-design/icons";
 import { Button, Card, Input } from "antd";
 import React, { useState } from "react";
 import { Checkbox } from "antd";
 import { useRouter } from "next/navigation";
 import { login } from "@/lib/actions/dummyActions";
 import { toast } from "sonner";
+import { FaEye, FaEyeSlash, FaUnlockAlt } from "react-icons/fa";
+import { CiMail } from "react-icons/ci";
 
 const SigninFormCard = () => {
   const router = useRouter();
@@ -45,7 +41,7 @@ const SigninFormCard = () => {
           onChange={(e) => setEmail(e.target.value)}
           size="large"
           placeholder="Enter your email"
-          prefix={<MailOutlined className="pr-2" />}
+          prefix={<CiMail className="pr-2 h-6 w-6" />}
         />
       </div>
       <div className="flex flex-col space-y-1 mt-4">
@@ -55,9 +51,9 @@ const SigninFormCard = () => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter your password"
           iconRender={(visible) =>
-            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            visible ? <FaEye /> : <FaEyeSlash />
           }
-          prefix={<LockOutlined className="pr-2" />}
+          prefix={<FaUnlockAlt className="pr-2 w-5 h-5" />}
           className="text-base"
         />
       </div>

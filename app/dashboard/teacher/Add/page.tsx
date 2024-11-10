@@ -1,10 +1,11 @@
 "use client";
 import React from "react";
-import { InfoCircleOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, message, Form, Input, Select, Tooltip, Upload } from "antd";
 import Timetable from "@/app/components/timetable";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { CiExport } from "react-icons/ci";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 
 const formItemLayout = {
   labelCol: {
@@ -38,7 +39,7 @@ const AddTeacherpage: React.FC = () => {
         </div>
         <Upload>
           <Button
-            icon={<UploadOutlined />}
+            icon={<CiExport />}
             className="text-[#636AE8FF] border-[#636AE8FF] "
           >
             Import
@@ -70,7 +71,7 @@ const AddTeacherpage: React.FC = () => {
           <label>
             <span>Schedule</span>
             <Tooltip title="Click on the timeslots where to the teachers are busy to set them to busy">
-              <InfoCircleOutlined className="ml-2 text-[#636AE8FF]" />
+              <IoIosInformationCircleOutline className="ml-2 text-[#636AE8FF]" />
             </Tooltip>
           </label>
           <Timetable />

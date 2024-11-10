@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { InfoCircleOutlined, UploadOutlined } from "@ant-design/icons";
 import {
   Button,
   message,
@@ -15,6 +14,8 @@ import {
 import type { RadioChangeEvent } from "antd";
 import Timetable from "@/app/components/timetable";
 import { motion } from "framer-motion";
+import { CiExport } from "react-icons/ci";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -45,7 +46,7 @@ const AddRoomForm: React.FC = () => {
         &#8592; Back
         <Upload>
           <Button
-            icon={<UploadOutlined />}
+            icon={<CiExport />}
             className="text-[#636AE8FF] border-[#636AE8FF] "
           >
             Import
@@ -89,9 +90,9 @@ const AddRoomForm: React.FC = () => {
             <span>Schedule</span>
             <Tooltip
               title="Tooltip with customize icon"
-              // icon={<InfoCircleOutlined />}
+            // add-icon
             >
-              <InfoCircleOutlined className="ml-2 text-[#636AE8FF]" />
+              <IoIosInformationCircleOutline className="ml-2 text-[#636AE8FF]" />
             </Tooltip>
           </label>
           <div className="flex justify-left">

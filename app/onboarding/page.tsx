@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Button, Progress } from "antd";
 import Illustration from "../components/OnBoardingProcess/Illustration";
 import LogoHeader from "../components/OnBoardingProcess/LogoHeader";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import Form1 from "../components/OnBoardingProcess/Forms/Form1";
 import Form2 from "../components/OnBoardingProcess/Forms/Form2";
 import Form3 from "../components/OnBoardingProcess/Forms/Form3";
 import ConfirmPage from "../components/OnBoardingProcess/Forms/ConfirmPage";
 import { OrganisationSchema } from "../types/main";
+import { IoIosArrowBack } from "react-icons/io";
+import { FaChevronRight } from "react-icons/fa";
 
 const totalPageNumbers = 3;
 
@@ -27,7 +28,7 @@ const Page = () => {
     });
 
   const [backBtnDisable, setBackBtnDisable] = useState(false);
-  
+
   // Disable back button when user is at pageNumber 0
   useEffect(() => {
     if (pageNumber <= 0) setBackBtnDisable(true);
@@ -101,7 +102,7 @@ const Page = () => {
             onClick={() => setPageNumber((p) => p - 1)}
             className="bg-[#F3F4F6FF] rounded-xl"
           >
-            <LeftOutlined />
+            <IoIosArrowBack />
             <h1>Back</h1>
           </Button>
           <Button
@@ -110,7 +111,7 @@ const Page = () => {
             disabled={continueBtnEnable}
           >
             <h1>Continue</h1>
-            <RightOutlined />
+            <FaChevronRight />
           </Button>
         </div>
       </div>
