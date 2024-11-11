@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import PrismaClientManager from '../pgConnect';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { statusCodes } from '@/app/types/statusCodes';
 
 const secretKey = process.env.JWT_SECRET_KEY || ""
