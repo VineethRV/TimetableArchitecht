@@ -3,10 +3,12 @@ import { Button, Card, Input } from "antd";
 import React, { useState } from "react";
 import { Checkbox } from "antd";
 import { useRouter } from "next/navigation";
-import { login } from "@/lib/actions/dummyActions";
+
 import { toast } from "sonner";
 import { FaEye, FaEyeSlash, FaUnlockAlt } from "react-icons/fa";
 import { CiMail } from "react-icons/ci";
+import { login } from "@/lib/actions/auth";
+import { statusCodes } from "@/app/types/statusCodes";
 
 const SigninFormCard = () => {
   const router = useRouter();
@@ -14,21 +16,30 @@ const SigninFormCard = () => {
   const [password, setPassword] = useState("");
 
   function signInHandler() {
-    const tokenPromise = login(email, password)
-      .then((token) => {
-        localStorage.setItem("token", token as string);
-        router.push("/dashboard");
-      })
-      .catch((e) => {
-        console.error("Login failed:", e);
-        throw e;
-      });
+    const response = login(email,password).then((res)=>{
+      const statusCode = res.status;
 
-    toast.promise(tokenPromise, {
-      loading: "Logging in",
-      success: "Logged in successfully",
-      error: "Login failed",
-    });
+      switch(statusCode){
+        case statusCodes.OK:
+          toast.success("User logged in successfully");
+          localStorage.setItem('token',res.token)
+          router.push('/dashboard');
+          break;
+        case statusCodes.NOT_FOUND:
+          toast.error("User does not exist");
+          break;
+        case statusCodes.UNAUTHORIZED:
+          toast.error("Wrong credentials")
+          break;        
+        case statusCodes.INTERNAL_SERVER_ERROR:
+          toast.error("Server error")
+          break; 
+      }
+    })
+
+    toast.promise(response, {
+      loading: "Logging in !!"
+    })
   }
 
   return (

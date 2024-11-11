@@ -1,13 +1,13 @@
-import jwt from 'jsonwebtoken'
-import PrismaClientManager from '../pgConnect';
-import bcrypt from 'bcryptjs'
-import { statusCodes } from '@/app/types/statusCodes';
+"use server";
+import jwt from "jsonwebtoken";
+import PrismaClientManager from "../pgConnect";
+import bcrypt from "bcryptjs";
+import { statusCodes } from "@/app/types/statusCodes";
 
-const secretKey = process.env.JWT_SECRET_KEY || ""
+const secretKey = process.env.JWT_SECRET_KEY || "";
 const prisma = PrismaClientManager.getInstance().getPrismaClient();
 
 export const checkAuthentication = async (token: string): Promise<boolean> => {
-
   try {
     jwt.verify(token, secretKey); // Verifies the token using the secret key
     return true; // If token is valid, return true
@@ -16,21 +16,22 @@ export const checkAuthentication = async (token: string): Promise<boolean> => {
   }
 };
 
-export const login = async (email: string, pass: string): Promise<{ status: number, token: string }> => {
-
+export const login = async (
+  email: string,
+  pass: string
+): Promise<{ status: number; token: string }> => {
   try {
     const user = await prisma.user.findFirst({
       where: {
-        email
-      }
-    })
-
+        email,
+      },
+    });
 
     if (!user) {
       return {
         status: statusCodes.NOT_FOUND,
-        token: ""
-      }
+        token: "",
+      };
     }
 
     const validatePass = await bcrypt.compare(pass, user?.hashedPass || "");
@@ -38,56 +39,73 @@ export const login = async (email: string, pass: string): Promise<{ status: numb
     if (!validatePass) {
       return {
         status: statusCodes.UNAUTHORIZED,
-        token: ""
-      }
+        token: "",
+      };
     }
 
-    const token = jwt.sign({
-      email: user?.email
-    }, secretKey);
-
+    const token = jwt.sign(
+      {
+        email: user?.email,
+      },
+      secretKey
+    );
     return {
       status: statusCodes.OK,
-      token
-    }
-  }
-  catch (e) {
+      token,
+    };
+  } catch (e) {
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
-      token: ""
-    }
+      token: "",
+    };
   }
-
 };
 
-export const register = async (name: string, email: string, password: string): Promise<{ status: number, token: string }> => {
-  // check if fields are following proper rules
-
+export const register = async (
+  name: string,
+  email: string,
+  password: string
+): Promise<{ status: number; token: string }> => {
   try {
     const hashedPass = await bcrypt.hash(password, 10);
+
+    const duplicateUser = await prisma.user.findFirst({
+      where: {
+        email,
+      },
+    });
+
+    if (duplicateUser) {
+      return {
+        status: statusCodes.CONFLICT,
+        token: "",
+      };
+    }
+
     await prisma.user.create({
       data: {
         name,
         email,
         hashedPass,
-        hasAccess: false
-      }
-    })
+        hasAccess: false,
+      },
+    });
 
-    const token = jwt.sign({
-      email
-    }, secretKey);
+    const token = jwt.sign(
+      {
+        email,
+      },
+      secretKey
+    );
 
     return {
-      status: statusCodes.OK,
-      token
-    }
-
-  }
-  catch (e) {
+      status: statusCodes.CREATED,
+      token,
+    };
+  } catch (e) {
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
-      token: ""
-    }
+      token: "",
+    };
   }
-}
+};
