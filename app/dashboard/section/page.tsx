@@ -1,7 +1,7 @@
 function page() {
   return (
     <div>
-      <h1>Classes</h1>
+      <h1>Section</h1>
     </div>
   );
 }

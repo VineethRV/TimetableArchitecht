@@ -13,7 +13,7 @@ import { usePathname } from "next/navigation";
 
 const { Sider } = Layout;
 
-const roomssSidebar = () => {
+const RoomssSidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -114,4 +114,4 @@ const roomssSidebar = () => {
   );
 };
 
-export default roomssSidebar;
+export default RoomssSidebar;

@@ -19,7 +19,7 @@ const formItemLayout = {
 const AddRoomForm: React.FC = () => {
   const [form] = Form.useForm();
   const success = () => {
-    message.success("Room Added successfully!", 3);
+    message.success("Room Added successfully!", 5);
   };
   const router = useRouter();
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Spin } from 'antd';
 
 const App: React.FC = () => (
-  <div className="flex justify-center items-center w-screen h-screen">
+  <div className="flex justify-center items-center w-full h-screen">
     <Spin tip="Loading" size="large" />
   </div>
 );

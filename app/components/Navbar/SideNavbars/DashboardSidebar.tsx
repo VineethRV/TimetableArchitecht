@@ -41,13 +41,13 @@ const DashboardSidebar = () => {
       key: "4",
       title: "Courses",
       icon: FaBook,
-      path: "/dashboard//courses",
+      path: "/dashboard/courses",
     },
     {
       key: "5",
-      title: "Classes",
+      title: "section",
       icon: FaUserGraduate,
-      path: "/dashboard/classes",
+      path: "/dashboard/section",
     },
   ];
 
