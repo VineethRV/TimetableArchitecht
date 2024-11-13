@@ -69,18 +69,18 @@ const DashboardSidebar = () => {
           mode="vertical"
           className="bg-gray-800"
           selectedKeys={[
-            menuItems.find((item) => item.path === pathname)?.key || "",
+            menuItems.find((item) => (item.path == '/dashboard' ? pathname == item.path : pathname.includes(item.path)) )?.key || "",
           ]}
         >
-          {menuItems.map(({ key, title, icon:Icon, path }) => (
+          {menuItems.map(({ key, title, icon: Icon, path }) => (
             <Menu.Item
               key={key}
               title={title}
               onClick={() => handleMenuClick(key, path)}
             >
-              <Icon 
+              <Icon
                 className={
-                  pathname === path ? "text-indigo-500" : "text-gray-400"
+                 (path == '/dashboard' ? pathname == path : pathname.includes(path))  ? "text-indigo-500" : "text-gray-400"
                 }
               />
             </Menu.Item>

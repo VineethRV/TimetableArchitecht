@@ -2,7 +2,7 @@
 import React from "react";
 import { Avatar, Button, Table, Tooltip } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
-import { DeleteFilled, EditFilled } from "@ant-design/icons";
+import { MdDelete, MdEdit } from "react-icons/md";
 
 interface TeacherType {
   key: React.Key;
@@ -449,7 +449,7 @@ const columns: TableColumnsType<TeacherType> = [
     render: () => {
       return (
         <Tooltip title="Edit">
-          <Button type="primary" shape="circle" icon={<EditFilled />} />
+          <Button type="primary" shape="circle" icon={<MdEdit />} />
         </Tooltip>
       );
     },
@@ -463,7 +463,7 @@ const columns: TableColumnsType<TeacherType> = [
             className="bg-red-400 "
             type="primary"
             shape="circle"
-            icon={<DeleteFilled />}
+            icon={<MdDelete />}
           />
         </Tooltip>
       );

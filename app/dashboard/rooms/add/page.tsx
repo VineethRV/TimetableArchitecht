@@ -4,6 +4,8 @@ import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button, message, Form, Input, Select, Tooltip, Upload,InputNumber,Radio } from 'antd';
 import Timetable from '@/app/components/timetable';
 import { motion } from 'framer-motion'
+import { CiExport } from 'react-icons/ci';
+import { IoIosInformationCircleOutline } from 'react-icons/io';
 import { useRouter } from "next/navigation";
 const formItemLayout = {
   labelCol: {
@@ -38,7 +40,7 @@ const AddRoomForm: React.FC = () => {
         </div>
         <Upload>
           <Button
-            icon={<UploadOutlined />}
+            icon={<CiExport />}
             className="text-[#636AE8FF] border-[#636AE8FF] "
           >
             Import
