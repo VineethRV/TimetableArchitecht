@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
-import { InfoCircleOutlined, UploadOutlined } from "@ant-design/icons";
+import { CiImport } from "react-icons/ci";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 import {
   Button,
   message,
@@ -14,6 +15,7 @@ import {
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { semesterOptions } from "@/app/components/semester/semester";
+import RoomOptions from "@/app/components/general/roomoption";
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -46,7 +48,7 @@ const AddCoursepage: React.FC = () => {
         </div>
         <Upload>
           <Button
-            icon={<UploadOutlined />}
+            icon={<CiImport />}
             className="text-[#636AE8FF] border-[#636AE8FF] "
           >
             Import
@@ -85,23 +87,17 @@ const AddCoursepage: React.FC = () => {
           </Form.Item>
           <Form.Item
             label={
-              <span>
+              <span className="inline-flex items-center">
                 Any particular room to be used?
                 <Tooltip title="Select one or more rooms to indicate specific room preferences for this session.">
-                  <InfoCircleOutlined className="ml-2 text-[#636AE8FF]" />
+                  <IoIosInformationCircleOutline className="ml-2 text-[#636AE8FF]" />
                 </Tooltip>
               </span>
             }
           >
-            <Select
-              mode="multiple"
-              placeholder="Select the rooms"
-              className="font-normal"
-            />
+            <RoomOptions />
           </Form.Item>
-          <Form.Item
-            label="Rate the subject from 1 to 5 based on the exhaustiveness of the subject"
-          >
+          <Form.Item label="Rate the subject from 1 to 5 based on the exhaustiveness of the subject">
             <InputNumber
               min={0}
               placeholder="Rating"

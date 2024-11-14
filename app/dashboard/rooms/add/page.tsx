@@ -1,12 +1,12 @@
 'use client';
 import React from 'react';
-import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button, message, Form, Input, Select, Tooltip, Upload,InputNumber,Radio } from 'antd';
 import Timetable from '@/app/components/timetable';
 import { motion } from 'framer-motion'
-import { CiExport } from 'react-icons/ci';
-import { IoIosInformationCircleOutline } from 'react-icons/io';
+import { CiImport } from 'react-icons/ci';
 import { useRouter } from "next/navigation";
+import { IoIosInformationCircleOutline } from 'react-icons/io';
+
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -40,7 +40,7 @@ const AddRoomForm: React.FC = () => {
         </div>
         <Upload>
           <Button
-            icon={<CiExport />}
+            icon={<CiImport />}
             className="text-[#636AE8FF] border-[#636AE8FF] "
           >
             Import
@@ -79,9 +79,9 @@ const AddRoomForm: React.FC = () => {
       </Form.Item>
       <label>
           <span>Schedule</span>
-          <Tooltip title="Tooltip with customize icon" icon={<InfoCircleOutlined />}>
-            <InfoCircleOutlined className="ml-2 text-[#636AE8FF]" />
-          </Tooltip>
+          <Tooltip title="Tooltip with customize icon">
+              <IoIosInformationCircleOutline className="ml-2 text-[#636AE8FF]" />
+            </Tooltip>
       </label>
       <div className="flex justify-left" >
       <Timetable />
