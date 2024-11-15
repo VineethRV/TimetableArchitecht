@@ -1,8 +1,8 @@
 import React from 'react';
-import { Cascader, Tag } from 'antd';
+import { Cascader, Tag, CascaderProps } from 'antd';
 
 const RoomOptions: React.FC = () => {
-  const tagRender = (props: any) => {
+  const tagRender = (props: CascaderProps['tagRender']) => {
     const { label, closable, onClose } = props;
 
     return (
@@ -41,17 +41,18 @@ const RoomOptions: React.FC = () => {
 
   return (
     <div>
-    <Cascader
-      options={options}
-      multiple
-      maxTagCount="responsive"
-      tagRender={tagRender}
-      showCheckedStrategy={Cascader.SHOW_CHILD}
-      placeholder="Default Classrooms"
-      style={{width:'100%',
-        fontWeight:'400'
-      }}
-    />
+      <Cascader
+        options={options}
+        multiple
+        maxTagCount="responsive"
+        tagRender={tagRender}
+        showCheckedStrategy={Cascader.SHOW_CHILD}
+        placeholder="Default Classrooms"
+        style={{
+          width: '100%',
+          fontWeight: '400',
+        }}
+      />
     </div>
   );
 };
