@@ -145,30 +145,30 @@ export async function getPosition(JWTtoken:string):Promise<{status:number,user:U
             department:user.department
           };
           return {
-            status:200,
+            status:statusCodes.OK,
             user:retVal
           };
         }
         else{
           return{
             //not authorised
-            status:400,
+            status:statusCodes.UNAUTHORIZED,
             user:null
           }
         }
       }
       else{
         //illegal request
-        return {status:404,user:null}
+        return {status:statusCodes.BAD_REQUEST,user:null}
       }
     }
     catch{
       //if the user isnt found
-      return {status:404, user:null}
+      return {status:statusCodes.NOT_FOUND, user:null}
     }
   }
   catch{
     //server error ig
-    return {status:500, user:null}
+    return {status:statusCodes.INTERNAL_SERVER_ERROR, user:null}
   }
 }
