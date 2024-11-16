@@ -137,7 +137,7 @@ export async function getPosition(JWTtoken:string):Promise<{status:number,user:U
       if(user && user.email==userEmail){
         //successfull match,and has permission return values
         if(user.hasAccess){
-          let retVal={
+          const retVal={
             id:user.id,
             name:user.name,
             organisation:user.organisation,
