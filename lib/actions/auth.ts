@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import PrismaClientManager from "../pgConnect";
 import bcrypt from "bcryptjs";
 import { statusCodes } from "@/app/types/statusCodes";
+import { User } from "@/app/types/main";
 
 const secretKey = process.env.JWT_SECRET_KEY || "bob";
 const prisma = PrismaClientManager.getInstance().getPrismaClient();
@@ -115,13 +116,7 @@ export const register = async (
 
 
 //This is the return type of the fuction
-export type User={
-  id:number,
-  name:string|null,
-  organisation:string | null,
-  role:string | null,
-  department:string| null
-}
+
 
 
 //pass the jwtToken of the user that you want to get the position of.
@@ -132,9 +127,9 @@ export async function getPosition(JWTtoken:string):Promise<{status:number,user:U
     const userId=jwtParsed.id;
     const userEmail=jwtParsed.email;
     //find user info from DB using id
-    try{
-      const user=await prisma.user.findUnique({where:{id:userId}});
-      if(user && user.email==userEmail){
+    const user=await prisma.user.findUnique({where:{id:userId}});
+    if(user){
+      if(user.email==userEmail){
         //successfull match,and has permission return values
         if(user.hasAccess){
           const retVal={
@@ -162,7 +157,7 @@ export async function getPosition(JWTtoken:string):Promise<{status:number,user:U
         return {status:statusCodes.BAD_REQUEST,user:null}
       }
     }
-    catch{
+    else{
       //if the user isnt found
       return {status:statusCodes.NOT_FOUND, user:null}
     }
