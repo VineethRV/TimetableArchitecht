@@ -153,7 +153,7 @@ export async function getRooms(token:string):Promise<{status:number,rooms:Room[]
 export async function peekRoom(token:string,name:string,department:string):Promise<{status:number,room:Room|null}> {
     try{
         //get position of user
-        let {status,user}=await auth.getPosition(token)
+        const {status,user}=await auth.getPosition(token)
         if(status==statusCodes.OK && user){
             //find all the clasrooms in his lab
             const room=await prisma.room.findFirst({
