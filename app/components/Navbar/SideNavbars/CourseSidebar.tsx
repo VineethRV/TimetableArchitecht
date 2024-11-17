@@ -101,15 +101,16 @@ const CoursesSidebar = () => {
         </div>
       </div>
       <Divider />
-      <div className="flex justify-center items-center h-[10vh]">
+      <div className="flex justify-center items-center h-[7vh]">
            <Select
         placeholder="Select a semester"
         options={semesterOptions}
         className="font-normal"
       />
       </div>
+      <Divider/>
       <div
-        className="flex flex-col items-left justify-center h-[25vh] space-y-2 font-medium text-[#565E6C] pl-4"
+        className="flex flex-col items-left justify-center h-[15vh] space-y-2 font-medium text-[#565E6C] pl-4"
         style={{ fontFamily: "Inter" }}
       >
         <div

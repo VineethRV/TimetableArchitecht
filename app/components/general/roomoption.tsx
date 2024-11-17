@@ -1,25 +1,7 @@
 import React from 'react';
 import { Cascader, Tag } from 'antd';
-import type { CustomTagProps } from 'rc-cascader/lib/Components/Tag';
 
 const RoomOptions: React.FC = () => {
-  // Define the type of props correctly to avoid errors
-  const tagRender = (props: CustomTagProps) => {
-    const { label, closable, onClose } = props;
-
-    return (
-      <Tag
-        color="#F2F2FDFF"
-        closable={closable}
-        onClose={onClose}
-        className="rounded-xl text-indigo-600 bg-gray-100"
-        closeIcon={<span className="text-red-500">×</span>}
-      >
-        {label}
-      </Tag>
-    );
-  };
-
   const options = [
     {
       label: 'CSE',
@@ -41,13 +23,32 @@ const RoomOptions: React.FC = () => {
     },
   ];
 
+  const tagRender = (props: { label: React.ReactNode; value: string; onClose: () => void }) => {
+    const { label, onClose } = props;
+
+    return (
+      <Tag
+        color="#F2F2FDFF"
+        closable
+        onClose={onClose}
+        style={{ color: '#636AE8FF', borderRadius: '12px' }}
+        closeIcon={<span style={{ color: 'red' }}>×</span>}
+      >
+        {label}
+      </Tag>
+    );
+  };
+
   return (
     <div>
       <Cascader
         options={options}
         multiple
         maxTagCount="responsive"
-        tagRender={tagRender}
+        tagRender={(props) => {
+          const label = props.label;
+          return tagRender({ ...props, label });
+        }}
         showCheckedStrategy={Cascader.SHOW_CHILD}
         placeholder="Default Classrooms"
         className="w-full font-normal"
