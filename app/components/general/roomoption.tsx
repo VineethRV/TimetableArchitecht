@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cascader, Tag } from 'antd';
+import { Cascader } from 'antd';
 
 const RoomOptions: React.FC = () => {
   const options = [
@@ -23,19 +23,23 @@ const RoomOptions: React.FC = () => {
     },
   ];
 
-  const tagRender = (props: { label: React.ReactNode; value: string; onClose: () => void }) => {
+  const tagRender = (props: { label: React.ReactNode; onClose: () => void }) => {
     const { label, onClose } = props;
 
     return (
-      <Tag
-        color="#F2F2FDFF"
-        closable
-        onClose={onClose}
-        style={{ color: '#636AE8FF', borderRadius: '12px' }}
-        closeIcon={<span style={{ color: 'red' }}>×</span>}
+      <div
+        className="flex items-center bg-[#F2F2FDFF] text-[#636AE8FF] rounded-full px-3 text-sm m-1 font-semibold"
       >
         {label}
-      </Tag>
+        {(
+          <button
+            onClick={onClose}
+            className="ml-2 text-red-500 text-lg cursor-pointer hover:text-red-700"
+          >
+            ×
+          </button>
+        )}
+      </div>
     );
   };
 
@@ -45,10 +49,7 @@ const RoomOptions: React.FC = () => {
         options={options}
         multiple
         maxTagCount="responsive"
-        tagRender={(props) => {
-          const label = props.label;
-          return tagRender({ ...props, label });
-        }}
+        tagRender={tagRender}
         showCheckedStrategy={Cascader.SHOW_CHILD}
         placeholder="Default Classrooms"
         className="w-full font-normal"
