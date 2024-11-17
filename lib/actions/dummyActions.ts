@@ -8,23 +8,23 @@ const secretKey = process.env.JWT_SECRET_KEY || "";
 
 
 // Mock data for rooms, teachers, etc.
-const rooms = [
-    { name: 'Room A', department: 'Computer Science', labornot: true },
-    { name: 'Room B', department: 'Computer Science', labornot: false },
-    { name: 'Room A', department: 'Computer Science', labornot: true },
-    { name: 'Room B', department: 'Computer Science', labornot: false },
-    { name: 'Room A', department: 'Computer Science', labornot: true },
-    { name: 'Room B', department: 'Computer Science', labornot: false },
-    { name: 'Room A', department: 'Computer Science', labornot: true },
-    { name: 'Room B', department: 'Computer Science', labornot: false },
-    { name: 'Room A', department: 'Computer Science', labornot: true },
-    { name: 'Room B', department: 'Computer Science', labornot: false },
-    { name: 'Room A', department: 'Computer Science', labornot: true },
-    { name: 'Room B', department: 'Computer Science', labornot: false },
-    { name: 'Room A', department: 'Computer Science', labornot: true },
-    { name: 'Room B', department: 'Computer Science', labornot: false },
-  // other rooms
-];
+// const rooms = [
+//     { name: 'Room A', department: 'Computer Science', labornot: true },
+//     { name: 'Room B', department: 'Computer Science', labornot: false },
+//     { name: 'Room A', department: 'Computer Science', labornot: true },
+//     { name: 'Room B', department: 'Computer Science', labornot: false },
+//     { name: 'Room A', department: 'Computer Science', labornot: true },
+//     { name: 'Room B', department: 'Computer Science', labornot: false },
+//     { name: 'Room A', department: 'Computer Science', labornot: true },
+//     { name: 'Room B', department: 'Computer Science', labornot: false },
+//     { name: 'Room A', department: 'Computer Science', labornot: true },
+//     { name: 'Room B', department: 'Computer Science', labornot: false },
+//     { name: 'Room A', department: 'Computer Science', labornot: true },
+//     { name: 'Room B', department: 'Computer Science', labornot: false },
+//     { name: 'Room A', department: 'Computer Science', labornot: true },
+//     { name: 'Room B', department: 'Computer Science', labornot: false },
+//   // other rooms
+// ];
 
 const teachers = [
     { name: 'John Doe', initials: 'JD', email: 'johndoe@example.com', dept: 'Computer Science' },
@@ -110,7 +110,7 @@ export const getRooms = async (token: string): Promise<Room[] | string> => {
   if (!checkAuthentication(token)) {
     throw new Error("User is not authenticated");
   }
-  return rooms; // Return the list of rooms if authenticated
+  return "rooms"; // Return the list of rooms if authenticated
 };
 
 // **Get Teachers Function**: Checks authentication before returning teacher data
