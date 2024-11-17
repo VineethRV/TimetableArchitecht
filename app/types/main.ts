@@ -1,3 +1,10 @@
+export type User={
+  id:number,
+  name:string|null,
+  organisation:string | null,
+  role:string | null,
+  department:string| null
+}
 export type OrganisationSchema = {
   name: string;
   designation: string;
