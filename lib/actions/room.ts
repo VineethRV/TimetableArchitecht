@@ -17,7 +17,7 @@ function convertTableToString(timetable:string[][]):string|null{
 
 
 //for creating rooms by editors, and admins
-export async function createRoom(JWTtoken:string,name:string,lab:boolean,timetable:string[][]|null,department:string|null):Promise<{status:number,room:Room|null}> {
+export async function createRoom(JWTtoken:string,name:string,lab:boolean,timetable:string[][]|null=null,department:string|null=null):Promise<{status:number,room:Room|null}> {
     try{
         const {status,user}=await auth.getPosition(JWTtoken)
         //if status is ok
@@ -35,7 +35,7 @@ export async function createRoom(JWTtoken:string,name:string,lab:boolean,timetab
                 if(timetable){
                     room.timetable=convertTableToString(timetable)
                 }
-                if(user.role=="editor" && department){
+                if(user.role=="admin" && department){
                     room.department=department
                 }
                 //first check if any duplicates there, org dep and name same
@@ -149,3 +149,44 @@ export async function getRooms(token:string):Promise<{status:number,rooms:Room[]
     }
     
 }   
+//have to add extra handeling for admins
+export async function peekRoom(token:string,name:string,department:string):Promise<{status:number,room:Room|null}> {
+    try{
+        //get position of user
+        let {status,user}=await auth.getPosition(token)
+        if(status==statusCodes.OK && user){
+            //find all the clasrooms in his lab
+            const room=await prisma.room.findFirst({
+                where:{
+                    name:name,
+                    department:department,
+                    organisation:user.organisation
+                },
+                select:{
+                    name:true,
+                    organisation:true,
+                    department:true,
+                    lab:true,
+                    timetable:true
+                }
+            })
+            return{
+                status:statusCodes.OK,
+                room:room
+            }
+        }
+        else{
+            return {
+                status:status,
+                room:null
+            }
+        }
+    }
+    catch{
+        //internal error
+        return {
+            status:statusCodes.INTERNAL_SERVER_ERROR,
+            room:null
+        }
+    }
+}
