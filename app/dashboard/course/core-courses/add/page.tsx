@@ -23,7 +23,7 @@ const formItemLayout = {
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 14 },
+    sm: { span: 20 },
   },
 };
 
@@ -39,7 +39,7 @@ const AddCoursepage: React.FC = () => {
       <div className="flex px-2 items-center justify-between text-[#636AE8FF] text-xl text-bold">
         <div
           onClick={() => {
-            router.push("/dashboard/teacher");
+            router.push("/dashboard/courses/core-courses");
           }}
           className="flex text-base w-fit cursor-pointer space-x-2"
         >
@@ -66,7 +66,7 @@ const AddCoursepage: React.FC = () => {
       >
         <Form {...formItemLayout} form={form} layout="vertical" requiredMark>
           <Form.Item label="Course Name" required>
-            <Input placeholder="Name" className="font-normal" />
+            <Input placeholder="Name" className="w-full font-normal" />
           </Form.Item>
           <Form.Item label="Course Code" required>
             <Input placeholder="Course Code" className="font-normal" />
