@@ -23,3 +23,12 @@ model User {
   hasAccess Boolean
   department String?
 }
+
+model Room{
+  id Int @id @default(autoincrement())
+  name String
+  organisation String?
+  department String?
+  lab Boolean?
+  timetable String?
+}

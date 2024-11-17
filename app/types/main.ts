@@ -14,12 +14,14 @@ export type OrganisationSchema = {
   students: number;
   depts_list: string[];
 };
-
-export interface Room {
-  name: string;
-  department: string;
-  labornot: boolean;
+export type Room={
+  name: string,
+  organisation: string|null,
+  department:string|null,
+  lab:boolean|null,
+  timetable:string|null
 }
+
 
 export interface Teacher {
   name: string;
