@@ -47,6 +47,7 @@ export const login = async (
     const token = jwt.sign(
       {
         email: user?.email,
+        id: user?.id,
         //consider adding organisation and role
       },
       secretKey
@@ -84,7 +85,7 @@ export const register = async (
       };
     }
 
-    await prisma.user.create({
+    const new_user = await prisma.user.create({
       data: {
         name,
         email,
@@ -95,7 +96,8 @@ export const register = async (
 
     const token = jwt.sign(
       {
-        email,
+        email: new_user.email,
+        id: new_user.id,
       },
       secretKey
     );
@@ -114,56 +116,51 @@ export const register = async (
 
 //the following section defines the functions to recieve and verify the positions of users.
 
-
 //This is the return type of the fuction
 
-
-
 //pass the jwtToken of the user that you want to get the position of.
-export async function getPosition(JWTtoken:string):Promise<{status:number,user:User|null}> {
-  try{
+export async function getPosition(
+  JWTtoken: string
+): Promise<{ status: number; user: User | null }> {
+  try {
     //getting user id from token
-    const jwtParsed=jwt.decode(JWTtoken) as jwt.JwtPayload;
-    const userId=jwtParsed.id;
-    const userEmail=jwtParsed.email;
+    const jwtParsed = jwt.decode(JWTtoken) as jwt.JwtPayload;
+    const userId = jwtParsed.id;
+    const userEmail = jwtParsed.email;
     //find user info from DB using id
-    const user=await prisma.user.findUnique({where:{id:userId}});
-    if(user){
-      if(user.email==userEmail){
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (user) {
+      if (user.email == userEmail) {
         //successfull match,and has permission return values
-        if(user.hasAccess){
-          const retVal={
-            id:user.id,
-            name:user.name,
-            organisation:user.organisation,
-            role:user.role,
-            department:user.department
+        if (user.hasAccess) {
+          const retVal = {
+            id: user.id,
+            name: user.name,
+            organisation: user.organisation,
+            role: user.role,
+            department: user.department,
           };
           return {
-            status:statusCodes.OK,
-            user:retVal
+            status: statusCodes.OK,
+            user: retVal,
+          };
+        } else {
+          return {
+            //not authorised
+            status: statusCodes.UNAUTHORIZED,
+            user: null,
           };
         }
-        else{
-          return{
-            //not authorised
-            status:statusCodes.UNAUTHORIZED,
-            user:null
-          }
-        }
-      }
-      else{
+      } else {
         //illegal request
-        return {status:statusCodes.BAD_REQUEST,user:null}
+        return { status: statusCodes.BAD_REQUEST, user: null };
       }
-    }
-    else{
+    } else {
       //if the user isnt found
-      return {status:statusCodes.NOT_FOUND, user:null}
+      return { status: statusCodes.NOT_FOUND, user: null };
     }
-  }
-  catch{
+  } catch {
     //server error ig
-    return {status:statusCodes.INTERNAL_SERVER_ERROR, user:null}
+    return { status: statusCodes.INTERNAL_SERVER_ERROR, user: null };
   }
 }
