@@ -4,7 +4,7 @@ import { Button, message, Form, Input, Select, Tooltip, Upload } from "antd";
 import Timetable from "@/app/components/timetable";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { CiExport } from "react-icons/ci";
+import { CiImport } from "react-icons/ci";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 
 const formItemLayout = {
@@ -39,7 +39,7 @@ const AddTeacherpage: React.FC = () => {
         </div>
         <Upload>
           <Button
-            icon={<CiExport />}
+            icon={<CiImport />}
             className="text-[#636AE8FF] border-[#636AE8FF] "
           >
             Import
@@ -71,7 +71,7 @@ const AddTeacherpage: React.FC = () => {
           <label>
             <div className="flex items-center">
             <span>Schedule</span>
-            <Tooltip title="Click on the timeslots where to the teachers are busy to set them to busy">
+            <Tooltip title="Click on the timeslots where to the teacher  busy to set them to busy">
               <IoIosInformationCircleOutline className="ml-2 w-4 h-4 text-[#636AE8FF]" />
             </Tooltip>
             </div>

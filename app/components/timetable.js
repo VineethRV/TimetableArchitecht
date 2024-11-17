@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Table, Button } from 'antd';
 
 const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const timeslots = ['8:00 AM', '10:00 AM', '12:00 PM', '2:00 PM', '4:00 PM', '6:00 PM'];
+const timeslots = ['9:00-10:00', '10:00-11:00', '11:30-12:30', '12:30-1:30', '2:30-3:30', '3:30-4:30'];
 
 const Timetable = () => {
   const [buttonStatus, setButtonStatus] = useState(
@@ -22,13 +22,11 @@ const Timetable = () => {
     buttons: timeslots.map((_, colIndex) => (
       <Button
         key={colIndex}
-        style={{
-          width: '75px',
-          height: '32px',
-          margin: '4px',
-          color: buttonStatus[rowIndex][colIndex] === 'Busy' ? 'white' : '#636AE8FF',
-          backgroundColor: buttonStatus[rowIndex][colIndex] === 'Busy' ? '#636AE8FF' : '#F2F2FDFF',
-        }}
+        className={`w-20 h-8 m-1 text-sm font-semibold rounded-md ${
+          buttonStatus[rowIndex][colIndex] === 'Busy'
+            ? 'text-[#F2F2FDFF] bg-[#636AE8FF]'
+            : 'text-[#636AE8FF] bg-[#F2F2FDFF]'
+        }`}
         onClick={() => handleButtonClick(rowIndex, colIndex)}
       >
         {buttonStatus[rowIndex][colIndex]}
@@ -41,21 +39,21 @@ const Timetable = () => {
       title: 'Timeslots',
       dataIndex: 'day',
       key: 'day',
-      render: (text) => <strong style={{ fontFamily: 'Inter', fontWeight: '400' }}>{text}</strong>,
+      render: (text) => <strong className='text-normal' style={{ fontFamily: 'Inter'}}>{text}</strong>,
     },
     ...timeslots.map((slot, index) => ({
       title: slot,
       dataIndex: `button${index}`,
       key: `button${index}`,
       render: (_, record) => (
-        <span style={{ fontFamily: 'Inter', fontWeight: '400' }}>{record.buttons[index]}</span>
+        <span className='text-normal' style={{ fontFamily: 'Inter'}}>{record.buttons[index]}</span>
       ),
     })),
   ];
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
-      <div style={{ maxWidth: '600px', width: '100%' }}>
+    <div className='flex justify-center p-5' >
+      <div className="max-w-[600px] w-full" >
         <Table
           dataSource={dataSource}
           columns={columns}

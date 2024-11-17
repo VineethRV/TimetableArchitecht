@@ -1,9 +1,10 @@
+
 function page() {
   return (
     <div>
-      <h1>Subjects</h1>
+      <h1>Section</h1>
     </div>
-  );
+  )
 }
 
-export default page;
+export default page

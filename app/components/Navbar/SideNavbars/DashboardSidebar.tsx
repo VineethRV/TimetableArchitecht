@@ -45,9 +45,9 @@ const DashboardSidebar = () => {
     },
     {
       key: "5",
-      title: "Classes",
+      title: "section",
       icon: FaUserGraduate,
-      path: "/dashboard/classes",
+      path: "/dashboard/section",
     },
   ];
 
