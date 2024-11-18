@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Button, Switch, Table, Tooltip } from "antd";
+import { Button, Table, Tooltip } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { MdDelete, MdEdit } from "react-icons/md";
 
