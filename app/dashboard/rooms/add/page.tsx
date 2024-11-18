@@ -1,11 +1,22 @@
-'use client';
-import React from 'react';
-import { Button, message, Form, Input, Select, Tooltip, Upload,InputNumber,Radio } from 'antd';
-import Timetable from '@/app/components/timetable';
-import { motion } from 'framer-motion'
-import { CiImport } from 'react-icons/ci';
+"use client";
+import React, { useState } from "react";
+import {
+  Button,
+  message,
+  Form,
+  Input,
+  Select,
+  Tooltip,
+  Upload,
+  InputNumber,
+  Radio,
+} from "antd";
+import Timetable from "@/app/components/timetable";
+import { motion } from "framer-motion";
+import { CiImport } from "react-icons/ci";
 import { useRouter } from "next/navigation";
-import { IoIosInformationCircleOutline } from 'react-icons/io';
+import { IoIosInformationCircleOutline } from "react-icons/io";
+import { DEPARTMENTS_OPTIONS } from "@/info";
 
 const formItemLayout = {
   labelCol: {
@@ -18,6 +29,23 @@ const formItemLayout = {
   },
 };
 
+const weekdays = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+const timeslots = [
+  "9:00-10:00",
+  "10:00-11:00",
+  "11:30-12:30",
+  "12:30-1:30",
+  "2:30-3:30",
+  "3:30-4:30",
+];
+
 const AddRoomForm: React.FC = () => {
   const [form] = Form.useForm();
   const success = () => {
@@ -25,8 +53,11 @@ const AddRoomForm: React.FC = () => {
   };
   const router = useRouter();
 
+  const [buttonStatus, setButtonStatus] = useState(
+    weekdays.map(() => timeslots.map(() => "Free"))
+  );
+
   return (
-  
     <div className="text-xl font-bold text-[#171A1F] pl-8 py-6 h-screen overflow-y-scroll">
       <div className="flex px-2 items-center justify-between text-[#636AE8FF] font-inter text-xl text-bold">
         <div
@@ -53,48 +84,60 @@ const AddRoomForm: React.FC = () => {
         transition={{
           duration: 0.5,
           ease: "easeInOut",
-        }} className="flex justify-left items-center h-[86vh] mt-[40vh] ml-4 ">
-      <Form
-        {...formItemLayout}
-        form={form}
-        layout="vertical"
-        requiredMark >
-        <Form.Item label="ClassRoom Name" required>
-          <Input placeholder="Name" className="font-inter font-normal"
-          />
-        </Form.Item>
-        <Form.Item label="ClassRoom Capacity" required>
-        <InputNumber min={0} placeholder="Capacity" className='w-full font-inter font-normal' />
-        </Form.Item>
-        <Form.Item label="Is it a Lab?" required>
-              <Radio.Group >
-            <Radio value={1} className='mr-10'>Yes</Radio>
-            <Radio value={2}  className='ml-10 color-[#636AE8FF]'>No</Radio>
-              </Radio.Group>
-        </Form.Item>
-        <Form.Item
-        label="Department"
-        name="Select">
-        <Select className='font-inter font-normal' />
-      </Form.Item>
-      <label>
-          <span>Schedule</span>
-          <Tooltip title="Tooltip with customize icon">
+        }}
+        className="flex justify-left items-center mt-12 ml-4"
+      >
+        <Form {...formItemLayout} form={form} layout="vertical" requiredMark>
+          <Form.Item label="Classroom Name" required>
+            <Input placeholder="Name" className="font-inter font-normal" />
+          </Form.Item>
+          
+          <Form.Item label="Room Capacity" required>
+            <InputNumber
+              min={0}
+              placeholder="Capacity"
+              className="w-full font-inter font-normal"
+            />
+          </Form.Item>
+          <Form.Item label="Is it a Lab?" required>
+            <Radio.Group>
+              <Radio value={1}>Yes</Radio>
+              <Radio value={2} className="ml-4 color-[#636AE8FF]">
+                No
+              </Radio>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item label="Department" name="Select">
+            <Select options={DEPARTMENTS_OPTIONS} className="font-inter font-normal" />
+          </Form.Item>
+          <label className="flex items-center">
+            <span>Schedule</span>
+            <Tooltip title="Click on the timeslots where to the teacher  busy to set them to busy">
               <IoIosInformationCircleOutline className="ml-2 text-[#636AE8FF]" />
             </Tooltip>
-      </label>
-      <div className="flex justify-left" >
-      <Timetable />
-      </div>
-      <div className="flex justify-end w-[55vm]">
-        <Form.Item>
-          <Button className="border-[#636AE8FF] text-[#636AE8FF] mr-[30px] w-[75px] h-[32px]">Clear</Button>
-        </Form.Item>
-        <Form.Item>
-          <Button onClick={success} className="bg-[#636AE8FF] text-[#FFFFFF] w-[75px] h-[32px]">Submit</Button>
-        </Form.Item>
-      </div>
-      </Form>
+          </label>
+          <div className="flex justify-left">
+            <Timetable
+              buttonStatus={buttonStatus}
+              setButtonStatus={setButtonStatus}
+            />
+          </div>
+          <div className="flex justify-end w-[55vm]">
+            <Form.Item>
+              <Button className="border-[#636AE8FF] text-[#636AE8FF] w-[75px] h-[32px]">
+                Clear
+              </Button>
+            </Form.Item>
+            <Form.Item>
+              <Button
+                onClick={success}
+                className="bg-[#636AE8FF] text-[#FFFFFF] w-[75px] h-[32px]"
+              >
+                Submit
+              </Button>
+            </Form.Item>
+          </div>
+        </Form>
       </motion.div>
     </div>
   );

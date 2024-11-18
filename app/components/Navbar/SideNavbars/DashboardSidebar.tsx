@@ -52,7 +52,7 @@ const DashboardSidebar = () => {
   ];
 
   return (
-    <Sider width="5%" className="h-screen bg-gray-800">
+    <Sider width="9vh" className="h-screen bg-gray-800 flex flex-col justify-between">
       <div className="flex justify-center items-center my-4">
         <Image alt="Logo" src={Logo} className="w-8 h-8" />
       </div>

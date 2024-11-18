@@ -9,6 +9,7 @@ import { motion } from 'framer-motion'
 import { checkAuthentication } from '@/lib/actions/auth';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import Loading from '@/app/components/Loading/Loading'
 
 const Page = () => {
   const [loading, setLoading] = useState(true);
@@ -25,7 +26,7 @@ const Page = () => {
     })
   }, [])
 
-  if (loading) return <div>Loading.....</div>
+  if (loading) return <Loading />
 
   return (
     <>
