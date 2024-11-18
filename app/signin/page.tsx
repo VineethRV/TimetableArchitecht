@@ -1,13 +1,32 @@
 "use client"
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/SigninPage/Header';
 import SigninFormCard from '../components/SigninPage/SigninFormCard';
 import SignInIllus1 from '@/public/Illustrations/Sign1.png';
 import SignInIllus2 from '@/public/Illustrations/Sign2.png';
 import Image from 'next/image';
 import { motion } from 'framer-motion'
+import { checkAuthentication } from '@/lib/actions/auth';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const Page = () => {
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    checkAuthentication(localStorage.getItem('token') || "").then((verify) => {
+      if (verify) {
+        router.push('/dashboard');
+        toast.success("User is already logged in !!");
+      }
+
+      setTimeout(() => setLoading(false), 1000);
+    })
+  }, [])
+
+  if (loading) return <div>Loading.....</div>
+
   return (
     <>
       <div className="relative h-screen w-screen overflow-hidden bg-gray-50">
@@ -23,12 +42,12 @@ const Page = () => {
         />
         <Header />
         <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: 0.5,
-          ease: "easeInOut",
-        }} className="flex justify-center items-center h-[86vh]">
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.5,
+            ease: "easeInOut",
+          }} className="flex justify-center items-center h-[86vh]">
           <SigninFormCard />
         </motion.div>
       </div>
