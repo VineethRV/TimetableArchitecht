@@ -53,7 +53,7 @@ const AddRoomForm: React.FC = () => {
         transition={{
           duration: 0.5,
           ease: "easeInOut",
-        }} className="flex justify-left items-center h-[86vh] mt-[40vh] ml-4 ">
+        }}className="flex mt-12 items-center pl-4">
       <Form
         {...formItemLayout}
         form={form}

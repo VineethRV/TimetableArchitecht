@@ -70,10 +70,10 @@ const AddTeacherpage: React.FC = () => {
           </Form.Item>
           <label>
             <div className="flex items-center">
-            <span>Schedule</span>
-            <Tooltip title="Click on the timeslots where to the teacher  busy to set them to busy">
-              <IoIosInformationCircleOutline className="ml-2 w-4 h-4 text-[#636AE8FF]" />
-            </Tooltip>
+              <span>Schedule</span>
+              <Tooltip title="Click on the timeslots where to the teacher  busy to set them to busy">
+                <IoIosInformationCircleOutline className="ml-2 w-4 h-4 text-[#636AE8FF]" />
+              </Tooltip>
             </div>
           </label>
           <Timetable />
@@ -85,10 +85,7 @@ const AddTeacherpage: React.FC = () => {
                 </Button>
               </Form.Item>
               <Form.Item>
-                <Button
-                  onClick={success}
-                  className="bg-primary text-[#FFFFFF]"
-                >
+                <Button onClick={success} className="bg-primary text-[#FFFFFF]">
                   Submit
                 </Button>
               </Form.Item>
