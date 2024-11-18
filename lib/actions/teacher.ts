@@ -4,10 +4,10 @@ import { PrismaClient } from "@prisma/client";
 import { Teacher } from "@/app/types/main";
 import { statusCodes } from "@/app/types/statusCodes";
 
-const prisma=new PrismaClient();
+const prisma = new PrismaClient();
 
-function convertTableToString(timetable:string[][]):string{
-    return timetable.map(row => row.join(",")).join(";");
+function convertTableToString(timetable: string[][]): string {
+  return timetable.map(row => row.join(",")).join(";");
 }
 
 
@@ -135,20 +135,20 @@ export async function getTeachers(JWTtoken:string):Promise<{status:number,teache
                 teachers:teachers
             }
 
-       }
-       else{
-            return {
-                status:status,
-                teachers:null
-            }
-       }
     }
-    catch{
-        return {
-            status:statusCodes.INTERNAL_SERVER_ERROR,
-            teachers:null
-        }
+    else {
+      return {
+        status: status,
+        teachers: null
+      }
     }
+  }
+  catch {
+    return {
+      status: statusCodes.INTERNAL_SERVER_ERROR,
+      teachers: null
+    }
+  }
 }
 
 export async function peekTeacher(
