@@ -155,11 +155,11 @@ export async function getRooms(
     };
   }
 }
-//have to add extra handeling for admins
+
 export async function peekRoom(
   token: string,
   name: string,
-  department: string
+  department: string|null=null
 ): Promise<{ status: number; room: Room | null }> {
   try {
     //get position of user
@@ -169,7 +169,7 @@ export async function peekRoom(
       const room = await prisma.room.findFirst({
         where: {
           name: name,
-          department: department,
+          department: user.role=='admin'?department?department:user.department:user.department,//if user is admin, refer the department passed in peekRoom(if a department isnt passed, the admins department is used), else use users deparment
           organisation: user.organisation,
         },
         select: {

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header>
+    <h1>API Documentation</h1>
+    <p>A guide to using the functions from <code>teachers.ts</code> and <code>room.ts</code>.</p>
+  </header>
+  
+  <main>
+    <section>
+      <h2>Teachers Module</h2>
+      <article>
+        <h3>createTeachers</h3>
+        <p>Creates a new teacher in the database.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token, name, initials, email, department, alternate departments, timetable, labtable</li>
+          <li><strong>Returns:</strong> Status code and the created teacher object</li>
+          <li><strong>Example:</strong>
+            <pre><code>createTeachers(JWTtoken, "John Doe", "JD", "john@example.com", "EI","CSE,AIML");</code></pre>
+          </li>
+        </ul>
+      </article>
+      
+      <article>
+        <h3>getTeachers</h3>
+        <p>Retrieves a list of teachers based on user role and department.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token</li>
+          <li><strong>Returns:</strong> Status code and a list of teachers</li>
+          <pre><code>getTeachers("JWTtoken");</code></pre>
+        </ul>
+      </article>
+      
+      <article>
+        <h3>peekTeacher</h3>
+        <p>Fetches details of a specific teacher.</p>
+        <ul>
+          <li><strong>Parameters:</strong> Token, name, department</li>
+          <li><strong>Returns:</strong> Status code and the teacher object</li>
+          <pre><code>peekTeacher("JWTtoken","Kendaganna","CSE");</code></pre>
+        </ul>
+      </article>
+    </section>
+    
+    <section>
+      <h2>Room Module</h2>
+      <article>
+        <h3>createRoom</h3>
+        <p>Creates a new room in the database.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token, name, lab (boolean), timetable, department</li>
+          <li><strong>Returns:</strong> Status code and the created room object</li>
+          <pre><code>createRoom(JWTtoken, "Physics Lab", true);</code></pre>
+
+        </ul>
+      </article>
+      
+      <article>
+        <h3>getRooms</h3>
+        <p>Retrieves a list of rooms based on user role and department.</p>
+        <ul>
+          <li><strong>Parameters:</strong> Token</li>
+          <li><strong>Returns:</strong> Status code and a list of rooms</li>
+          <pre><code>getRooms(JWTtoken);</code></pre>
+        </ul>
+      </article>
+      
+      <article>
+        <h3>peekRoom</h3>
+        <p>Fetches details of a specific room.</p>
+        <ul>
+          <li><strong>Parameters:</strong> Token, name, department</li>
+          <li><strong>Returns:</strong> Status code and the room object</li>
+          <pre><code>peekRoom(JWTtoken, "Physics Lab");</code></pre>
+        </ul>
+      </article>
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2024 API Documentation</p>
+  </footer>
+</body>
+</html>
