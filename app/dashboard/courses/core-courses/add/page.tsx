@@ -85,6 +85,13 @@ const AddCoursepage: React.FC = () => {
               className="w-full font-normal"
             />
           </Form.Item>
+          <Form.Item label="Hours per week" required>
+            <InputNumber
+              min={0}
+              placeholder="Hours per week"
+              className="w-full font-normal"
+            />
+          </Form.Item>
           <Form.Item
             label={
               <span className="inline-flex items-center">
@@ -95,7 +102,7 @@ const AddCoursepage: React.FC = () => {
               </span>
             }
           >
-            <RoomOptions />
+            <RoomOptions multiple={true}/>
           </Form.Item>
           <Form.Item label="Rate the subject from 1 to 5 based on the exhaustiveness of the subject">
             <InputNumber

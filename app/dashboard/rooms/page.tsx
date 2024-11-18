@@ -13,7 +13,7 @@ function page() {
           <CiImport />
           Import
         </Button>
-        <Button className="bg-primary space-x-2 text-white font-bold">
+        <Button className="bg-primary text-white font-bold">
           <CiExport />
           Export
         </Button>
