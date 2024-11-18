@@ -91,14 +91,14 @@ export async function getTeachers(JWTtoken:string):Promise<{status:number,teache
                     select:{
                         name:true,
                         department:true,
-                        initials:true
+                        initials:true,
+                        email:true,
                     }
                 })
                 //convert the returned object into Teacher[] type
                 .then((teachers)=>
                     teachers.map((teacher)=>({
                         ...teacher,
-                        email:null,
                         alternateDepartments:null,
                         organisation: user.organisation,
                         timetable: null, // Default value, since it's not queried
@@ -115,14 +115,14 @@ export async function getTeachers(JWTtoken:string):Promise<{status:number,teache
                     select:{
                         name:true,
                         department:true,
-                        initials:true
+                        initials:true,
+                        email:true
                     }
                 })
                 //convert the returned object into Teacher[] type
                 .then((teachers)=>
                     teachers.map((teacher)=>({
                         ...teacher,
-                        email:null,
                         alternateDepartments:null,
                         organisation: user.organisation,
                         timetable: null, // Default value, since it's not queried
