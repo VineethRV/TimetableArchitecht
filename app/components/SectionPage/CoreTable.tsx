@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
-import {Button, Switch, Table, Tooltip } from "antd";
+import { Button, Switch, Table, Tooltip } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { MdDelete, MdEdit } from "react-icons/md";
 
-interface RoomType {
+interface CoreType {
   key: React.Key;
   name: string;
   maximumCapacity: number;
@@ -12,148 +12,29 @@ interface RoomType {
   department: string;
 }
 
-const data: RoomType[] = [
-  {
-    key: "1",
-    name: "CS101",
-    maximumCapacity: 60,
-    lab: true,
-    department: "Computer Science Engineering",
-  },
-  {
-    key: "2",
-    name: "CS102",
-    maximumCapacity: 60,
-    lab: false,
-    department: "Computer Science Engineering",
-  },
-  {
-    key: "3",
-    name: "CS103",
-    maximumCapacity: 60,
-    lab: true,
-    department: "Computer Science Engineering",
-  },
-  {
-    key: "4",
-    name: "CS104",
-    maximumCapacity: 60,
-    lab: false,
-    department: "Computer Science Engineering",
-  },
-  {
-    key: "5",
-    name: "CS105",
-    maximumCapacity: 60,
-    lab: true,
-    department: "Information Science Engineering",
-  },
-  {
-    key: "6",
-    name: "IS101",
-    maximumCapacity: 60,
-    lab: false,
-    department: "Information Science Engineering",
-  },
-  {
-    key: "7",
-    name: "IS102",
-    maximumCapacity: 60,
-    lab: true,
-    department: "Information Science Engineering",
-  },
-  {
-    key: "8",
-    name: "IS103",
-    maximumCapacity: 60,
-    lab: false,
-    department: "Information Science Engineering",
-  },
-  {
-    key: "9",
-    name: "IS104",
-    maximumCapacity: 60,
-    lab: true,
-    department: "Information Science Engineering",
-  },
-  {
-    key: "10",
-    name: "IS105",
-    maximumCapacity: 60,
-    lab: false,
-    department: "Information Science Engineering",
-  },
-  {
-    key: "11",
-    name: "ME101",
-    maximumCapacity: 60,
-    lab: true,
-    department: "Mechanical Engineering",
-  },
-  {
-    key: "12",
-    name: "ME102",
-    maximumCapacity: 60,
-    lab: false,
-    department: "Mechanical Engineering",
-  },
-  {
-    key: "13",
-    name: "ME103",
-    maximumCapacity: 60,
-    lab: true,
-    department: "Mechanical Engineering",
-  },
-  {
-    key: "14",
-    name: "ME104",
-    maximumCapacity: 60,
-    lab: false,
-    department: "Mechanical Engineering",
-  },
-  {
-    key: "15",
-    name: "ME105",
-    maximumCapacity: 60,
-    lab: true,
-    department: "Mechanical Engineering",
-  },
-  {
-    key: "16",
-    name: "CS201",
-    maximumCapacity: 60,
-    lab: false,
-    department: "Computer Science Engineering",
-  },
-  {
-    key: "17",
-    name: "IS201",
-    maximumCapacity: 60,
-    lab: true,
-    department: "Information Science Engineering",
-  },
-  {
-    key: "18",
-    name: "ME201",
-    maximumCapacity: 60,
-    lab: false,
-    department: "Mechanical Engineering",
-  },
-  {
-    key: "19",
-    name: "CS202",
-    maximumCapacity: 60,
-    lab: true,
-    department: "Computer Science Engineering",
-  },
-  {
-    key: "20",
-    name: "IS202",
-    maximumCapacity: 60,
-    lab: false,
-    department: "Information Science Engineering",
-  },
-];
+const data: CoreType[] = [
+    { key: "1", name: "CS101", maximumCapacity: 60, lab: true, department: "Computer Science Engineering" },
+    { key: "2", name: "CS102", maximumCapacity: 60, lab: false, department: "Computer Science Engineering" },
+    { key: "3", name: "CS103", maximumCapacity: 60, lab: true, department: "Computer Science Engineering" },
+    { key: "4", name: "CS104", maximumCapacity: 60, lab: false, department: "Computer Science Engineering" },
+    { key: "5", name: "CS105", maximumCapacity: 60, lab: true, department: "Information Science Engineering" },
+    { key: "6", name: "IS101", maximumCapacity: 60, lab: false, department: "Information Science Engineering" },
+    { key: "7", name: "IS102", maximumCapacity: 60, lab: true, department: "Information Science Engineering" },
+    { key: "8", name: "IS103", maximumCapacity: 60, lab: false, department: "Information Science Engineering" },
+    { key: "9", name: "IS104", maximumCapacity: 60, lab: true, department: "Information Science Engineering" },
+    { key: "10", name: "IS105", maximumCapacity: 60, lab: false, department: "Information Science Engineering" },
+    { key: "11", name: "ME101", maximumCapacity: 60, lab: true, department: "Mechanical Engineering" },
+    { key: "12", name: "ME102", maximumCapacity: 60, lab: false, department: "Mechanical Engineering" },
+    { key: "13", name: "ME103", maximumCapacity: 60, lab: true, department: "Mechanical Engineering" },
+    { key: "14", name: "ME104", maximumCapacity: 60, lab: false, department: "Mechanical Engineering" },
+    { key: "15", name: "ME105", maximumCapacity: 60, lab: true, department: "Mechanical Engineering" },
+    { key: "16", name: "CS201", maximumCapacity: 60, lab: false, department: "Computer Science Engineering" },
+    { key: "17", name: "IS201", maximumCapacity: 60, lab: true, department: "Information Science Engineering" },
+    { key: "18", name: "ME201", maximumCapacity: 60, lab: false, department: "Mechanical Engineering" },
+    { key: "19", name: "CS202", maximumCapacity: 60, lab: true, department: "Computer Science Engineering" },
+    { key: "20", name: "IS202", maximumCapacity: 60, lab: false, department: "Information Science Engineering" },
+  ];
+  
 
 const colorCombos: Record<string, string>[] = [
   { textColor: "#FFFFFF", backgroundColor: "#000000" },
@@ -196,29 +77,32 @@ const colorCombos: Record<string, string>[] = [
 
 const deptColors: Record<string, string> = {};
 let cnt = 0;
-data.forEach((d: RoomType) => {
+data.forEach((d: CoreType) => {
   if (!deptColors[d.department]) {
     deptColors[d.department] = colorCombos[cnt].backgroundColor;
     cnt++;
   }
 });
 
-const columns: TableColumnsType<RoomType> = [
-  {
-    title: "Name",
-    dataIndex: "name",
-  },
-  {
-    title: "Maximum Capacity",
-    dataIndex: "maximumCapacity",
-  },
-  {
-    title: "Lab",
-    dataIndex: "lab",
-    render: () => {
-      return <Switch />;
-    },
-  },
+const columns: TableColumnsType<CoreType> = [
+    {
+        title: "Name",
+        dataIndex: "name",
+      },
+      {
+        title: "Maximum Capacity",
+        dataIndex: "maximumCapacity",
+      },
+      {
+        title: "Lab",
+        dataIndex: "lab",
+        render: () => {
+            return (
+                <Switch
+                />
+            )
+        }
+      },
   {
     title: "Department",
     dataIndex: "department",
@@ -265,15 +149,15 @@ const columns: TableColumnsType<RoomType> = [
   },
 ];
 
-const rowSelection: TableProps<RoomType>["rowSelection"] = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: RoomType[]) => {
+const rowSelection: TableProps<CoreType>["rowSelection"] = {
+  onChange: (selectedRowKeys: React.Key[], selectedRows: CoreType[]) => {
     console.log(
       `selectedRowKeys: ${selectedRowKeys}`,
       "selectedRows: ",
       selectedRows
     );
   },
-  getCheckboxProps: (record: RoomType) => ({
+  getCheckboxProps: (record: CoreType) => ({
     disabled: record.name === "Disabled User",
     name: record.name,
   }),
@@ -282,7 +166,7 @@ const rowSelection: TableProps<RoomType>["rowSelection"] = {
 const RoomsTable: React.FC = () => {
   return (
     <div>
-      <Table<RoomType>
+      <Table<CoreType>
         rowSelection={{ type: "checkbox", ...rowSelection }}
         columns={columns}
         dataSource={data}
