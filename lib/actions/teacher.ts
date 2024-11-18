@@ -15,38 +15,47 @@ export async function createTeachers(JWTtoken:string,name:string,initials:string
     try{
         const {status,user}=await auth.getPosition(JWTtoken)
         if(status==statusCodes.OK && user){
-            //check if teacher with same name dep and org exist
-            const teachers=await prisma.teacher.findFirst({
-                where:{
+            //if user isnt a viewer
+            if(user.role!='viewer')
+            {
+                    //check if teacher with same name dep and org exist
+                const teachers=await prisma.teacher.findFirst({
+                    where:{
+                        name:name,
+                        department:department?department:user.department,
+                        organisation:user.organisation
+                    }
+                })
+                //if even a single teacher exists
+                if(teachers){
+                    return {
+                        status:statusCodes.BAD_REQUEST,
+                        teacher:null
+                    }
+                }
+                //else
+                const teacher:Teacher={
                     name:name,
-                    department:department?department:user.department,
+                    initials:initials,
+                    email:email,
+                    department:department?department:user.department?user.department:"no department",
+                    alternateDepartments:alternateDepartments,
+                    timetable:timetable?convertTableToString(timetable):"0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;",
+                    labtable:labtable?convertTableToString(labtable):"0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;",
                     organisation:user.organisation
                 }
-            })
-            //if even a single teacher exists
-            if(teachers){
-                return {
-                    status:statusCodes.BAD_REQUEST,
-                    teacher:null
+                await prisma.teacher.create({
+                    data:teacher
+                })
+                return{
+                    status:statusCodes.CREATED,
+                    teacher:teacher
                 }
             }
-            //else
-            const teacher:Teacher={
-                name:name,
-                initials:initials,
-                email:email,
-                department:department?department:user.department?user.department:"no department",
-                alternateDepartments:alternateDepartments,
-                timetable:timetable?convertTableToString(timetable):"0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;",
-                labtable:labtable?convertTableToString(labtable):"0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;",
-                organisation:user.organisation
-            }
-            await prisma.teacher.create({
-                data:teacher
-            })
+            //if user is a viewer code will reach here
             return{
-                status:statusCodes.CREATED,
-                teacher:teacher
+                status:statusCodes.UNAUTHORIZED,
+                teacher:null
             }
         }
         //if status not ok
@@ -63,12 +72,16 @@ export async function createTeachers(JWTtoken:string,name:string,initials:string
     }
 }
 
-
+//to display teachers list 
 export async function getTeachers(JWTtoken:string):Promise<{status:number,teachers:Teacher[]|null}>{
     try{
        const {status,user}=await auth.getPosition(JWTtoken)
+
+       //if verification of roles is ok
        if(status==statusCodes.OK && user){
             let teachers:Teacher[];
+
+            //if role isnt admin, return teachers from same department
             if(user.role!='admin'){
                 teachers=await prisma.teacher.findMany({
                     where:{
@@ -81,6 +94,7 @@ export async function getTeachers(JWTtoken:string):Promise<{status:number,teache
                         initials:true
                     }
                 })
+                //convert the returned object into Teacher[] type
                 .then((teachers)=>
                     teachers.map((teacher)=>({
                         ...teacher,
@@ -92,6 +106,7 @@ export async function getTeachers(JWTtoken:string):Promise<{status:number,teache
                     }))
                 );
             }
+            //if role is admin, return teachers from all departments
             else{
                 teachers=await prisma.teacher.findMany({
                     where:{
@@ -103,6 +118,7 @@ export async function getTeachers(JWTtoken:string):Promise<{status:number,teache
                         initials:true
                     }
                 })
+                //convert the returned object into Teacher[] type
                 .then((teachers)=>
                     teachers.map((teacher)=>({
                         ...teacher,
@@ -135,50 +151,49 @@ export async function getTeachers(JWTtoken:string):Promise<{status:number,teache
     }
 }
 
-//have to add extra handeling for admins
 export async function peekTeacher(
     token: string,
     name: string,
-    department: string
+    department: string|null=null
   ): Promise<{ status: number; teacher: Teacher | null }> {
     try {
-      //get position of user
-      const { status, user } = await auth.getPosition(token);
-      if (status == statusCodes.OK && user) {
-        //find all the clasrooms in his lab
-        const teacher = await prisma.teacher.findFirst({
-          where: {
-            name: name,
-            department: department,
-            organisation: user.organisation,
-          },
-          select: {
-            name: true,
-            organisation: true,
-            department: true,
-            alternateDepartments:true,
-            initials:true,
-            email:true,
-            labtable:true,
-            timetable: true,
-          },
-        });
+        //get position of user
+        const { status, user } = await auth.getPosition(token);
+        //if verification of rules is okay, perform the following
+        if (status == statusCodes.OK && user) {
+            const teacher = await prisma.teacher.findFirst({
+                where: {
+                    name: name,
+                    department: user.role=='admin'?department?department:user.department:user.department,
+                    organisation: user.organisation,
+                },
+                select: {
+                    name: true,
+                    organisation: true,
+                    department: true,
+                    alternateDepartments:true,
+                    initials:true,
+                    email:true,
+                    labtable:true,
+                    timetable: true,
+                },
+            });
+            return {
+                status: statusCodes.OK,
+                teacher: teacher,
+            };
+        }   
+        //else 
         return {
-          status: statusCodes.OK,
-          teacher: teacher,
-        };
-      } 
-      else {
-        return {
-          status: status,
-          teacher: null,
-        };
-      }
-    } catch {
+            status: status,
+            teacher:null
+        }
+    } 
+    catch {
       //internal error
       return {
         status: statusCodes.INTERNAL_SERVER_ERROR,
         teacher: null,
       };
     }
-  }
+}
