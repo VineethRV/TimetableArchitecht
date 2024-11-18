@@ -10,7 +10,7 @@ import Loading from "./loading";
 import { Teacher } from "@/app/types/main";
 import { DEPARTMENTS_OPTIONS } from "@/info";
 
-function page() {
+function Page() {
   const [loading, setLoading] = useState(true);
   const [teachersData, setTeachersData] = useState<Teacher[]>([]);
 
@@ -87,4 +87,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

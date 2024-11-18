@@ -52,7 +52,6 @@ const AddTeacherpage: React.FC = () => {
     const initials = form.getFieldValue("initials");
     const email = form.getFieldValue("email");
     const department = form.getFieldValue("department");
-    const designation = form.getFieldValue("designation");
     const res = createTeachers(
       localStorage.getItem("token") || "",
       name,
