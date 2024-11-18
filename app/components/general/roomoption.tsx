@@ -1,7 +1,7 @@
 import React from 'react';
 import { Cascader } from 'antd';
 
-const RoomOptions: React.FC = () => {
+const RoomOptions: React.FC<{multiple: boolean}> = ({multiple=true}) => {
   const options = [
     {
       label: 'CSE',
@@ -28,13 +28,13 @@ const RoomOptions: React.FC = () => {
 
     return (
       <div
-        className="flex items-center bg-[#F2F2FDFF] text-[#636AE8FF] rounded-full px-3 text-sm m-1 font-semibold"
+        className="flex items-center bg-[#F2F2FDFF] text-[#636AE8FF] rounded-full px-3 py-1 text-xs m-1 font-semibold"
       >
         {label}
         {(
           <button
             onClick={onClose}
-            className="ml-2 text-red-500 text-lg cursor-pointer hover:text-red-700"
+            className="ml-2 text-red-500 cursor-pointer hover:text-red-700"
           >
             ×
           </button>
@@ -43,13 +43,14 @@ const RoomOptions: React.FC = () => {
     );
   };
 
+
   return (
     <div>
       <Cascader
         options={options}
-        multiple
-        maxTagCount="responsive"
-        tagRender={tagRender}
+        multiple={multiple}
+        maxTagCount={multiple ? 'responsive' : undefined} // Enable responsive tag count only for multiple
+        tagRender={multiple ? tagRender : undefined}
         showCheckedStrategy={Cascader.SHOW_CHILD}
         placeholder="Default Classrooms"
         className="w-full font-normal"
