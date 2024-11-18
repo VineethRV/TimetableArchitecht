@@ -86,7 +86,7 @@ export async function getTeachers(JWTtoken:string):Promise<{status:number,teache
                         ...teacher,
                         email:null,
                         alternateDepartments:null,
-                        organisation: user.organisation || null,
+                        organisation: user.organisation,
                         timetable: null, // Default value, since it's not queried
                         labtable: null, // Default value, since it's not queried
                     }))
@@ -108,7 +108,7 @@ export async function getTeachers(JWTtoken:string):Promise<{status:number,teache
                         ...teacher,
                         email:null,
                         alternateDepartments:null,
-                        organisation: user.organisation || null,
+                        organisation: user.organisation,
                         timetable: null, // Default value, since it's not queried
                         labtable: null, // Default value, since it's not queried
                     }))
