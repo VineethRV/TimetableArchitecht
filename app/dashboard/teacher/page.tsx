@@ -1,10 +1,35 @@
 "use client";
 import { Button, ConfigProvider, Input, Select } from "antd";
 import { TbTrash } from "react-icons/tb";
-import TeachersTable from '@/app/components/TeachersPage/TeachersTable'
+import TeachersTable from "@/app/components/TeachersPage/TeachersTable";
 import { CiExport, CiImport, CiSearch } from "react-icons/ci";
+import { useEffect, useState } from "react";
+import { getTeachers } from "@/lib/actions/teacher";
 
-function page() {
+import Loading from "./loading";
+import { Teacher } from "@/app/types/main";
+import { DEPARTMENTS_OPTIONS } from "@/info";
+
+function Page() {
+  const [loading, setLoading] = useState(true);
+  const [teachersData, setTeachersData] = useState<Teacher[]>([]);
+
+  useEffect(() => {
+    getTeachers(localStorage.getItem("token") || "").then((res) => {
+      const statusCode = res.status;
+
+      console.log(statusCode);
+
+      setTeachersData(res.teachers as Teacher[]);
+      console.log(res.teachers);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className="h-screen px-8 py-4 overflow-y-scroll">
       <h1 className="text-3xl font-bold text-primary mt-2">Teachers</h1>
@@ -41,22 +66,25 @@ function page() {
               style={{ width: 120 }}
               options={[]}
             />
-            <Select defaultValue="All Departments" options={[]} />
-            <Select defaultValue="All Designations" options={[]} />
+            <Select
+              className="w-[200px]"
+              defaultValue="All Departments"
+              options={DEPARTMENTS_OPTIONS}
+            />
           </div>
         </ConfigProvider>
         <div className="flex space-x-2">
           <Button className="bg-red-500 text-white font-bold">
-            <TbTrash />Delete
+            <TbTrash />
+            Delete
           </Button>
           <Button>Clear filters</Button>
         </div>
       </div>
 
-      <TeachersTable />
-
+      <TeachersTable teachersData={teachersData} />
     </div>
   );
 }
 
-export default page;
+export default Page;
