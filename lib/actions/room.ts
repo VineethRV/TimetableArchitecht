@@ -43,14 +43,14 @@ export async function createRoom(
           room.department = department;
         }
         //first check if any duplicates there, org dep and name same
-        const duplicates = await prisma.room.findMany({
+        const duplicates = await prisma.room.findFirst({
           where: {
             organisation: room.organisation,
             department: room.department,
             name: name,
           },
         });
-        if (duplicates.length > 0) {
+        if (duplicates) {
           //bad request
           return {
             status: statusCodes.BAD_REQUEST,
@@ -96,13 +96,13 @@ export async function getRooms(
     const { status, user } = await auth.getPosition(token);
     if (status == statusCodes.OK && user) {
       //find all the clasrooms in his lab
-      let rooms;
+      let rooms:Room[];
       if (user.role != "admin") {
         rooms = await prisma.room
           .findMany({
             where: {
-              organisation: user?.organisation,
-              department: user?.department,
+              organisation: user.organisation,
+              department: user.department,
             },
             select: {
               name: true,
@@ -121,7 +121,7 @@ export async function getRooms(
         rooms = await prisma.room
           .findMany({
             where: {
-              organisation: user?.organisation,
+              organisation: user.organisation,
             },
             select: {
               name: true,
