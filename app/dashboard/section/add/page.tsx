@@ -11,6 +11,7 @@ import {
   Tooltip,
   Upload,
   InputNumber,
+  SelectProps,
 } from "antd";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
@@ -30,9 +31,30 @@ const formItemLayout = {
 const AddCoursepage: React.FC = () => {
   const [form] = Form.useForm();
   const success = () => {
-    message.success("Course Added successfully!", 3);
+    message.success("Section Added successfully!", 3);
   };
   const router = useRouter();
+
+  const tagRender = (props: {
+    label: React.ReactNode;
+    onClose: () => void;
+  }) => {
+    const { label, onClose } = props;
+
+    return (
+      <div className="flex items-center bg-[#F2F2FDFF] text-[#636AE8FF] rounded-full px-3 py-1 text-xs m-1 font-semibold">
+        {label}
+        {
+          <button
+            onClick={onClose}
+            className="ml-2 text-red-500 cursor-pointer hover:text-red-700"
+          >
+            ×
+          </button>
+        }
+      </div>
+    );
+  };
 
   return (
     <div className="text-xl font-bold text-[#171A1F] pl-8 py-6 h-screen overflow-y-scroll">
@@ -72,7 +94,7 @@ const AddCoursepage: React.FC = () => {
             label={
               <span className="inline-flex items-center">
                 Class Batch
-                <Tooltip title="Year of Graduation">
+                <Tooltip title="Year of Admission">
                   <IoIosInformationCircleOutline className="ml-2 text-[#636AE8FF]" />
                 </Tooltip>
               </span>
@@ -81,12 +103,9 @@ const AddCoursepage: React.FC = () => {
           >
             <InputNumber
               min={2020}
-              placeholder="Credits"
+              placeholder="Batch"
               className="w-full font-normal"
             />
-          </Form.Item>
-          <Form.Item label="Course Code" required>
-            <Input placeholder="Course Code" className="font-normal" />
           </Form.Item>
           <Form.Item label="Semester" name="selectSem" required>
             <Select
@@ -95,32 +114,60 @@ const AddCoursepage: React.FC = () => {
               className="font-normal"
             />
           </Form.Item>
-          <Form.Item label="Number of Credits" required>
-            <InputNumber
-              min={0}
-              placeholder="Credits"
-              className="w-full font-normal"
-            />
-          </Form.Item>
+
           <Form.Item
             label={
               <span className="inline-flex items-center">
-                Any particular room to be used?
-                <Tooltip title="Select one or more rooms to indicate specific room preferences for this session.">
+                Elective and Common Time Subjects
+                <Tooltip title="Select one or more Elective Clusters and common time subjects applicable for the class">
                   <IoIosInformationCircleOutline className="ml-2 text-[#636AE8FF]" />
                 </Tooltip>
               </span>
             }
           >
-            <RoomOptions />
-          </Form.Item>
-          <Form.Item label="Rate the subject from 1 to 5 based on the exhaustiveness of the subject">
-            <InputNumber
-              min={0}
-              placeholder="Rating"
-              className="w-full font-normal"
+            <Select
+              mode="multiple"
+              placeholder="Elective Clusters"
+              className="font-normal"
+              tagRender={tagRender}
             />
           </Form.Item>
+          <Form.Item
+            label={
+              <span className="inline-flex items-center">
+                Lab Courses
+                <Tooltip title="Select one or more Lab Clusters applicable for the class">
+                  <IoIosInformationCircleOutline className="ml-2 text-[#636AE8FF]" />
+                </Tooltip>
+              </span>
+            }
+          >
+            <Select
+              mode="multiple"
+              placeholder="Lab Courses"
+              className="font-normal"
+              tagRender={tagRender}
+            />
+          </Form.Item>
+
+          <Form.Item required
+            label={
+              <span className="inline-flex items-center">
+                Default Room
+                <Tooltip title="The default room which must be assigned to the section">
+                  <IoIosInformationCircleOutline className="ml-2 text-[#636AE8FF]" />
+                </Tooltip>
+              </span>
+            }
+          >
+            <RoomOptions multiple={false}/>
+          </Form.Item>
+
+          <Form.Item required label="Department from which room should be selected if default room is not available">
+            <Select  mode="multiple" placeholder='Department' className="font-normal"/>
+          </Form.Item>
+
+
           <div className="flex justify-end">
             <div className="flex space-x-4">
               <Form.Item>
