@@ -22,13 +22,17 @@ export type Room={
   timetable:string|null
 }
 
-
-export interface Teacher {
-  name: string;
-  initials: string;
-  email: string;
-  dept: string;
+export type Teacher={
+  name: string
+  initials: string|null
+  email: string|null
+  department:string|null
+  alternateDepartments:string|null
+  timetable: string|null
+  labtable: string|null
+  organisation: string|null
 }
+
 export interface Subject {
   name: string;
   code: string;

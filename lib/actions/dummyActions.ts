@@ -1,6 +1,6 @@
 'use server'
 
-import { Lab, Room, RoomDetails, Subject, SubjectDetails, Teacher, TeacherDetails } from '@/app/types/main';
+import { Lab, Subject, SubjectDetails,   } from '@/app/types/main';
 import jwt from 'jsonwebtoken';
 
 
@@ -26,23 +26,23 @@ const secretKey = process.env.JWT_SECRET_KEY || "";
 //   // other rooms
 // ];
 
-const teachers = [
-    { name: 'John Doe', initials: 'JD', email: 'johndoe@example.com', dept: 'Computer Science' },
-    { name: 'Jane Smith', initials: 'JS', email: 'janesmith@example.com', dept: 'Mathematics' },
-    { name: 'John Doe', initials: 'JD', email: 'johndoe@example.com', dept: 'Computer Science' },
-    { name: 'Jane Smith', initials: 'JS', email: 'janesmith@example.com', dept: 'Mathematics' },
-    { name: 'John Doe', initials: 'JD', email: 'johndoe@example.com', dept: 'Computer Science' },
-    { name: 'Jane Smith', initials: 'JS', email: 'janesmith@example.com', dept: 'Mathematics' },
-    { name: 'John Doe', initials: 'JD', email: 'johndoe@example.com', dept: 'Computer Science' },
-    { name: 'Jane Smith', initials: 'JS', email: 'janesmith@example.com', dept: 'Mathematics' },
-    { name: 'John Doe', initials: 'JD', email: 'johndoe@example.com', dept: 'Computer Science' },
-    { name: 'Jane Smith', initials: 'JS', email: 'janesmith@example.com', dept: 'Mathematics' },
-    { name: 'John Doe', initials: 'JD', email: 'johndoe@example.com', dept: 'Computer Science' },
-    { name: 'Jane Smith', initials: 'JS', email: 'janesmith@example.com', dept: 'Mathematics' },
-    { name: 'John Doe', initials: 'JD', email: 'johndoe@example.com', dept: 'Computer Science' },
-    { name: 'Jane Smith', initials: 'JS', email: 'janesmith@example.com', dept: 'Mathematics' },
-  // other teachers
-];
+// const teachers = [
+//     { name: 'John Doe', initials: 'JD', email: 'johndoe@example.com', dept: 'Computer Science' },
+//     { name: 'Jane Smith', initials: 'JS', email: 'janesmith@example.com', dept: 'Mathematics' },
+//     { name: 'John Doe', initials: 'JD', email: 'johndoe@example.com', dept: 'Computer Science' },
+//     { name: 'Jane Smith', initials: 'JS', email: 'janesmith@example.com', dept: 'Mathematics' },
+//     { name: 'John Doe', initials: 'JD', email: 'johndoe@example.com', dept: 'Computer Science' },
+//     { name: 'Jane Smith', initials: 'JS', email: 'janesmith@example.com', dept: 'Mathematics' },
+//     { name: 'John Doe', initials: 'JD', email: 'johndoe@example.com', dept: 'Computer Science' },
+//     { name: 'Jane Smith', initials: 'JS', email: 'janesmith@example.com', dept: 'Mathematics' },
+//     { name: 'John Doe', initials: 'JD', email: 'johndoe@example.com', dept: 'Computer Science' },
+//     { name: 'Jane Smith', initials: 'JS', email: 'janesmith@example.com', dept: 'Mathematics' },
+//     { name: 'John Doe', initials: 'JD', email: 'johndoe@example.com', dept: 'Computer Science' },
+//     { name: 'Jane Smith', initials: 'JS', email: 'janesmith@example.com', dept: 'Mathematics' },
+//     { name: 'John Doe', initials: 'JD', email: 'johndoe@example.com', dept: 'Computer Science' },
+//     { name: 'Jane Smith', initials: 'JS', email: 'janesmith@example.com', dept: 'Mathematics' },
+//   // other teachers
+// ];
 
 const subjects = [
     { name: 'Computer Science I', code: 'CS101', semester: 1, dept: 'Computer Science' },
@@ -106,20 +106,20 @@ export const login = async (email: string, pass: string): Promise<string | null>
 };
 
 // **Get Rooms Function**: Checks authentication before returning room data
-export const getRooms = async (token: string): Promise<Room[] | string> => {
-  if (!checkAuthentication(token)) {
-    throw new Error("User is not authenticated");
-  }
-  return "rooms"; // Return the list of rooms if authenticated
-};
+// export const getRooms = async (token: string): Promise<Room[] | string> => {
+//   if (!checkAuthentication(token)) {
+//     throw new Error("User is not authenticated");
+//   }
+//   return "rooms"; // Return the list of rooms if authenticated
+// };
 
 // **Get Teachers Function**: Checks authentication before returning teacher data
-export const getTeachers = async (token: string): Promise<Teacher[] | string> => {
-  if (!checkAuthentication(token)) {
-    throw new Error("User is not authenticated");
-  }
-  return teachers; // Return the list of teachers if authenticated
-};
+// export const getTeachers = async (token: string): Promise<Teacher[] | string> => {
+//   if (!checkAuthentication(token)) {
+//     throw new Error("User is not authenticated");
+//   }
+//   return teachers; // Return the list of teachers if authenticated
+// };
 
 // **Get Subjects Function**: Checks authentication before returning subject data
 export const getSubjects = async (token: string): Promise<Subject[] | string> => {
@@ -138,48 +138,48 @@ export const getLabs = async (token: string): Promise<Lab[] | string> => {
 };
 
 // **Peek Room Function**: Checks authentication before returning room details
-export const peekRoom = async (token: string, roomName: string): Promise<RoomDetails | string> => {
-  if (!checkAuthentication(token)) {
-    throw new Error("User is not authenticated");
-  }
+// export const peekRoom = async (token: string, roomName: string): Promise<RoomDetails | string> => {
+//   if (!checkAuthentication(token)) {
+//     throw new Error("User is not authenticated");
+//   }
 
-  if (!roomName) {
-    throw new Error("Room not found");
-  }
+//   if (!roomName) {
+//     throw new Error("Room not found");
+//   }
 
-  return {
-    name: roomName,
-    dept: "cse",
-    lab: 1,
-    timetable: [
-      [null, null, null, null, null, null],
-      [null, null, null, null, null, null],
-      // other time slots
-    ]
-  };
-};
+//   return {
+//     name: roomName,
+//     dept: "cse",
+//     lab: 1,
+//     timetable: [
+//       [null, null, null, null, null, null],
+//       [null, null, null, null, null, null],
+//       // other time slots
+//     ]
+//   };
+// };
 
 // **Peek Teacher Function**: Checks authentication before returning teacher details
-export const peekTeacher = async (token: string, teacherName: string): Promise<TeacherDetails | string> => {
-  if (!checkAuthentication(token)) {
-    throw new Error("User is not authenticated");
-  }
+// export const peekTeacher = async (token: string, teacherName: string): Promise<TeacherDetails | string> => {
+//   if (!checkAuthentication(token)) {
+//     throw new Error("User is not authenticated");
+//   }
 
-  if (!teacherName) {
-    throw new Error("Teacher not found");
-  }
+//   if (!teacherName) {
+//     throw new Error("Teacher not found");
+//   }
 
-  return {
-    name: "Bob",
-    initials: "BB",
-    email: "bob@gmail.com",
-    dept: "cse",
-    timetable: [
-      [null, null, null, null, null, null],
-      // other time slots
-    ]
-  };
-};
+//   return {
+//     name: "Bob",
+//     initials: "BB",
+//     email: "bob@gmail.com",
+//     dept: "cse",
+//     timetable: [
+//       [null, null, null, null, null, null],
+//       // other time slots
+//     ]
+//   };
+// };
 
 // **Peek Subject Function**: Checks authentication before returning subject details
 export const peekSubject = async (token: string, subjectCode: string): Promise<SubjectDetails | string> => {

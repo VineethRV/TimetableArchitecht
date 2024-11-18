@@ -32,3 +32,16 @@ model Room{
   lab Boolean?
   timetable String?
 }
+
+
+model Teacher{
+  id Int @id @default(autoincrement())
+  name String
+  initials String?
+  email String?
+  department String?
+  alternateDepartments String?
+  timetable String?
+  labtable String?
+  organisation String?
+}
