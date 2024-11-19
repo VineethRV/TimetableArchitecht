@@ -9,7 +9,7 @@ import Loading from "./loading";
 import { getRooms } from "@/lib/actions/room";
 import { statusCodes } from "@/app/types/statusCodes";
 
-function page() {
+function Page() {
   const [roomsData, setRoomsData] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -78,4 +78,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
