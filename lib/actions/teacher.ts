@@ -197,3 +197,40 @@ export async function peekTeacher(
       };
     }
 }
+
+export async function deleteTeachers(JWTtoken:string,teachers:Teacher[],department:string|null=null):Promise<{status:number}>{
+    const {status,user}=await auth.getPosition(JWTtoken)
+    try{
+        if(status==200 && user){
+            if(user.role!='viewer'){
+                prisma.user.deleteMany({
+                    where:{
+                        name:{
+                            in: teachers.map(teacher=>teacher.name)
+                        },
+                        organisation:user.organisation,
+                        //for admins, department parameter has to be passed compulsorily
+                        department:user.role=='admin'?department?department:"no department":user.department
+                    }
+                })
+                return {
+                    status:statusCodes.OK
+                }
+            }
+            //else
+            return{
+                status:statusCodes.UNAUTHORIZED
+            }
+        }
+        //else
+        return{
+            status:status
+        }
+    }
+    catch{
+        return{
+            status:statusCodes.INTERNAL_SERVER_ERROR
+        }
+    }
+
+}
