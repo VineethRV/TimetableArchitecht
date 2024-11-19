@@ -203,7 +203,7 @@ export async function deleteTeachers(JWTtoken:string,teachers:Teacher[],departme
     try{
         if(status==200 && user){
             if(user.role!='viewer'){
-                const deletedTeachers=prisma.user.deleteMany({
+                prisma.user.deleteMany({
                     where:{
                         name:{
                             in: teachers.map(teacher=>teacher.name)
