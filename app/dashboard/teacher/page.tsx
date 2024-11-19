@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "antd";
 import TeachersTable from "@/app/components/TeachersPage/TeachersTable";
-import { CiExport, CiImport, CiSearch } from "react-icons/ci";
+import { CiExport, CiImport } from "react-icons/ci";
 import { useEffect, useState } from "react";
 import { getTeachers } from "@/lib/actions/teacher";
 

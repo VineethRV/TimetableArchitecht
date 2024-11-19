@@ -112,7 +112,7 @@ const columns: TableColumnsType<Teacher> = [
 
 
 const TeachersTable = ({ teachersData, setTeachersData }: { teachersData: Teacher[], setTeachersData: React.Dispatch<React.SetStateAction<Teacher[]>> }) => {
-
+  console.log(setTeachersData)
   const [selectedTeachers, setSelectedTeachers] = useState<Teacher[]>([])
 
   const rowSelection: TableProps<Teacher>["rowSelection"] = {
