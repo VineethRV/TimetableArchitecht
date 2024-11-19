@@ -8,20 +8,6 @@ import FAQ from "./components/LandingPage/FAQ";
 import Footer from "./components/LandingPage/Footer";
 import { motion } from "framer-motion";
 
-// Clear session if notKeepLoggedIn
-
-if (window) {
-  window.onunload = () => {
-    if (localStorage.getItem('keepLogged') == "true") {
-
-    } else {
-
-      localStorage.setItem('token', "")
-
-    }
-  }
-}
-
 
 export default function Home() {
   return (
