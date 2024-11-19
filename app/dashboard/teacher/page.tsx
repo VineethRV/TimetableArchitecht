@@ -1,6 +1,5 @@
 "use client";
-import { Button, ConfigProvider, Input, Select } from "antd";
-import { TbTrash } from "react-icons/tb";
+import { Button } from "antd";
 import TeachersTable from "@/app/components/TeachersPage/TeachersTable";
 import { CiExport, CiImport, CiSearch } from "react-icons/ci";
 import { useEffect, useState } from "react";
@@ -8,7 +7,6 @@ import { getTeachers } from "@/lib/actions/teacher";
 
 import Loading from "./loading";
 import { Teacher } from "@/app/types/main";
-import { DEPARTMENTS_OPTIONS } from "@/info";
 
 function Page() {
   const [loading, setLoading] = useState(true);
@@ -43,46 +41,7 @@ function Page() {
           Export
         </Button>
       </div>
-      <div className="flex space-x-8 justify-between py-4">
-        <Input
-          className="w-fit"
-          addonBefore={<CiSearch />}
-          placeholder="Teacher"
-        />
-
-        {/* this config to set background color of the selectors | did as specified in antd docs */}
-        <ConfigProvider
-          theme={{
-            components: {
-              Select: {
-                selectorBg: "#F3F4F6FF",
-              },
-            },
-          }}
-        >
-          <div className="flex space-x-3">
-            <Select
-              defaultValue="Sort By"
-              style={{ width: 120 }}
-              options={[]}
-            />
-            <Select
-              className="w-[200px]"
-              defaultValue="All Departments"
-              options={DEPARTMENTS_OPTIONS}
-            />
-          </div>
-        </ConfigProvider>
-        <div className="flex space-x-2">
-          <Button className="bg-red-500 text-white font-bold">
-            <TbTrash />
-            Delete
-          </Button>
-          <Button>Clear filters</Button>
-        </div>
-      </div>
-
-      <TeachersTable teachersData={teachersData} />
+      <TeachersTable setTeachersData={setTeachersData} teachersData={teachersData} />
     </div>
   );
 }

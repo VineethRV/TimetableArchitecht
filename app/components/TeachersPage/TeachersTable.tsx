@@ -1,9 +1,15 @@
 "use client";
-import React from "react";
-import { Avatar, Button, Table, Tooltip } from "antd";
+import React, { useState } from "react";
+import { Avatar, Button, ConfigProvider, Input, Select, Table, Tooltip } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { Teacher } from "@/app/types/main";
+import { deleteTeachers } from "@/lib/actions/teacher";
+import { statusCodes } from "@/app/types/statusCodes";
+import { toast } from "sonner";
+import { TbTrash } from "react-icons/tb";
+import { DEPARTMENTS_OPTIONS } from "@/info";
+import { CiSearch } from "react-icons/ci";
 
 const getRandomColor = () => {
   const letters = "0123456789ABCDEF";
@@ -104,22 +110,42 @@ const columns: TableColumnsType<Teacher> = [
   },
 ];
 
-const rowSelection: TableProps<Teacher>["rowSelection"] = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: Teacher[]) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      "selectedRows: ",
-      selectedRows
-    );
-  },
-  getCheckboxProps: (record: Teacher) => ({
-    disabled: record.name === "Disabled User",
-    name: record.name,
-  }),
-};
 
-const TeachersTable = ({ teachersData }: { teachersData: Teacher[] }) => {
-  // Assign department colors
+const TeachersTable = ({ teachersData, setTeachersData }: { teachersData: Teacher[], setTeachersData: React.Dispatch<React.SetStateAction<Teacher[]>> }) => {
+
+  const [selectedTeachers, setSelectedTeachers] = useState<Teacher[]>([])
+
+  const rowSelection: TableProps<Teacher>["rowSelection"] = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: Teacher[]) => {
+      setSelectedTeachers(selectedRows)
+    },
+    getCheckboxProps: (record: Teacher) => ({
+      disabled: record.name === "Disabled User",
+      name: record.name,
+    }),
+  };
+
+  function deleteTeachersHandler() {
+    if (selectedTeachers.length == 0) {
+      toast.info("Select teachers to delete !!");
+      return;
+    }
+    console.log(selectedTeachers)
+    const res = deleteTeachers(localStorage.getItem('token') || "", selectedTeachers).then((res) => {
+      const statusCode = res.status;
+      console.log(res)
+      switch (statusCode) {
+        case statusCodes.OK:
+          toast.success("Teachers deleted successfully");
+          break;
+      }
+    })
+
+    toast.promise(res, {
+      loading: "Deleting teachers ..."
+    })
+  }
+
   teachersData.forEach((teacher) => {
     if (!deptColors[teacher.department as string]) {
       deptColors[teacher.department as string] =
@@ -136,6 +162,47 @@ const TeachersTable = ({ teachersData }: { teachersData: Teacher[] }) => {
 
   return (
     <div>
+      <div className="flex space-x-8 justify-between py-4">
+        <Input
+          className="w-fit"
+          addonBefore={<CiSearch />}
+          placeholder="Teacher"
+        />
+
+        {/* this config to set background color of the selectors | did as specified in antd docs */}
+        <ConfigProvider
+          theme={{
+            components: {
+              Select: {
+                selectorBg: "#F3F4F6FF",
+              },
+            },
+          }}
+        >
+          <div className="flex space-x-3">
+            <Select
+              defaultValue="Sort By"
+              style={{ width: 120 }}
+              options={[]}
+            />
+            <Select
+              className="w-[200px]"
+              defaultValue="All Departments"
+              options={DEPARTMENTS_OPTIONS}
+            />
+          </div>
+        </ConfigProvider>
+        <div className="flex space-x-2">
+          <Button onClick={deleteTeachersHandler} className="bg-red-500 text-white font-bold">
+            <TbTrash />
+            Delete
+          </Button>
+          <Button>Clear filters</Button>
+        </div>
+      </div>
+
+
+
       <Table<Teacher>
         rowSelection={{ type: "checkbox", ...rowSelection }}
         columns={columns}

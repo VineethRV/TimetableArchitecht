@@ -14,15 +14,18 @@ const SigninFormCard = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [keepLogged, setKeepLogged] = useState(false);
 
   function signInHandler() {
-    const response = login(email,password).then((res)=>{
+    console.log(keepLogged)
+    const response = login(email, password).then((res) => {
       const statusCode = res.status;
 
-      switch(statusCode){
+      switch (statusCode) {
         case statusCodes.OK:
           toast.success("User logged in successfully");
-          localStorage.setItem('token',res.token)
+          localStorage.setItem('token', res.token)
+          if (keepLogged) localStorage.setItem('keepLogged', "true")
           router.push('/dashboard');
           break;
         case statusCodes.NOT_FOUND:
@@ -30,10 +33,10 @@ const SigninFormCard = () => {
           break;
         case statusCodes.UNAUTHORIZED:
           toast.error("Wrong credentials")
-          break;        
+          break;
         case statusCodes.INTERNAL_SERVER_ERROR:
           toast.error("Server error")
-          break; 
+          break;
       }
     })
 
@@ -70,7 +73,7 @@ const SigninFormCard = () => {
       </div>
       <div className="flex mt-4 justify-between">
         <div className="flex space-x-2">
-          <Checkbox />
+          <Checkbox onClick={() => setKeepLogged(!keepLogged)} />
           <p className="text-sm font-medium">Keep me logged in</p>
         </div>
         <p className="text-[#636AE8FF] font-medium hover:cursor-pointer text-sm">
