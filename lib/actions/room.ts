@@ -88,6 +88,132 @@ export async function createRoom(
   }
 }
 
+export async function createManyRoom(
+  JWTtoken: string,
+  name: string[],
+  lab: boolean[],
+  department: string | null = null
+): Promise<{ status: number; rooms: Room[] | null }> {
+  try {
+    const { status, user } = await auth.getPosition(JWTtoken);
+    if (status == statusCodes.OK) {
+      if (user && user.role != "viewer") {
+
+        let rooms: Room[] = [];
+
+        for(let i=0;i<name.length;i++){
+          rooms.push({
+            name: name[i],
+            organisation: user.organisation,
+            department: user.department,
+            lab: lab[i],
+            timetable:
+              "0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;",
+          });
+        }
+        const duplicateChecks = await Promise.all(
+          rooms.map((room) =>
+            prisma.room.findFirst({
+              where: {
+                organisation: room.organisation,
+                department: room.department,
+                name: room.name,
+              },
+            })
+          )
+        );
+
+
+        if (duplicateChecks.some((duplicate) => duplicate)) {
+          return {
+              status: statusCodes.BAD_REQUEST,
+              rooms: rooms.filter((room, index) => duplicateChecks[index]),
+          };
+      }
+        
+        //if no duplicates, create rooms
+        await prisma.room.createMany({
+          data: rooms,
+        });
+
+        return {
+          status: statusCodes.CREATED,
+          rooms: rooms,
+        };
+      }
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        rooms: null,
+      };
+    }
+    return {
+      status: status,
+      rooms: null,
+    };
+  } catch {
+    return {
+      status: statusCodes.INTERNAL_SERVER_ERROR,
+      rooms: null,
+    };
+  }
+}
+
+
+
+export async function updateRoom(JWTtoken: string, room: Room): Promise<{ status: number }> {
+  try {
+    
+    const { status, user } = await auth.getPosition(JWTtoken);
+
+    if (status == statusCodes.OK && user) {
+    
+      if (user.role != "viewer") {
+    
+        const existingRoom = await prisma.room.findFirst({
+          where: {
+            organisation: user.organisation,
+            department: user.department,
+            name: room.name,
+          },
+        });
+
+        if (!existingRoom) {
+          return {
+            status: statusCodes.NOT_FOUND,
+          };
+        }
+
+        await prisma.room.update({
+          where: {
+            id: existingRoom.id,
+          },
+          data: {
+            name: room.name,
+            department: room.department,
+            lab: room.lab,
+            timetable: room.timetable,
+          },
+        });
+        return {
+          status: statusCodes.OK,
+        };
+      }
+      //else
+      return {
+        status: statusCodes.UNAUTHORIZED,
+      };
+    }
+    return {
+      status: status,
+    };
+  }
+  catch {
+    return {
+      status: statusCodes.INTERNAL_SERVER_ERROR
+    }
+  }
+}
+
 export async function getRooms(
   token: string
 ): Promise<{ status: number; rooms: Room[] | null }> {
