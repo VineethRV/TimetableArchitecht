@@ -39,9 +39,19 @@ const timeslots = [
   "3:30-4:30",
 ];
 
+
+
 const AddTeacherpage: React.FC = () => {
   const [form] = Form.useForm();
   const router = useRouter();
+
+  const clearFields = () => {
+    form.setFieldValue("name", "");
+    form.setFieldValue("initials", "");
+    form.setFieldValue("email", "");
+    form.setFieldValue("department", "");
+    setButtonStatus(weekdays.map(() => timeslots.map(() => "Free")));
+  };
 
   const [buttonStatus, setButtonStatus] = useState(
     weekdays.map(() => timeslots.map(() => "Free"))
@@ -63,14 +73,6 @@ const AddTeacherpage: React.FC = () => {
       null
     ).then((res) => {
       const statusCode = res.status;
-
-      const clearFields = () => {
-        form.setFieldValue("name", "");
-        form.setFieldValue("initials", "");
-        form.setFieldValue("email", "");
-        form.setFieldValue("department", "");
-        setButtonStatus(weekdays.map(() => timeslots.map(() => "Free")));
-      };
 
       switch (statusCode) {
         case statusCodes.CREATED:
@@ -159,7 +161,7 @@ const AddTeacherpage: React.FC = () => {
           <div className="flex justify-end">
             <div className="flex space-x-4">
               <Form.Item>
-                <Button className="border-[#636AE8FF] text-[#636AE8FF]">
+                <Button onClick={clearFields} className="border-[#636AE8FF] text-[#636AE8FF]">
                   Clear
                 </Button>
               </Form.Item>
