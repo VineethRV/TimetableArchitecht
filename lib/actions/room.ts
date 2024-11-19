@@ -99,13 +99,13 @@ export async function createManyRoom(
     if (status == statusCodes.OK) {
       if (user && user.role != "viewer") {
 
-        let rooms: Room[] = [];
+        const rooms: Room[] = [];
 
         for(let i=0;i<name.length;i++){
           rooms.push({
             name: name[i],
             organisation: user.organisation,
-            department: user.department,
+            department: department?department:user.department,
             lab: lab[i],
             timetable:
               "0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;",

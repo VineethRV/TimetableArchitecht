@@ -129,22 +129,22 @@ export async function updateTeachers(JWTtoken:string,teacher:Teacher):Promise<{s
 
 export async function createManyTeachers(
     JWTtoken: string,
-        name: string,
-        initials: string | null,
-        email: string | null=null,
+        name: string[],
+        initials: string[] | null,
+        email: string[] | null=null,
         department: string | null=null
 ): Promise<{ status: number; teachers: Teacher[] | null }> {
     try {
         const { status, user } = await auth.getPosition(JWTtoken);
         if (status == statusCodes.OK && user && user.role != "viewer") {
             
-            let teachers: Teacher[] =[]
+            const teachers: Teacher[] =[]
 
             for(let i=0;i<name.length;i++){
                 teachers.push({
                     name: name[i],
-                    initials: initials,
-                    email: email,
+                    initials: initials?initials[i]:null,
+                    email: email?email[i]:null,
                     department: department?department:user.department,
                     alternateDepartments: null,
                     timetable:"0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;",
@@ -176,7 +176,7 @@ export async function createManyTeachers(
             await prisma.teacher.createMany({
                 data: teachers,
             });
-            
+
             return {
                 status: statusCodes.CREATED,
                 teachers: teachers,

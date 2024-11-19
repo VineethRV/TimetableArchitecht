@@ -26,6 +26,18 @@
           </li>
         </ul>
       </article>
+
+      <article>
+        <h3>createManyTeachers</h3>
+        <p>Creates multiple new teachers in the database.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token, array of names, initials, email (optional), department (optional)</li>
+          <li><strong>Returns:</strong> Status code and the created teachers array</li>
+          <li><strong>Example:</strong>
+            <pre><code>createManyTeachers(JWTtoken, ["John Doe", "Jane Smith"], ["JD","JA"], ["john@example.com","asudad"], "EI");</code></pre>
+          </li>
+        </ul>
+      </article>
       
       <article>
         <h3>getTeachers</h3>
@@ -46,7 +58,17 @@
           <pre><code>peekTeacher("JWTtoken","Kendaganna","CSE");</code></pre>
         </ul>
       </article>
-
+      <article>
+        <h3>modifyTeachers</h3>
+        <p>Modifies an existing teacher in the database.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token, teacher object</li>
+          <li><strong>Returns:</strong> Status code and the modified teacher object</li>
+          <li><strong>Example:</strong>
+        <pre><code>modifyTeachers(JWTtoken, {name: "John Doe", initials: "JD", email: "john@example.com", department: "EI", alternateDepartments: "CSE,AIML", timetable: "0,0,0,0,0,0;0,0,0,0,0,0;", labtable: "0,0,0,0,0,0;0,0,0,0,0,0;"});</code></pre>
+          </li>
+        </ul>
+      </article>
       <article>
         <h3>deleteTeachers</h3>
         <p>Deletes a teacher from the database.</p>
@@ -88,6 +110,27 @@
           <li><strong>Returns:</strong> Status code and the room object</li>
           <pre><code>peekRoom(JWTtoken, "Physics Lab");</code></pre>
         </ul>
+      </article>
+      <article>
+        <h3>addManyRooms</h3>
+        <p>Creates multiple new rooms in the database.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token, array of room names, lab (boolean), department</li>
+          <li><strong>Returns:</strong> Status code and the created rooms array</li>
+          <pre><code>addManyRooms(JWTtoken, ["Physics Lab", "Chemistry Lab"], [true.tue], "Science");</code></pre>
+        </ul>
+      </article>
+      <article>
+        <h3>modifyRooms</h3>
+        <p>Modifies existing rooms in the database.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token, room object</li>
+          <li><strong>Returns:</strong> Status code and the modified room object</li>
+          <pre><code>modifyRooms(JWTtoken, {name: "Physics Lab", lab: true, timetable: "0,0,0,0,0,0;0,0,0,0,0,0;", department: "Science"});</code></pre>
+        </ul>
+      </article>
+
+      
       </article>
 
       <article>
