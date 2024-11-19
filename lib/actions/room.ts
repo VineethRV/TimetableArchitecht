@@ -198,3 +198,42 @@ export async function peekRoom(
     };
   }
 }
+
+
+export async function deleteRooms(
+  JWTtoken: string,
+  rooms: Room[],
+  department: string | null = null
+): Promise<{ status: number }> {
+  const { status, user } = await auth.getPosition(JWTtoken);
+  try {
+    if (status == statusCodes.OK && user) {
+      if (user.role != "viewer") {
+        await prisma.room.deleteMany({
+          where: {
+            name: {
+              in: rooms.map(room=>room.name)
+            },
+            organisation: user.organisation,
+            department: user.role == "admin" ? (department ? department : "no department") : user.department,
+          },
+        });
+        return {
+          status: statusCodes.OK,
+        };
+      }
+      // else
+      return {
+        status: statusCodes.UNAUTHORIZED,
+      };
+    }
+    // else
+    return {
+      status: status,
+    };
+  } catch {
+    return {
+      status: statusCodes.INTERNAL_SERVER_ERROR,
+    };
+  }
+}

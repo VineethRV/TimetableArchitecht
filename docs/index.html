@@ -46,6 +46,16 @@
           <pre><code>peekTeacher("JWTtoken","Kendaganna","CSE");</code></pre>
         </ul>
       </article>
+
+      <article>
+        <h3>deleteTeachers</h3>
+        <p>Deletes a teacher from the database.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token, teacher object list</li>
+          <li><strong>Returns:</strong> Status code indicating success or failure</li>
+          <pre><code>deleteTeachers(JWTtoken, {teacher1,teacher2,teacher3});</code></pre>
+        </ul>
+      </article>
     </section>
     
     <section>
@@ -57,7 +67,6 @@
           <li><strong>Parameters:</strong> JWT token, name, lab (boolean), timetable, department</li>
           <li><strong>Returns:</strong> Status code and the created room object</li>
           <pre><code>createRoom(JWTtoken, "Physics Lab", true);</code></pre>
-
         </ul>
       </article>
       
@@ -78,6 +87,16 @@
           <li><strong>Parameters:</strong> Token, name, department</li>
           <li><strong>Returns:</strong> Status code and the room object</li>
           <pre><code>peekRoom(JWTtoken, "Physics Lab");</code></pre>
+        </ul>
+      </article>
+
+      <article>
+        <h3>deleteRooms</h3>
+        <p>Deletes rooms from the database.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token, Room object list</li>
+          <li><strong>Returns:</strong> Status code indicating success or failure</li>
+          <pre><code>deleteRooms(JWTtoken, {room1,room2});</code></pre>
         </ul>
       </article>
     </section>
