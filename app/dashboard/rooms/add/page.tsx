@@ -2,13 +2,11 @@
 import React, { useState } from "react";
 import {
   Button,
-  message,
   Form,
   Input,
   Select,
   Tooltip,
   Upload,
-  InputNumber,
   Radio,
 } from "antd";
 import Timetable from "@/app/components/timetable";
@@ -17,6 +15,9 @@ import { CiImport } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { DEPARTMENTS_OPTIONS } from "@/info";
+import { createRoom } from "@/lib/actions/room";
+import { toast } from "sonner";
+import { statusCodes } from "@/app/types/statusCodes";
 
 const formItemLayout = {
   labelCol: {
@@ -48,14 +49,47 @@ const timeslots = [
 
 const AddRoomForm: React.FC = () => {
   const [form] = Form.useForm();
-  const success = () => {
-    message.success("Room Added successfully!", 3);
-  };
   const router = useRouter();
 
   const [buttonStatus, setButtonStatus] = useState(
     weekdays.map(() => timeslots.map(() => "Free"))
   );
+
+  function clearFields() {
+    form.setFieldValue('className', "");
+    form.setFieldValue('lab', "");
+    form.setFieldValue('department', "");
+    setButtonStatus(weekdays.map(() => timeslots.map(() => "Free")));
+  }
+
+  function addClassRoom() {
+    const className = form.getFieldValue('className');
+    const lab = form.getFieldValue('lab')
+    const dept = form.getFieldValue('department')
+    // lab -> 1 is Yes 2 is No
+
+    const res = createRoom(localStorage.getItem('token') || "", className, lab == 1, buttonStatus, dept).then((res) => {
+      const statusCode = res.status;
+
+      switch (statusCode) {
+        case statusCodes.CREATED:
+          toast.success("Added room successfully !!");
+          clearFields();
+          break;
+        case statusCodes.BAD_REQUEST:
+          toast.error("You are not authorized");
+          clearFields();
+          break;
+        case statusCodes.INTERNAL_SERVER_ERROR:
+          toast.error("Server error");
+          break;
+      }
+    })
+
+    toast.promise(res, {
+      loading: "Adding room ...."
+    })
+  }
 
   return (
     <div className="text-xl font-bold text-[#171A1F] pl-8 py-6 h-screen overflow-y-scroll">
@@ -88,18 +122,10 @@ const AddRoomForm: React.FC = () => {
         className="flex justify-left items-center mt-12 ml-4"
       >
         <Form {...formItemLayout} form={form} layout="vertical" requiredMark>
-          <Form.Item label="Classroom Name" required>
+          <Form.Item name="className" label="Classroom Name" required>
             <Input placeholder="Name" className="font-inter font-normal" />
           </Form.Item>
-          
-          <Form.Item label="Room Capacity" required>
-            <InputNumber
-              min={0}
-              placeholder="Capacity"
-              className="w-full font-inter font-normal"
-            />
-          </Form.Item>
-          <Form.Item label="Is it a Lab?" required>
+          <Form.Item name="lab" label="Is it a Lab?" required>
             <Radio.Group>
               <Radio value={1}>Yes</Radio>
               <Radio value={2} className="ml-4 color-[#636AE8FF]">
@@ -107,7 +133,7 @@ const AddRoomForm: React.FC = () => {
               </Radio>
             </Radio.Group>
           </Form.Item>
-          <Form.Item label="Department" name="Select">
+          <Form.Item label="Department" name="department">
             <Select options={DEPARTMENTS_OPTIONS} className="font-inter font-normal" />
           </Form.Item>
           <label className="flex items-center">
@@ -122,7 +148,7 @@ const AddRoomForm: React.FC = () => {
               setButtonStatus={setButtonStatus}
             />
           </div>
-          <div className="flex justify-end w-[55vm]">
+          <div className="flex space-x-4 justify-end w-[55vm]">
             <Form.Item>
               <Button className="border-[#636AE8FF] text-[#636AE8FF] w-[75px] h-[32px]">
                 Clear
@@ -130,7 +156,7 @@ const AddRoomForm: React.FC = () => {
             </Form.Item>
             <Form.Item>
               <Button
-                onClick={success}
+                onClick={addClassRoom}
                 className="bg-[#636AE8FF] text-[#FFFFFF] w-[75px] h-[32px]"
               >
                 Submit
