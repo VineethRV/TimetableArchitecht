@@ -9,15 +9,19 @@ import Footer from "./components/LandingPage/Footer";
 import { motion } from "framer-motion";
 
 // Clear session if notKeepLoggedIn
-window.onunload = () => {
-  if (localStorage.getItem('keepLogged') == "true") {
 
-  } else {
+if (window) {
+  window.onunload = () => {
+    if (localStorage.getItem('keepLogged') == "true") {
 
-    localStorage.setItem('token', "")
+    } else {
 
+      localStorage.setItem('token', "")
+
+    }
   }
 }
+
 
 export default function Home() {
   return (
