@@ -325,7 +325,7 @@ export async function deleteTeachers(JWTtoken: string, teachers: Teacher[]): Pro
       if (user.role != 'viewer') {
         await prisma.user.deleteMany({
           where: {
-            AND: teachers.map(teacher => ({
+            OR: teachers.map(teacher => ({
               name: teacher.name,
               organisation: user.organisation,
               department: user.role=='admin'?teacher.department:user.department
@@ -351,5 +351,4 @@ export async function deleteTeachers(JWTtoken: string, teachers: Teacher[]): Pro
       status: statusCodes.INTERNAL_SERVER_ERROR
     }
   }
-
 }
