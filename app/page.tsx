@@ -8,6 +8,7 @@ import FAQ from "./components/LandingPage/FAQ";
 import Footer from "./components/LandingPage/Footer";
 import { motion } from "framer-motion";
 
+
 export default function Home() {
   return (
     <>

@@ -1,9 +1,15 @@
 "use client";
-import React from "react";
-import { Avatar, Button, Table, Tooltip } from "antd";
+import React, { useMemo, useState } from "react";
+import { Avatar, Button, ConfigProvider, Input, Select, Table, Tooltip } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { Teacher } from "@/app/types/main";
+import { deleteTeachers } from "@/lib/actions/teacher";
+import { statusCodes } from "@/app/types/statusCodes";
+import { toast } from "sonner";
+import { TbTrash } from "react-icons/tb";
+import { DEPARTMENTS_OPTIONS } from "@/info";
+import { CiSearch } from "react-icons/ci";
 
 const getRandomColor = () => {
   const letters = "0123456789ABCDEF";
@@ -104,23 +110,48 @@ const columns: TableColumnsType<Teacher> = [
   },
 ];
 
-const rowSelection: TableProps<Teacher>["rowSelection"] = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: Teacher[]) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      "selectedRows: ",
-      selectedRows
-    );
-  },
-  getCheckboxProps: (record: Teacher) => ({
-    disabled: record.name === "Disabled User",
-    name: record.name,
-  }),
-};
 
-const TeachersTable = ({ teachersData }: { teachersData: Teacher[] }) => {
-  // Assign department colors
-  teachersData.forEach((teacher) => {
+const TeachersTable = ({ teachersData, setTeachersData }: { teachersData: Teacher[], setTeachersData: React.Dispatch<React.SetStateAction<Teacher[]>> }) => {
+  console.log(setTeachersData)
+  const [selectedTeachers, setSelectedTeachers] = useState<Teacher[]>([])
+  const [departmentFilter, setDepartmentFilter] = useState("Select a department");
+
+  function clearFilters() {
+    setDepartmentFilter("Select a department");
+  }
+
+  const rowSelection: TableProps<Teacher>["rowSelection"] = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: Teacher[]) => {
+      setSelectedTeachers(selectedRows)
+    },
+    getCheckboxProps: (record: Teacher) => ({
+      disabled: record.name === "Disabled User",
+      name: record.name,
+    }),
+  };
+
+  function deleteTeachersHandler() {
+    if (selectedTeachers.length == 0) {
+      toast.info("Select teachers to delete !!");
+      return;
+    }
+    console.log(selectedTeachers)
+    const res = deleteTeachers(localStorage.getItem('token') || "", selectedTeachers).then((res) => {
+      const statusCode = res.status;
+      console.log(res)
+      switch (statusCode) {
+        case statusCodes.OK:
+          toast.success("Teachers deleted successfully");
+          break;
+      }
+    })
+
+    toast.promise(res, {
+      loading: "Deleting teachers ..."
+    })
+  }
+
+  teachersData?.forEach((teacher) => {
     if (!deptColors[teacher.department as string]) {
       deptColors[teacher.department as string] =
         colorCombos[cnt % colorCombos.length].backgroundColor;
@@ -128,14 +159,70 @@ const TeachersTable = ({ teachersData }: { teachersData: Teacher[] }) => {
     }
   });
 
+
+  const filteredTeachersData = useMemo(() => {
+    if (departmentFilter == "Select a department") {
+      return teachersData;
+    }
+
+    const new_teachers = teachersData.filter((t) => t.department == departmentFilter)
+    return new_teachers;
+  }, [departmentFilter])
+
+
+
+
   // Add a unique key to each teacher record (email is assumed to be unique)
-  const dataWithKeys = teachersData.map((teacher) => ({
+  const dataWithKeys = filteredTeachersData.map((teacher) => ({
     ...teacher,
     key: teacher.email, // Use email as the unique key
   }));
 
   return (
     <div>
+      <div className="flex space-x-8 justify-between py-4">
+        <Input
+          className="w-fit"
+          addonBefore={<CiSearch />}
+          placeholder="Teacher"
+        />
+
+        {/* this config to set background color of the selectors | did as specified in antd docs */}
+        <ConfigProvider
+          theme={{
+            components: {
+              Select: {
+                selectorBg: "#F3F4F6FF",
+              },
+            },
+          }}
+        >
+          <div className="flex space-x-3">
+            <Select
+              defaultValue="Sort By"
+              style={{ width: 120 }}
+              options={[]}
+            />
+            <Select
+              className="w-[300px]"
+              defaultValue="All Departments"
+              value={departmentFilter}
+              options={DEPARTMENTS_OPTIONS}
+              onChange={(e) => setDepartmentFilter(e)}
+            />
+          </div>
+        </ConfigProvider>
+        <div className="flex space-x-2">
+          <Button onClick={deleteTeachersHandler} className="bg-red-500 text-white font-bold">
+            <TbTrash />
+            Delete
+          </Button>
+          <Button onClick={clearFilters}>Clear filters</Button>
+        </div>
+      </div>
+
+
+
       <Table<Teacher>
         rowSelection={{ type: "checkbox", ...rowSelection }}
         columns={columns}
