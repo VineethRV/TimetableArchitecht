@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Avatar, Button, ConfigProvider, Input, Select, Table, Tooltip } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { MdDelete, MdEdit } from "react-icons/md";
@@ -114,6 +114,11 @@ const columns: TableColumnsType<Teacher> = [
 const TeachersTable = ({ teachersData, setTeachersData }: { teachersData: Teacher[], setTeachersData: React.Dispatch<React.SetStateAction<Teacher[]>> }) => {
   console.log(setTeachersData)
   const [selectedTeachers, setSelectedTeachers] = useState<Teacher[]>([])
+  const [departmentFilter, setDepartmentFilter] = useState("Select a department");
+
+  function clearFilters(){
+      setDepartmentFilter("Select a department");
+  }
 
   const rowSelection: TableProps<Teacher>["rowSelection"] = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: Teacher[]) => {
@@ -154,8 +159,21 @@ const TeachersTable = ({ teachersData, setTeachersData }: { teachersData: Teache
     }
   });
 
+
+  const filteredTeachersData = useMemo(() => {
+    if (departmentFilter == "Select a department") {
+      return teachersData;
+    }
+
+    const new_teachers = teachersData.filter((t) => t.department == departmentFilter)
+    return new_teachers;
+  }, [departmentFilter])
+
+
+
+
   // Add a unique key to each teacher record (email is assumed to be unique)
-  const dataWithKeys = teachersData.map((teacher) => ({
+  const dataWithKeys = filteredTeachersData.map((teacher) => ({
     ...teacher,
     key: teacher.email, // Use email as the unique key
   }));
@@ -186,9 +204,11 @@ const TeachersTable = ({ teachersData, setTeachersData }: { teachersData: Teache
               options={[]}
             />
             <Select
-              className="w-[200px]"
+              className="w-[300px]"
               defaultValue="All Departments"
+              value={departmentFilter}
               options={DEPARTMENTS_OPTIONS}
+              onChange={(e) => setDepartmentFilter(e)}
             />
           </div>
         </ConfigProvider>
@@ -197,7 +217,7 @@ const TeachersTable = ({ teachersData, setTeachersData }: { teachersData: Teache
             <TbTrash />
             Delete
           </Button>
-          <Button>Clear filters</Button>
+          <Button onClick={clearFilters}>Clear filters</Button>
         </div>
       </div>
 
