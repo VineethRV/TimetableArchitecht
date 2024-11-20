@@ -337,7 +337,7 @@ export async function deleteRooms(
       if (user.role != "viewer") {
         await prisma.room.deleteMany({
           where: {
-            AND: rooms.map(room => ({
+            OR: rooms.map(room => ({
               name: room.name,
               organisation: user.organisation,
               department: user.role=='admin'?room.department:user.department
