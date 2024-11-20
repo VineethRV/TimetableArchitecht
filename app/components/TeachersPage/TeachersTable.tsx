@@ -116,8 +116,8 @@ const TeachersTable = ({ teachersData, setTeachersData }: { teachersData: Teache
   const [selectedTeachers, setSelectedTeachers] = useState<Teacher[]>([])
   const [departmentFilter, setDepartmentFilter] = useState("Select a department");
 
-  function clearFilters(){
-      setDepartmentFilter("Select a department");
+  function clearFilters() {
+    setDepartmentFilter("Select a department");
   }
 
   const rowSelection: TableProps<Teacher>["rowSelection"] = {
@@ -151,7 +151,7 @@ const TeachersTable = ({ teachersData, setTeachersData }: { teachersData: Teache
     })
   }
 
-  teachersData.forEach((teacher) => {
+  teachersData?.forEach((teacher) => {
     if (!deptColors[teacher.department as string]) {
       deptColors[teacher.department as string] =
         colorCombos[cnt % colorCombos.length].backgroundColor;

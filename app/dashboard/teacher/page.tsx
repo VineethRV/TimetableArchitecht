@@ -7,6 +7,7 @@ import { getTeachers } from "@/lib/actions/teacher";
 
 import Loading from "./loading";
 import { Teacher } from "@/app/types/main";
+import { statusCodes } from "@/app/types/statusCodes";
 
 function Page() {
   const [loading, setLoading] = useState(true);
@@ -15,12 +16,10 @@ function Page() {
   useEffect(() => {
     getTeachers(localStorage.getItem("token") || "").then((res) => {
       const statusCode = res.status;
-
-      console.log(statusCode);
+      console.log(statusCode)
 
       setTeachersData(res.teachers as Teacher[]);
-      console.log(res.teachers);
-      setLoading(false);
+      if (res.status == statusCodes.OK) setLoading(false);
     });
   }, []);
 
