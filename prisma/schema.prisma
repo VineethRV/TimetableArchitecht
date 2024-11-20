@@ -31,6 +31,8 @@ model Room{
   department String?
   lab Boolean?
   timetable String?
+  
+  @@unique([name, department, organisation])
 }
 
 
@@ -44,4 +46,6 @@ model Teacher{
   timetable String?
   labtable String?
   organisation String?
+
+  @@unique([name, department, organisation])
 }
