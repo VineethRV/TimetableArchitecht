@@ -325,13 +325,12 @@ export async function deleteTeachers(JWTtoken: string, teachers: Teacher[]): Pro
       if (user.role != 'viewer') {
         await prisma.user.deleteMany({
           where: {
-            OR: teachers.map(teacher => ({
-              name: teacher.name,
-              organisation: user.organisation,
-              department: user.role=='admin'?teacher.department:user.department
-            }))
+            name: {
+                in: teachers.map(teacher => teacher.name)
+                },
           }
         })
+        console.log("DONEE")
         return {
           status: statusCodes.OK
         }
