@@ -1,10 +1,29 @@
 "use client";
 import { Button, ConfigProvider, Input, Select } from "antd";
 import { TbTrash } from "react-icons/tb";
-import RoomsTable from '@/app/components/RoomsPage/RoomsTable'
+import RoomsTable from "@/app/components/RoomsPage/RoomsTable";
 import { CiExport, CiImport, CiSearch } from "react-icons/ci";
+import { useEffect, useState } from "react";
+import { Room } from "@/app/types/main";
+import Loading from "./loading";
+import { getRooms } from "@/lib/actions/room";
+import { statusCodes } from "@/app/types/statusCodes";
 
-function page() {
+function Page() {
+  const [roomsData, setRoomsData] = useState<Room[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getRooms(localStorage.getItem("token") || "").then((res) => {
+      const statusCode = res.status;
+      if (statusCode == statusCodes.OK) setRoomsData(res.rooms as Room[]);
+      console.log(statusCode);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) return <Loading />;
+
   return (
     <div className="h-screen px-8 py-4 overflow-y-scroll">
       <h1 className="text-3xl font-bold text-primary mt-2">ClassRooms</h1>
@@ -47,16 +66,16 @@ function page() {
         </ConfigProvider>
         <div className="flex space-x-2">
           <Button className="bg-red-500 text-white font-bold">
-            <TbTrash />Delete
+            <TbTrash />
+            Delete
           </Button>
           <Button>Clear filters</Button>
         </div>
       </div>
 
-      <RoomsTable />
-
+      <RoomsTable roomsData={roomsData} />
     </div>
   );
 }
 
-export default page;
+export default Page;

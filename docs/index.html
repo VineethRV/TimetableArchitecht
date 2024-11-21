@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header>
+    <h1>API Documentation</h1>
+    <p>A guide to using the functions from <code>teachers.ts</code> and <code>room.ts</code>.</p>
+  </header>
+  
+  <main>
+    <section>
+      <h2>Teachers Module</h2>
+      <article>
+        <h3>createTeachers</h3>
+        <p>Creates a new teacher in the database.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token, name, initials, email, department, alternate departments, timetable, labtable</li>
+          <li><strong>Returns:</strong> Status code and the created teacher object</li>
+          <li><strong>Example:</strong>
+            <pre><code>createTeachers(JWTtoken, "John Doe", "JD", "john@example.com", "EI","CSE,AIML");</code></pre>
+          </li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>createManyTeachers</h3>
+        <p>Creates multiple new teachers in the database.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token, array of names, initials, email (optional), department (optional)</li>
+          <li><strong>Returns:</strong> Status code and the created teachers array</li>
+          <li><strong>Example:</strong>
+            <pre><code>createManyTeachers(JWTtoken, ["John Doe", "Jane Smith"], ["JD","JA"], ["john@example.com","asudad"], "EI");</code></pre>
+          </li>
+        </ul>
+      </article>
+      
+      <article>
+        <h3>getTeachers</h3>
+        <p>Retrieves a list of teachers based on user role and department.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token</li>
+          <li><strong>Returns:</strong> Status code and a list of teachers</li>
+          <pre><code>getTeachers("JWTtoken");</code></pre>
+        </ul>
+      </article>
+      
+      <article>
+        <h3>peekTeacher</h3>
+        <p>Fetches details of a specific teacher.</p>
+        <ul>
+          <li><strong>Parameters:</strong> Token, name, department</li>
+          <li><strong>Returns:</strong> Status code and the teacher object</li>
+          <pre><code>peekTeacher("JWTtoken","Kendaganna","CSE");</code></pre>
+        </ul>
+      </article>
+      <article>
+        <h3>modifyTeachers</h3>
+        <p>Modifies an existing teacher in the database.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token, teacher object</li>
+          <li><strong>Returns:</strong> Status code and the modified teacher object</li>
+          <li><strong>Example:</strong>
+        <pre><code>modifyTeachers(JWTtoken, {name: "John Doe", initials: "JD", email: "john@example.com", department: "EI", alternateDepartments: "CSE,AIML", timetable: "0,0,0,0,0,0;0,0,0,0,0,0;", labtable: "0,0,0,0,0,0;0,0,0,0,0,0;"});</code></pre>
+          </li>
+        </ul>
+      </article>
+      <article>
+        <h3>deleteTeachers</h3>
+        <p>Deletes a teacher from the database.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token, teacher object list</li>
+          <li><strong>Returns:</strong> Status code indicating success or failure</li>
+          <pre><code>deleteTeachers(JWTtoken, {teacher1,teacher2,teacher3});</code></pre>
+        </ul>
+      </article>
+    </section>
+    
+    <section>
+      <h2>Room Module</h2>
+      <article>
+        <h3>createRoom</h3>
+        <p>Creates a new room in the database.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token, name, lab (boolean), timetable, department</li>
+          <li><strong>Returns:</strong> Status code and the created room object</li>
+          <pre><code>createRoom(JWTtoken, "Physics Lab", true);</code></pre>
+        </ul>
+      </article>
+      
+      <article>
+        <h3>getRooms</h3>
+        <p>Retrieves a list of rooms based on user role and department.</p>
+        <ul>
+          <li><strong>Parameters:</strong> Token</li>
+          <li><strong>Returns:</strong> Status code and a list of rooms</li>
+          <pre><code>getRooms(JWTtoken);</code></pre>
+        </ul>
+      </article>
+      
+      <article>
+        <h3>peekRoom</h3>
+        <p>Fetches details of a specific room.</p>
+        <ul>
+          <li><strong>Parameters:</strong> Token, name, department</li>
+          <li><strong>Returns:</strong> Status code and the room object</li>
+          <pre><code>peekRoom(JWTtoken, "Physics Lab");</code></pre>
+        </ul>
+      </article>
+      <article>
+        <h3>addManyRooms</h3>
+        <p>Creates multiple new rooms in the database.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token, array of room names, lab (boolean), department</li>
+          <li><strong>Returns:</strong> Status code and the created rooms array</li>
+          <pre><code>addManyRooms(JWTtoken, ["Physics Lab", "Chemistry Lab"], [true.tue], "Science");</code></pre>
+        </ul>
+      </article>
+      <article>
+        <h3>modifyRooms</h3>
+        <p>Modifies existing rooms in the database.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token, room object</li>
+          <li><strong>Returns:</strong> Status code and the modified room object</li>
+          <pre><code>modifyRooms(JWTtoken, {name: "Physics Lab", lab: true, timetable: "0,0,0,0,0,0;0,0,0,0,0,0;", department: "Science"});</code></pre>
+        </ul>
+      </article>
+
+      
+      </article>
+
+      <article>
+        <h3>deleteRooms</h3>
+        <p>Deletes rooms from the database.</p>
+        <ul>
+          <li><strong>Parameters:</strong> JWT token, Room object list</li>
+          <li><strong>Returns:</strong> Status code indicating success or failure</li>
+          <pre><code>deleteRooms(JWTtoken, {room1,room2});</code></pre>
+        </ul>
+      </article>
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2024 API Documentation</p>
+  </footer>
+</body>
+</html>

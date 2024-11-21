@@ -8,6 +8,7 @@ import QuoteSection from "../components/SignupPage/QuoteSection";
 import { useRouter } from 'next/navigation';
 import { checkAuthentication } from '@/lib/actions/auth';
 import { toast } from 'sonner';
+import Loading from '@/app/components/Loading/Loading'
 
 const Page = () => {
   const [loading, setLoading] = useState(true);
@@ -24,7 +25,7 @@ const Page = () => {
     })
   }, [])
 
-  if (loading) return <div>Loading....</div>
+  if (loading) return <Loading/>
 
   return (
     <main className="grid grid-cols-2 h-screen">
