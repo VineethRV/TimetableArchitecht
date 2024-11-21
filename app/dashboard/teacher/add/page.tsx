@@ -62,7 +62,7 @@ const AddTeacherpage: React.FC = () => {
           <Form.Item label="Initials" required>
             <Input placeholder="Initials" className="font-inter font-normal" />
           </Form.Item>
-          <Form.Item label="Email Id" required>
+          <Form.Item label="Email Id">
             <Input placeholder="Email Id" className="font-inter font-normal" />
           </Form.Item>
           <Form.Item label="Department" name="Select">
