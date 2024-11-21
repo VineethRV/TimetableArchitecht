@@ -134,7 +134,7 @@ const AddTeacherpage: React.FC = () => {
           <Form.Item name="initials" label="Initials" required>
             <Input placeholder="Initials" className="font-inter font-normal" />
           </Form.Item>
-          <Form.Item name="email" label="Email Id" required>
+          <Form.Item name="email" label="Email Id">
             <Input placeholder="Email Id" className="font-inter font-normal" />
           </Form.Item>
           <Form.Item name="department" label="Department">
@@ -143,6 +143,7 @@ const AddTeacherpage: React.FC = () => {
               placeholder="Select a department"
               optionFilterProp="label"
               options={DEPARTMENTS_OPTIONS}
+              className="font-normal"
             />
           </Form.Item>
 
