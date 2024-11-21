@@ -71,126 +71,126 @@ export async function createTeachers(JWTtoken: string, name: string, initials: s
   }
 }
 
-export async function updateTeachers(JWTtoken:string,teacher:Teacher):Promise<{status:number,teacher:Teacher|null}>{
-    try{
-        const {status,user}=await auth.getPosition(JWTtoken)
-        if(status==statusCodes.OK && user){
-            if(user.role!='viewer'){
-                const teacherExists=await prisma.teacher.findFirst({
-                    where:{
-                        name:teacher.name,
-                        department:teacher.department,
-                        organisation:user.organisation
-                    }
-                })
-                if(!teacherExists){
-                    return{
-                        status:statusCodes.BAD_REQUEST,
-                        teacher:null
-                    }
-                }
-                const updatedTeacher=await prisma.teacher.update({
-                    where:{
-                        id:teacherExists.id
-                    },
-                    data:{
-                        name:teacher.name,
-                        initials:teacher.initials,
-                        email:teacher.email,
-                        department:teacher.department,
-                        alternateDepartments:teacher.alternateDepartments,
-                        timetable:teacher.timetable,
-                        labtable:teacher.labtable,
-                    }
-                })
-                return{
-                    status:statusCodes.OK,
-                    teacher:updatedTeacher
-                }
-            }
-            return{
-                status:statusCodes.UNAUTHORIZED,
-                teacher:null
-            }
+export async function updateTeachers(JWTtoken: string, teacher: Teacher): Promise<{ status: number, teacher: Teacher | null }> {
+  try {
+    const { status, user } = await auth.getPosition(JWTtoken)
+    if (status == statusCodes.OK && user) {
+      if (user.role != 'viewer') {
+        const teacherExists = await prisma.teacher.findFirst({
+          where: {
+            name: teacher.name,
+            department: teacher.department,
+            organisation: user.organisation
+          }
+        })
+        if (!teacherExists) {
+          return {
+            status: statusCodes.BAD_REQUEST,
+            teacher: null
+          }
         }
-        return{
-            status:status,
-            teacher:null
+        const updatedTeacher = await prisma.teacher.update({
+          where: {
+            id: teacherExists.id
+          },
+          data: {
+            name: teacher.name,
+            initials: teacher.initials,
+            email: teacher.email,
+            department: teacher.department,
+            alternateDepartments: teacher.alternateDepartments,
+            timetable: teacher.timetable,
+            labtable: teacher.labtable,
+          }
+        })
+        return {
+          status: statusCodes.OK,
+          teacher: updatedTeacher
         }
+      }
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        teacher: null
+      }
     }
-    catch{
-        return{
-            status:statusCodes.INTERNAL_SERVER_ERROR,
-            teacher:null
-        }
+    return {
+      status: status,
+      teacher: null
     }
+  }
+  catch {
+    return {
+      status: statusCodes.INTERNAL_SERVER_ERROR,
+      teacher: null
+    }
+  }
 }
 
 export async function createManyTeachers(
-    JWTtoken: string,
-        name: string[],
-        initials: string[] | null,
-        email: string[] | null=null,
-        department: string | null=null
+  JWTtoken: string,
+  name: string[],
+  initials: string[] | null,
+  email: string[] | null = null,
+  department: string | null = null
 ): Promise<{ status: number; teachers: Teacher[] | null }> {
-    try {
-        const { status, user } = await auth.getPosition(JWTtoken);
-        if (status == statusCodes.OK && user && user.role != "viewer") {
-            
-            const teachers: Teacher[] =[]
+  try {
+    const { status, user } = await auth.getPosition(JWTtoken);
+    if (status == statusCodes.OK && user && user.role != "viewer") {
 
-            for(let i=0;i<name.length;i++){
-                teachers.push({
-                    name: name[i],
-                    initials: initials?initials[i]:null,
-                    email: email?email[i]:null,
-                    department: department?department:user.department,
-                    alternateDepartments: null,
-                    timetable:"0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;",
-                    labtable:"0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;",
-                    organisation:user.organisation
-                })
-            }
+      const teachers: Teacher[] = []
 
-            const duplicateChecks = await Promise.all(
-                teachers.map((teacher) =>
-                    prisma.teacher.findFirst({
-                        where: {
-                            organisation: teacher.organisation,
-                            department: teacher.department,
-                            name: teacher.name,
-                        },
-                    })
-                )
-            );
+      for (let i = 0; i < name.length; i++) {
+        teachers.push({
+          name: name[i],
+          initials: initials ? initials[i] : null,
+          email: email ? email[i] : null,
+          department: department ? department : user.department,
+          alternateDepartments: null,
+          timetable: "0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;",
+          labtable: "0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;",
+          organisation: user.organisation
+        })
+      }
 
-            //return duplicate teacher if found
-            if (duplicateChecks.some((duplicate) => duplicate)) {
-                return {
-                    status: statusCodes.BAD_REQUEST,
-                    teachers: teachers.filter((teacher, index) => duplicateChecks[index]),
-                };
-            }
+      const duplicateChecks = await Promise.all(
+        teachers.map((teacher) =>
+          prisma.teacher.findFirst({
+            where: {
+              organisation: teacher.organisation,
+              department: teacher.department,
+              name: teacher.name,
+            },
+          })
+        )
+      );
 
-            await prisma.teacher.createMany({
-                data: teachers,
-            });
-
-            return {
-                status: statusCodes.CREATED,
-                teachers: teachers,
-            };
-        }
+      //return duplicate teacher if found
+      if (duplicateChecks.some((duplicate) => duplicate)) {
         return {
-            status: statusCodes.UNAUTHORIZED,
-            teachers: null,
+          status: statusCodes.BAD_REQUEST,
+          teachers: teachers.filter((teacher, index) => duplicateChecks[index]),
         };
-    } catch {
-        return {
-            status: statusCodes.INTERNAL_SERVER_ERROR,
-            teachers: null,
-        };
+      }
+
+      await prisma.teacher.createMany({
+        data: teachers,
+      });
+
+      return {
+        status: statusCodes.CREATED,
+        teachers: teachers,
+      };
     }
+    return {
+      status: statusCodes.UNAUTHORIZED,
+      teachers: null,
+    };
+  } catch {
+    return {
+      status: statusCodes.INTERNAL_SERVER_ERROR,
+      teachers: null,
+    };
+  }
 }
 //to display teachers list 
 export async function getTeachers(JWTtoken: string): Promise<{ status: number, teachers: Teacher[] | null }> {
@@ -328,7 +328,7 @@ export async function deleteTeachers(JWTtoken: string, teachers: Teacher[]): Pro
             OR: teachers.map(teacher => ({
               name: teacher.name,
               organisation: user.organisation,
-              department: user.role=='admin'?teacher.department:user.department
+              department: user.role == 'admin' ? teacher.department : user.department
             }))
           }
         })
