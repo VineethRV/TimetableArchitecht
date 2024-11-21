@@ -58,3 +58,12 @@ model Course{
   organisation String?
   semester Int?
 }
+
+model Lab{
+  int Int @id @default(autoincrement())
+  name String
+  department String?
+  organisation String?
+  semester Int?
+  
+}

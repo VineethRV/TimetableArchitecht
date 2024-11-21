@@ -70,7 +70,7 @@ export async function createRoom(
       }
       //else return unauthorised
       return {
-        status: statusCodes.UNAUTHORIZED,
+        status: statusCodes.FORBIDDEN,
         room: null,
       };
     }
@@ -142,7 +142,7 @@ export async function createManyRoom(
         };
       }
       return {
-        status: statusCodes.UNAUTHORIZED,
+        status: statusCodes.FORBIDDEN,
         rooms: null,
       };
     }
@@ -200,7 +200,7 @@ export async function updateRoom(JWTtoken: string, room: Room): Promise<{ status
       }
       //else
       return {
-        status: statusCodes.UNAUTHORIZED,
+        status: statusCodes.FORBIDDEN,
       };
     }
     return {
@@ -329,7 +329,6 @@ export async function peekRoom(
 export async function deleteRooms(
   JWTtoken: string,
   rooms: Room[],
-  department: string | null = null
 ): Promise<{ status: number }> {
   const { status, user } = await auth.getPosition(JWTtoken);
   try {
@@ -350,7 +349,7 @@ export async function deleteRooms(
       }
       // else
       return {
-        status: statusCodes.UNAUTHORIZED,
+        status: statusCodes.FORBIDDEN,
       };
     }
     // else
