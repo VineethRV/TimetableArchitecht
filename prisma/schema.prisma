@@ -65,5 +65,8 @@ model Lab{
   department String?
   organisation String?
   semester Int?
-  
+  batches String?
+  teachers String?
+  rooms String?
+  timetable String?
 }
