@@ -112,14 +112,16 @@ const columns: TableColumnsType<Teacher> = [
 
 
 const TeachersTable = ({ teachersData, setTeachersData }: { teachersData: Teacher[], setTeachersData: React.Dispatch<React.SetStateAction<Teacher[]>> }) => {
-  console.log(setTeachersData)
+
   const [selectedTeachers, setSelectedTeachers] = useState<Teacher[]>([])
   const [departmentFilter, setDepartmentFilter] = useState("Select a department");
 
+  // Function to clear all fliters
   function clearFilters() {
     setDepartmentFilter("Select a department");
   }
 
+  // Row Selection logic by ant design
   const rowSelection: TableProps<Teacher>["rowSelection"] = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: Teacher[]) => {
       setSelectedTeachers(selectedRows)
@@ -130,19 +132,33 @@ const TeachersTable = ({ teachersData, setTeachersData }: { teachersData: Teache
     }),
   };
 
+  // function handling deleting the teachers logic
   function deleteTeachersHandler() {
     if (selectedTeachers.length == 0) {
       toast.info("Select teachers to delete !!");
       return;
     }
-    console.log(selectedTeachers)
     const res = deleteTeachers(localStorage.getItem('token') || "", selectedTeachers).then((res) => {
       const statusCode = res.status;
-      console.log(res)
       switch (statusCode) {
         case statusCodes.OK:
+          setTeachersData((teachers) => {
+            const newTeachers = teachers.filter((t) => {
+              for (let i = 0; i < selectedTeachers.length; i++) {
+                if (selectedTeachers[i].name == t.name) return false;
+              }
+              return true;
+            })
+            return newTeachers
+          })
+          setSelectedTeachers([])
           toast.success("Teachers deleted successfully");
           break;
+        case statusCodes.BAD_REQUEST:
+          toast.error("Invalid request");
+          break;
+        case statusCodes.INTERNAL_SERVER_ERROR:
+          toast.error("Server error")
       }
     })
 
@@ -151,6 +167,7 @@ const TeachersTable = ({ teachersData, setTeachersData }: { teachersData: Teache
     })
   }
 
+  // Assigning department colors for consistency
   teachersData?.forEach((teacher) => {
     if (!deptColors[teacher.department as string]) {
       deptColors[teacher.department as string] =
@@ -160,6 +177,7 @@ const TeachersTable = ({ teachersData, setTeachersData }: { teachersData: Teache
   });
 
 
+  // Memoizing the result of filteredTeachers -> Used for filtering the teachers
   const filteredTeachersData = useMemo(() => {
     if (departmentFilter == "Select a department") {
       return teachersData;
@@ -167,9 +185,7 @@ const TeachersTable = ({ teachersData, setTeachersData }: { teachersData: Teache
 
     const new_teachers = teachersData.filter((t) => t.department == departmentFilter)
     return new_teachers;
-  }, [departmentFilter])
-
-
+  }, [departmentFilter,teachersData])
 
 
   // Add a unique key to each teacher record (email is assumed to be unique)

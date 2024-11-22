@@ -125,54 +125,54 @@ export async function updateTeachers(JWTtoken: string, originalName: string, ori
 }
 
 export async function createManyTeachers(
-    JWTtoken: string,
-        name: string[],
-        initials: string[] | null,
-        email: string[] | null=null,
-        department: string | null=null
+  JWTtoken: string,
+  name: string[],
+  initials: string[] | null,
+  email: string[] | null = null,
+  department: string | null = null
 ): Promise<{ status: number; teachers: Teacher[] | null }> {
-    try {
-        const { status, user } = await auth.getPosition(JWTtoken);
-        if (status == statusCodes.OK && user && user.role != "viewer") {
-            
-            const teachers: Teacher[] =[]
+  try {
+    const { status, user } = await auth.getPosition(JWTtoken);
+    if (status == statusCodes.OK && user && user.role != "viewer") {
 
-            for(let i=0;i<name.length;i++){
-                teachers.push({
-                    name: name[i],
-                    initials: initials?initials[i]:null,
-                    email: email?email[i]:null,
-                    department: department?department:user.department,
-                    alternateDepartments: null,
-                    timetable:"0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;",
-                    labtable:"0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;",
-                    organisation:user.organisation
-                })
-            }
+      const teachers: Teacher[] = []
 
-            const duplicateChecks = await Promise.all(
-                teachers.map((teacher) =>
-                    prisma.teacher.findFirst({
-                        where: {
-                            organisation: teacher.organisation,
-                            department: teacher.department,
-                            name: teacher.name,
-                        },
-                    })
-                )
-            );
+      for (let i = 0; i < name.length; i++) {
+        teachers.push({
+          name: name[i],
+          initials: initials ? initials[i] : null,
+          email: email ? email[i] : null,
+          department: department ? department : user.department,
+          alternateDepartments: null,
+          timetable: "0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;",
+          labtable: "0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;",
+          organisation: user.organisation
+        })
+      }
 
-            //return duplicate teacher if found
-            if (duplicateChecks.some((duplicate) => duplicate)) {
-                return {
-                    status: statusCodes.BAD_REQUEST,
-                    teachers: teachers.filter((teacher, index) => duplicateChecks[index]),
-                };
-            }
+      const duplicateChecks = await Promise.all(
+        teachers.map((teacher) =>
+          prisma.teacher.findFirst({
+            where: {
+              organisation: teacher.organisation,
+              department: teacher.department,
+              name: teacher.name,
+            },
+          })
+        )
+      );
 
-            await prisma.teacher.createMany({
-                data: teachers,
-            });
+      //return duplicate teacher if found
+      if (duplicateChecks.some((duplicate) => duplicate)) {
+        return {
+          status: statusCodes.BAD_REQUEST,
+          teachers: teachers.filter((teacher, index) => duplicateChecks[index]),
+        };
+      }
+
+      await prisma.teacher.createMany({
+        data: teachers,
+      });
 
             return {
                 status: statusCodes.CREATED,
@@ -326,7 +326,7 @@ export async function deleteTeachers(JWTtoken: string, teachers: Teacher[]): Pro
             OR: teachers.map(teacher => ({
               name: teacher.name,
               organisation: user.organisation,
-              department: user.role=='admin'?teacher.department:user.department
+              department: user.role == 'admin' ? teacher.department : user.department
             }))
           }
         })
