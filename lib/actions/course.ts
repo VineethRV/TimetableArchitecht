@@ -125,42 +125,49 @@ export async function deleteCourse(JWTtoken: string, courseCode: string, semeste
     };
   }
 }
-
-export async function updateCourse(JWTtoken: string, course: Course): Promise<{ status: number }> {
-  const{user, status} = await auth.getPosition(JWTtoken);
-  if(status == statusCodes.OK){
-    if(user && user.role != "viewer"){
+export async function updateCourse(
+  JWTtoken: string,
+  originalName: string,
+  originalDepartment: string,
+  originalSemester: number,
+  course: Course
+): Promise<{ status: number }> {
+  const { user, status } = await auth.getPosition(JWTtoken);
+  if (status == statusCodes.OK) {
+    if (user && user.role != "viewer") {
       const existingCourse = await prisma.course.findFirst({
-        where:{
+        where: {
           organisation: user.organisation,
-          department: user.department,
-          name: course.name
-        }
+          department: user.role == "admin" ? originalDepartment : user.department,
+          name: originalName,
+          semester: originalSemester,
+        },
       });
-      if(!existingCourse){
-        return{
-          status: statusCodes.NOT_FOUND
-        }
+      if (!existingCourse) {
+        return {
+          status: statusCodes.NOT_FOUND,
+        };
       }
       await prisma.course.update({
-        where:{
-          id: existingCourse.id
+        where: {
+          id: existingCourse.id,
         },
-        data:{
+        data: {
           name: course.name,
           code: course.code,
-          semester: course.semester
-        }
+          semester: course.semester,
+          department: user.role == "admin" ? course.department : user.department,
+        },
       });
-      return{
-        status: statusCodes.OK
-      }
+      return {
+        status: statusCodes.OK,
+      };
     }
-    return{
-      status: statusCodes.FORBIDDEN
-    }
+    return {
+      status: statusCodes.FORBIDDEN,
+    };
   }
-  return{
-    status: status
-  }
+  return {
+    status: status,
+  };
 }

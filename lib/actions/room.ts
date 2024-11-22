@@ -160,20 +160,17 @@ export async function createManyRoom(
 
 
 
-export async function updateRoom(JWTtoken: string, room: Room): Promise<{ status: number }> {
+export async function updateRoom(JWTtoken: string, originalName: string, originalDepartment: string, room: Room): Promise<{ status: number }> {
   try {
-    
     const { status, user } = await auth.getPosition(JWTtoken);
 
     if (status == statusCodes.OK && user) {
-    
       if (user.role != "viewer") {
-    
         const existingRoom = await prisma.room.findFirst({
           where: {
             organisation: user.organisation,
-            department: user.department,
-            name: room.name,
+            department: user.role=='admin'?originalDepartment:user.department,
+            name: originalName,
           },
         });
 
@@ -198,7 +195,6 @@ export async function updateRoom(JWTtoken: string, room: Room): Promise<{ status
           status: statusCodes.OK,
         };
       }
-      //else
       return {
         status: statusCodes.FORBIDDEN,
       };

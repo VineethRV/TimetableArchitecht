@@ -101,22 +101,19 @@ export async function getLabs(JWTtoken: string, department: string|null=null, se
 
 export async function updateLab(
     JWTtoken: string,
-    name: string,
-    semester: number,
-    batches: string[],
-    teachers: string[][],
-    rooms: string[][],
-    timetables: string[][],
-    department?: string
+    originalName: string,
+    originalSemester: number,
+    originalDepartment:string,
+    lab: Lab,
 ): Promise<{ status: number; data: Lab|null; }> {
     try {
         const { status, user } = await auth.getPosition(JWTtoken);
         if (status == statusCodes.OK && user && user.role != "viewer") {
             const existingLab = await prisma.lab.findFirst({
                 where: {
-                    name: name,
-                    semester: semester,
-                    department: user.role == 'admin' && department ? department : user.department,
+                    name: originalName,
+                    semester: originalSemester,
+                    department: user.role == 'admin' && originalDepartment ? originalDepartment : user.department,
                     organisation: user.organisation,
                 },
             });
@@ -125,18 +122,19 @@ export async function updateLab(
                 return { status: statusCodes.NOT_FOUND, data: null };
             }
 
-            const lab = await prisma.lab.update({
-                where: {
-                    id: existingLab.id,
-                },
+            const updatedLab = await prisma.lab.update({
+                where: { id: existingLab.id },
                 data: {
-                    batches: batches.join(";"),
-                    teachers: teachers.map(batch => batch.join(",")).join(";"),
-                    rooms: rooms.map(batch => batch.join(",")).join(";"),
-                    timetable: timetables.map(row => row.join(",")).join(";"),
+                    name: lab.name,
+                    semester: lab.semester,
+                    batches: lab.batches,
+                    teachers: lab.teachers,
+                    rooms: lab.rooms,
+                    timetable: lab.timetable,
+                    department: lab.department,
                 },
             });
-            return { status: statusCodes.OK, data: lab };
+            return { status: statusCodes.OK, data: updatedLab };
         }
         return { status: status==statusCodes.OK?statusCodes.FORBIDDEN:status, data: null };
     } catch (error) {

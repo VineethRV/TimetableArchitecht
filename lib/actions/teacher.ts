@@ -70,60 +70,58 @@ export async function createTeachers(JWTtoken: string, name: string, initials: s
     }
   }
 }
-
-export async function updateTeachers(JWTtoken:string,teacher:Teacher):Promise<{status:number,teacher:Teacher|null}>{
-    try{
-        const {status,user}=await auth.getPosition(JWTtoken)
-        if(status==statusCodes.OK && user){
-            if(user.role!='viewer'){
-                const teacherExists=await prisma.teacher.findFirst({
-                    where:{
-                        name:teacher.name,
-                        department:teacher.department,
-                        organisation:user.organisation
-                    }
-                })
-                if(!teacherExists){
-                    return{
-                        status:statusCodes.BAD_REQUEST,
-                        teacher:null
-                    }
-                }
-                const updatedTeacher=await prisma.teacher.update({
-                    where:{
-                        id:teacherExists.id
-                    },
-                    data:{
-                        name:teacher.name,
-                        initials:teacher.initials,
-                        email:teacher.email,
-                        department:teacher.department,
-                        alternateDepartments:teacher.alternateDepartments,
-                        timetable:teacher.timetable,
-                        labtable:teacher.labtable,
-                    }
-                })
-                return{
-                    status:statusCodes.OK,
-                    teacher:updatedTeacher
-                }
-            }
-            return{
-                status:statusCodes.FORBIDDEN,
-                teacher:null
-            }
+export async function updateTeachers(JWTtoken: string, originalName: string, originalDepartment: string, teacher: Teacher): Promise<{ status: number, teacher: Teacher | null }> {
+  try {
+    const { status, user } = await auth.getPosition(JWTtoken);
+    if (status == statusCodes.OK && user) {
+      if (user.role != 'viewer') {
+        const teacherExists = await prisma.teacher.findFirst({
+          where: {
+            name: originalName,
+            department: user.role=='admin'?originalDepartment:user.department,
+            organisation: user.organisation
+          }
+        });
+        if (!teacherExists) {
+          return {
+            status: statusCodes.BAD_REQUEST,
+            teacher: null
+          };
         }
-        return{
-            status:status,
-            teacher:null
-        }
+        const updatedTeacher = await prisma.teacher.update({
+          where: {
+            id: teacherExists.id
+          },
+          data: {
+            name: teacher.name,
+            initials: teacher.initials,
+            email: teacher.email,
+            department: teacher.department,
+            alternateDepartments: teacher.alternateDepartments,
+            timetable: teacher.timetable,
+            labtable: teacher.labtable,
+          }
+        });
+        return {
+          status: statusCodes.OK,
+          teacher: updatedTeacher
+        };
+      }
+      return {
+        status: statusCodes.FORBIDDEN,
+        teacher: null
+      };
     }
-    catch{
-        return{
-            status:statusCodes.INTERNAL_SERVER_ERROR,
-            teacher:null
-        }
-    }
+    return {
+      status: status,
+      teacher: null
+    };
+  } catch {
+    return {
+      status: statusCodes.INTERNAL_SERVER_ERROR,
+      teacher: null
+    };
+  }
 }
 
 export async function createManyTeachers(
