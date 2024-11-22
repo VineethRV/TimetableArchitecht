@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { TbTrash } from "react-icons/tb";
 import { DEPARTMENTS_OPTIONS } from "@/info";
 import { CiSearch } from "react-icons/ci";
+import { useRouter } from "next/navigation";
 
 const getRandomColor = () => {
   const letters = "0123456789ABCDEF";
@@ -19,6 +20,8 @@ const getRandomColor = () => {
   }
   return color;
 };
+
+
 
 const colorCombos: Record<string, string>[] = [
   { textColor: "#FFFFFF", backgroundColor: "#000000" },
@@ -36,83 +39,13 @@ const colorCombos: Record<string, string>[] = [
 const deptColors: Record<string, string> = {};
 let cnt = 0;
 
-const columns: TableColumnsType<Teacher> = [
-  {
-    title: "Avatar",
-    dataIndex: "name",
-    render: (text: string) => {
-      return (
-        <Avatar
-          className="text-xl"
-          style={{ backgroundColor: getRandomColor(), verticalAlign: "middle" }}
-          size="large"
-        >
-          {text.slice(0, 1)}
-        </Avatar>
-      );
-    },
-  },
-  {
-    title: "Name",
-    dataIndex: "name",
-  },
-  {
-    title: "Initials",
-    dataIndex: "initials",
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-  },
-  {
-    title: "Department",
-    dataIndex: "department",
-    render: (dept: string) => {
-      return (
-        <h1
-          style={{
-            backgroundColor: deptColors[dept],
-            color: colorCombos.find(
-              (combo) => combo.backgroundColor === deptColors[dept]
-            )?.textColor,
-          }}
-          className="text-xs opacity-85 font-semibold w-fit px-2.5 py-0.5 rounded-xl"
-        >
-          {dept}
-        </h1>
-      );
-    },
-  },
-  {
-    title: "",
-    render: () => {
-      return (
-        <Tooltip title="Edit">
-          <Button type="primary" shape="circle" icon={<MdEdit />} />
-        </Tooltip>
-      );
-    },
-  },
-  {
-    title: "",
-    render: () => {
-      return (
-        <Tooltip title="Delete">
-          <Button
-            className="bg-red-400"
-            type="primary"
-            shape="circle"
-            icon={<MdDelete />}
-          />
-        </Tooltip>
-      );
-    },
-  },
-];
+const TeachersTable = ({ teachersData, setTeachersData}: { teachersData: Teacher[], setTeachersData: React.Dispatch<React.SetStateAction<Teacher[]>> }) => {
 
+  const router=useRouter();
 
-const TeachersTable = ({ teachersData, setTeachersData }: { teachersData: Teacher[], setTeachersData: React.Dispatch<React.SetStateAction<Teacher[]>> }) => {
-
+  const handleEditClick = (name: string, department: string) => {
+    router.push(`/dashboard/teacher/edit/${encodeURIComponent(name)}/${encodeURIComponent(department)}`);
+  };
   const [selectedTeachers, setSelectedTeachers] = useState<Teacher[]>([])
   const [departmentFilter, setDepartmentFilter] = useState("Select a department");
 
@@ -131,6 +64,83 @@ const TeachersTable = ({ teachersData, setTeachersData }: { teachersData: Teache
       name: record.name,
     }),
   };
+
+
+  const columns: TableColumnsType<Teacher> = [
+    {
+      title: "Avatar",
+      dataIndex: "name",
+      render: (text: string) => {
+        return (
+          <Avatar
+            className="text-xl"
+            style={{ backgroundColor: getRandomColor(), verticalAlign: "middle" }}
+            size="large"
+          >
+            {text.slice(0, 1)}
+          </Avatar>
+        );
+      },
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+    },
+    {
+      title: "Initials",
+      dataIndex: "initials",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+    },
+    {
+      title: "Department",
+      dataIndex: "department",
+      render: (dept: string) => {
+        return (
+          <h1
+            style={{
+              backgroundColor: deptColors[dept],
+              color: colorCombos.find(
+                (combo) => combo.backgroundColor === deptColors[dept]
+              )?.textColor,
+            }}
+            className="text-xs opacity-85 font-semibold w-fit px-2.5 py-0.5 rounded-xl"
+          >
+            {dept}
+          </h1>
+        );
+      },
+    },
+    {
+      title: "",
+      render: () => {
+        return (
+          <Tooltip title="Edit">
+            <Button type="primary"  onClick={() => handleEditClick("Arun", "Computer Science and Engineering")}  shape="circle" icon={<MdEdit />} />
+          </Tooltip>
+        );
+      },
+    },
+    {
+      title: "",
+      render: () => {
+        return (
+          <Tooltip title="Delete">
+            <Button
+              className="bg-red-400"
+              type="primary"
+              shape="circle"
+              icon={<MdDelete />}
+            />
+          </Tooltip>
+        );
+      },
+    },
+  ];
+  
+  
 
   // function handling deleting the teachers logic
   function deleteTeachersHandler() {

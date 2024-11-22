@@ -1,12 +1,12 @@
 "use client";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form, Input, Select, Tooltip, Upload } from "antd";
 import Timetable from "@/app/components/timetable";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { CiImport } from "react-icons/ci";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-import { updateTeachers,peekTeacher } from "@/lib/actions/teacher";
+import { updateTeachers, peekTeacher } from "@/lib/actions/teacher";
 import { statusCodes } from "@/app/types/statusCodes";
 import { toast } from "sonner";
 import { DEPARTMENTS_OPTIONS } from "@/info";
@@ -40,9 +40,14 @@ const timeslots = [
   "3:30-4:30",
 ];
 
-
-
-const EditTeacherpage: React.FC = () => {
+export default function EditTeacherpage({
+  params,
+}: {
+  params: {
+    name: string;
+    department: string;
+  };
+}) {
   const [form] = Form.useForm();
   const router = useRouter();
 
@@ -55,63 +60,62 @@ const EditTeacherpage: React.FC = () => {
   };
 
   useEffect(() => {
-    const teacherName = "Arun"; 
-    const department = "Automobile Engineering";
-    fetchTeacherDetails(teacherName, department);
-  }, []);
+    if (params.name && params.department) {
+      fetchTeacherDetails(decodeURIComponent(params.name), decodeURIComponent(params.department));
+    }
+  }, [params.name, params.department]);
 
-//fetching the details of the teacher
-  const fetchTeacherDetails = async (name: string, department: string | null) => {
+  //fetching the details of the teacher
+  const fetchTeacherDetails = async (
+    name: string,
+    department: string | null
+  ) => {
     const token = localStorage.getItem("token") || "";
     const res = await peekTeacher(token, name, department);
-  
-
     if (res.status === statusCodes.OK && res.teacher) {
-
       const timetableString = res.teacher.timetable
-      ? JSON.parse(res.teacher.timetable) 
-      : Array(6).fill(Array(6).fill("Free"));
-      
-      setButtonStatus(timetableString);
+  ? JSON.parse(res.teacher.timetable)
+  : Array(6).fill(Array(6).fill("Free"));
+      console.log(typeof(res.teacher.timetable))
+       setButtonStatus(timetableString);
 
       form.setFieldsValue({
         name: res.teacher.name,
         initials: res.teacher.initials,
         email: res.teacher.email,
         department: res.teacher.department,
-    });
+      });
     } else {
       toast.error("Failed to fetch teacher details!");
     }
-    
   };
   const [buttonStatus, setButtonStatus] = useState(
     weekdays.map(() => timeslots.map(() => "Free"))
   );
 
-//Submiting after updating the changes in the form
+  //Submiting after updating the changes in the form
   const handleSubmit = async () => {
-      const token = localStorage.getItem("token") || "";
-      const name = form.getFieldValue("name");
-      const initials = form.getFieldValue("initials");
-      const email = form.getFieldValue("email");
-      const department = form.getFieldValue("department");
-  
-      const teacherData : Teacher = {
-        name,
-        initials,
-        email,
-        department,
-        alternateDepartments: null, 
-        timetable: JSON.stringify(buttonStatus),
-        labtable: null,
-        id: 0,
-        organisation: null
-      };
-  
-      const res = updateTeachers(token, teacherData).then((res) => {
-        const statusCode = res.status;
-  
+    const token = localStorage.getItem("token") || "";
+    const name = form.getFieldValue("name");
+    const initials = form.getFieldValue("initials");
+    const email = form.getFieldValue("email");
+    const department = form.getFieldValue("department");
+
+    const teacherData: Teacher = {
+      name,
+      initials,
+      email,
+      department,
+      alternateDepartments: null,
+      timetable: JSON.stringify(buttonStatus),
+      labtable: null,
+      id: 0,
+      organisation: null,
+    };
+
+    const res = updateTeachers(token,decodeURIComponent(params.name),decodeURIComponent(params.department), teacherData).then((res) => {
+      const statusCode = res.status;
+
       switch (statusCode) {
         case statusCodes.OK:
           clearFields();
@@ -129,12 +133,11 @@ const EditTeacherpage: React.FC = () => {
           toast.error("Internal server error!");
           break;
       }
-      });
-      toast.promise(res, {
-        loading: "Updating teacher !!",
-      });
+    });
+    toast.promise(res, {
+      loading: "Updating teacher !!",
+    });
   };
-  
 
   return (
     <div className="text-xl font-bold text-[#171A1F] pl-8 py-6 h-screen overflow-y-scroll">
@@ -142,7 +145,7 @@ const EditTeacherpage: React.FC = () => {
         <div
           onClick={() => {
             router.push("/dashboard/teacher");
-          }}
+          } }
           className="flex text-base w-fit cursor-pointer space-x-2"
         >
           <h1>&#8592;</h1>
@@ -182,8 +185,7 @@ const EditTeacherpage: React.FC = () => {
               placeholder="Select a department"
               optionFilterProp="label"
               options={DEPARTMENTS_OPTIONS}
-              className="font-normal"
-            />
+              className="font-normal" />
           </Form.Item>
 
           <label>
@@ -196,12 +198,14 @@ const EditTeacherpage: React.FC = () => {
           </label>
           <Timetable
             buttonStatus={buttonStatus}
-            setButtonStatus={setButtonStatus}
-          />
+            setButtonStatus={setButtonStatus} />
           <div className="flex justify-end">
             <div className="flex space-x-4">
               <Form.Item>
-                <Button onClick={clearFields} className="border-[#636AE8FF] text-[#636AE8FF]">
+                <Button
+                  onClick={clearFields}
+                  className="border-[#636AE8FF] text-[#636AE8FF]"
+                >
                   Clear
                 </Button>
               </Form.Item>
@@ -219,6 +223,5 @@ const EditTeacherpage: React.FC = () => {
       </motion.div>
     </div>
   );
-};
+}
 
-export default EditTeacherpage;
