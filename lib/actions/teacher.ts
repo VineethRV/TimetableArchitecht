@@ -53,7 +53,7 @@ export async function createTeachers(JWTtoken: string, name: string, initials: s
       }
       //if user is a viewer code will reach here
       return {
-        status: statusCodes.UNAUTHORIZED,
+        status: statusCodes.FORBIDDEN,
         teacher: null
       }
     }
@@ -70,24 +70,23 @@ export async function createTeachers(JWTtoken: string, name: string, initials: s
     }
   }
 }
-
-export async function updateTeachers(JWTtoken: string, teacher: Teacher): Promise<{ status: number, teacher: Teacher | null }> {
+export async function updateTeachers(JWTtoken: string, originalName: string, originalDepartment: string, teacher: Teacher): Promise<{ status: number, teacher: Teacher | null }> {
   try {
-    const { status, user } = await auth.getPosition(JWTtoken)
+    const { status, user } = await auth.getPosition(JWTtoken);
     if (status == statusCodes.OK && user) {
       if (user.role != 'viewer') {
         const teacherExists = await prisma.teacher.findFirst({
           where: {
-            name: teacher.name,
-            department: teacher.department,
+            name: originalName,
+            department: user.role=='admin'?originalDepartment:user.department,
             organisation: user.organisation
           }
-        })
+        });
         if (!teacherExists) {
           return {
             status: statusCodes.BAD_REQUEST,
             teacher: null
-          }
+          };
         }
         const updatedTeacher = await prisma.teacher.update({
           where: {
@@ -102,27 +101,26 @@ export async function updateTeachers(JWTtoken: string, teacher: Teacher): Promis
             timetable: teacher.timetable,
             labtable: teacher.labtable,
           }
-        })
+        });
         return {
           status: statusCodes.OK,
           teacher: updatedTeacher
-        }
+        };
       }
       return {
-        status: statusCodes.UNAUTHORIZED,
+        status: statusCodes.FORBIDDEN,
         teacher: null
-      }
+      };
     }
     return {
       status: status,
       teacher: null
-    }
-  }
-  catch {
+    };
+  } catch {
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
       teacher: null
-    }
+    };
   }
 }
 
@@ -176,21 +174,21 @@ export async function createManyTeachers(
         data: teachers,
       });
 
-      return {
-        status: statusCodes.CREATED,
-        teachers: teachers,
-      };
+            return {
+                status: statusCodes.CREATED,
+                teachers: teachers,
+            };
+        }
+        return {
+            status: statusCodes.FORBIDDEN,
+            teachers: null,
+        };
+    } catch {
+        return {
+            status: statusCodes.INTERNAL_SERVER_ERROR,
+            teachers: null,
+        };
     }
-    return {
-      status: statusCodes.UNAUTHORIZED,
-      teachers: null,
-    };
-  } catch {
-    return {
-      status: statusCodes.INTERNAL_SERVER_ERROR,
-      teachers: null,
-    };
-  }
 }
 //to display teachers list 
 export async function getTeachers(JWTtoken: string): Promise<{ status: number, teachers: Teacher[] | null }> {
@@ -338,7 +336,7 @@ export async function deleteTeachers(JWTtoken: string, teachers: Teacher[]): Pro
       }
       //else
       return {
-        status: statusCodes.UNAUTHORIZED
+        status: statusCodes.FORBIDDEN
       }
     }
     //else
