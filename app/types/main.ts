@@ -33,18 +33,23 @@ export type Teacher={
   organisation: string|null
 }
 
-export interface Subject {
+export interface Course {
   name: string;
   code: string;
-  semester: number;
-  dept: string;
+  department: string|null;
+  organisation: string|null;
+  semester: number|null;
 }
 
 export interface Lab {
   name: string;
-  sem: number;
-  batches: string[];
-  dept: string;
+  department: string | null;
+  organisation: string | null;
+  semester: number | null;
+  batches: string | null;
+  teachers: string | null;
+  rooms: string | null;
+  timetable: string | null;
 }
 
 export interface RoomDetails {

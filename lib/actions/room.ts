@@ -70,7 +70,7 @@ export async function createRoom(
       }
       //else return unauthorised
       return {
-        status: statusCodes.UNAUTHORIZED,
+        status: statusCodes.FORBIDDEN,
         room: null,
       };
     }
@@ -142,7 +142,7 @@ export async function createManyRoom(
         };
       }
       return {
-        status: statusCodes.UNAUTHORIZED,
+        status: statusCodes.FORBIDDEN,
         rooms: null,
       };
     }
@@ -160,20 +160,17 @@ export async function createManyRoom(
 
 
 
-export async function updateRoom(JWTtoken: string, room: Room): Promise<{ status: number }> {
+export async function updateRoom(JWTtoken: string, originalName: string, originalDepartment: string, room: Room): Promise<{ status: number }> {
   try {
-    
     const { status, user } = await auth.getPosition(JWTtoken);
 
     if (status == statusCodes.OK && user) {
-    
       if (user.role != "viewer") {
-    
         const existingRoom = await prisma.room.findFirst({
           where: {
             organisation: user.organisation,
-            department: user.department,
-            name: room.name,
+            department: user.role=='admin'?originalDepartment:user.department,
+            name: originalName,
           },
         });
 
@@ -198,9 +195,8 @@ export async function updateRoom(JWTtoken: string, room: Room): Promise<{ status
           status: statusCodes.OK,
         };
       }
-      //else
       return {
-        status: statusCodes.UNAUTHORIZED,
+        status: statusCodes.FORBIDDEN,
       };
     }
     return {
@@ -329,7 +325,6 @@ export async function peekRoom(
 export async function deleteRooms(
   JWTtoken: string,
   rooms: Room[],
-  department: string | null = null
 ): Promise<{ status: number }> {
   const { status, user } = await auth.getPosition(JWTtoken);
   try {
@@ -337,12 +332,12 @@ export async function deleteRooms(
       if (user.role != "viewer") {
         await prisma.room.deleteMany({
           where: {
-            name: {
-              in: rooms.map(room=>room.name)
-            },
-            organisation: user.organisation,
-            department: user.role == "admin" ? (department ? department : "no department") : user.department,
-          },
+            OR: rooms.map(room => ({
+              name: room.name,
+              organisation: user.organisation,
+              department: user.role=='admin'?room.department:user.department
+            }))
+          }
         });
         return {
           status: statusCodes.OK,
@@ -350,7 +345,7 @@ export async function deleteRooms(
       }
       // else
       return {
-        status: statusCodes.UNAUTHORIZED,
+        status: statusCodes.FORBIDDEN,
       };
     }
     // else
