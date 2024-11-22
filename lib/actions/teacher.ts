@@ -53,7 +53,7 @@ export async function createTeachers(JWTtoken: string, name: string, initials: s
       }
       //if user is a viewer code will reach here
       return {
-        status: statusCodes.UNAUTHORIZED,
+        status: statusCodes.FORBIDDEN,
         teacher: null
       }
     }
@@ -109,7 +109,7 @@ export async function updateTeachers(JWTtoken:string,teacher:Teacher):Promise<{s
                 }
             }
             return{
-                status:statusCodes.UNAUTHORIZED,
+                status:statusCodes.FORBIDDEN,
                 teacher:null
             }
         }
@@ -182,7 +182,7 @@ export async function createManyTeachers(
             };
         }
         return {
-            status: statusCodes.UNAUTHORIZED,
+            status: statusCodes.FORBIDDEN,
             teachers: null,
         };
     } catch {
@@ -338,7 +338,7 @@ export async function deleteTeachers(JWTtoken: string, teachers: Teacher[]): Pro
       }
       //else
       return {
-        status: statusCodes.UNAUTHORIZED
+        status: statusCodes.FORBIDDEN
       }
     }
     //else
