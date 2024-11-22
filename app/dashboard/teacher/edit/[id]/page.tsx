@@ -1,15 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Button, Form, Input, Select, Tooltip, Upload } from "antd";
 import Timetable from "@/app/components/timetable";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { CiImport } from "react-icons/ci";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-import { createTeachers } from "@/lib/actions/teacher";
+import { updateTeachers,peekTeacher } from "@/lib/actions/teacher";
 import { statusCodes } from "@/app/types/statusCodes";
 import { toast } from "sonner";
 import { DEPARTMENTS_OPTIONS } from "@/info";
+import { Teacher } from "@prisma/client";
 
 const formItemLayout = {
   labelCol: {
@@ -39,7 +40,9 @@ const timeslots = [
   "3:30-4:30",
 ];
 
-const AddTeacherpage: React.FC = () => {
+
+
+const EditTeacherpage: React.FC = () => {
   const [form] = Form.useForm();
   const router = useRouter();
 
@@ -51,49 +54,87 @@ const AddTeacherpage: React.FC = () => {
     setButtonStatus(weekdays.map(() => timeslots.map(() => "Free")));
   };
 
+  useEffect(() => {
+    const teacherName = "Arun"; 
+    const department = "Automobile Engineering";
+    fetchTeacherDetails(teacherName, department);
+  }, []);
+
+//fetching the details of the teacher
+  const fetchTeacherDetails = async (name: string, department: string | null) => {
+    const token = localStorage.getItem("token") || "";
+    const res = await peekTeacher(token, name, department);
+  
+
+    if (res.status === statusCodes.OK && res.teacher) {
+
+      const timetableString = res.teacher.timetable
+      ? JSON.parse(res.teacher.timetable) 
+      : Array(6).fill(Array(6).fill("Free"));
+      
+      setButtonStatus(timetableString);
+
+      form.setFieldsValue({
+        name: res.teacher.name,
+        initials: res.teacher.initials,
+        email: res.teacher.email,
+        department: res.teacher.department,
+    });
+    } else {
+      toast.error("Failed to fetch teacher details!");
+    }
+    
+  };
   const [buttonStatus, setButtonStatus] = useState(
     weekdays.map(() => timeslots.map(() => "Free"))
   );
 
-  function teacherAdd() {
-    const name = form.getFieldValue("name");
-    const initials = form.getFieldValue("initials");
-    const email = form.getFieldValue("email");
-    const department = form.getFieldValue("department");
-    const res = createTeachers(
-      localStorage.getItem("token") || "",
-      name,
-      initials,
-      email,
-      department,
-      "",
-      buttonStatus,
-      null
-    ).then((res) => {
-      const statusCode = res.status;
-
+//Submiting after updating the changes in the form
+  const handleSubmit = async () => {
+      const token = localStorage.getItem("token") || "";
+      const name = form.getFieldValue("name");
+      const initials = form.getFieldValue("initials");
+      const email = form.getFieldValue("email");
+      const department = form.getFieldValue("department");
+  
+      const teacherData : Teacher = {
+        name,
+        initials,
+        email,
+        department,
+        alternateDepartments: null, 
+        timetable: JSON.stringify(buttonStatus),
+        labtable: null,
+        id: 0,
+        organisation: null
+      };
+  
+      const res = updateTeachers(token, teacherData).then((res) => {
+        const statusCode = res.status;
+  
       switch (statusCode) {
-        case statusCodes.CREATED:
+        case statusCodes.OK:
           clearFields();
-          toast.success("Teacher added successfully !!");
+          toast.success("Teacher updated successfully!");
           break;
         case statusCodes.BAD_REQUEST:
           clearFields();
-          toast.error("Teacher already exists !!");
+          toast.error("Teacher does not exist!");
           break;
         case statusCodes.UNAUTHORIZED:
           clearFields();
-          toast.error("You are not authorized !!");
+          toast.error("You are not authorized!");
           break;
         case statusCodes.INTERNAL_SERVER_ERROR:
-          toast.error("Internal server error");
+          toast.error("Internal server error!");
+          break;
       }
-    });
-
-    toast.promise(res, {
-      loading: "Creating teacher !!",
-    });
-  }
+      });
+      toast.promise(res, {
+        loading: "Updating teacher !!",
+      });
+  };
+  
 
   return (
     <div className="text-xl font-bold text-[#171A1F] pl-8 py-6 h-screen overflow-y-scroll">
@@ -160,16 +201,13 @@ const AddTeacherpage: React.FC = () => {
           <div className="flex justify-end">
             <div className="flex space-x-4">
               <Form.Item>
-                <Button
-                  onClick={clearFields}
-                  className="border-[#636AE8FF] text-[#636AE8FF]"
-                >
+                <Button onClick={clearFields} className="border-[#636AE8FF] text-[#636AE8FF]">
                   Clear
                 </Button>
               </Form.Item>
               <Form.Item>
                 <Button
-                  onClick={teacherAdd}
+                  onClick={handleSubmit}
                   className="bg-primary text-[#FFFFFF]"
                 >
                   Submit
@@ -183,4 +221,4 @@ const AddTeacherpage: React.FC = () => {
   );
 };
 
-export default AddTeacherpage;
+export default EditTeacherpage;
