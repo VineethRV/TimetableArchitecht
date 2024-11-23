@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { DEPARTMENTS_OPTIONS } from "@/info";
 import { Teacher } from "@prisma/client";
 
+
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -54,6 +55,7 @@ export default function EditTeacherpage({
 }) {
   const [form] = Form.useForm();
   const router = useRouter();
+  const [loading,setLoading]=useState(false);
 
   const clearFields = () => {
     form.setFieldValue("name", "");
@@ -80,6 +82,7 @@ export default function EditTeacherpage({
     department: string | null
   ) => {
     const token = localStorage.getItem("token") || "";
+    setLoading(true);
     const res = await peekTeacher(token, name, department);
     if (res.status === statusCodes.OK && res.teacher) {
       const timetableString = res.teacher.timetable
@@ -94,8 +97,10 @@ export default function EditTeacherpage({
         email: res.teacher.email,
         department: res.teacher.department,
       });
+      setLoading(false);
     } else {
       toast.error("Failed to fetch teacher details!");
+      setLoading(false);
     }
   };
   const [buttonStatus, setButtonStatus] = useState(
@@ -131,13 +136,9 @@ export default function EditTeacherpage({
           toast.success("Teacher updated successfully!");
           rewriteUrl(name,department)
           break;
-        case statusCodes.BAD_REQUEST:
+        case statusCodes.FORBIDDEN:
           clearFields();
-          toast.error("Teacher does not exist!");
-          break;
-        case statusCodes.UNAUTHORIZED:
-          clearFields();
-          toast.error("You are not authorized!");
+          toast.error("Cannot delete the teacher !!");
           break;
         case statusCodes.INTERNAL_SERVER_ERROR:
           toast.error("Internal server error!");
@@ -149,6 +150,11 @@ export default function EditTeacherpage({
     });
   };
 
+  if (loading) {
+    toast.loading("Fetching teacher data !!");
+  } else {
+    toast.dismiss();
+  }
   return (
     <div className="text-xl font-bold text-[#171A1F] pl-8 py-6 h-screen overflow-y-scroll">
       <div className="flex px-2 items-center justify-between text-[#636AE8FF] font-inter text-xl text-bold">
