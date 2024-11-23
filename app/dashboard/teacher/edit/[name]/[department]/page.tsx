@@ -23,6 +23,10 @@ const formItemLayout = {
   },
 };
 
+function convertTableToString(timetable: string[][]): string {
+  return timetable.map(row => row.join(",")).join(";");
+}
+
 const weekdays = [
   "Monday",
   "Tuesday",
@@ -74,8 +78,8 @@ export default function EditTeacherpage({
     const res = await peekTeacher(token, name, department);
     if (res.status === statusCodes.OK && res.teacher) {
       const timetableString = res.teacher.timetable
-  ? JSON.parse(res.teacher.timetable)
-  : Array(6).fill(Array(6).fill("Free"));
+      ? res.teacher.timetable.split(";").map(row => row.split(","))
+      : Array(6).fill(Array(6).fill("Free"));
       console.log(typeof(res.teacher.timetable))
        setButtonStatus(timetableString);
 
@@ -100,14 +104,14 @@ export default function EditTeacherpage({
     const initials = form.getFieldValue("initials");
     const email = form.getFieldValue("email");
     const department = form.getFieldValue("department");
-
+    console.log(buttonStatus)
     const teacherData: Teacher = {
       name,
       initials,
       email,
       department,
       alternateDepartments: null,
-      timetable: JSON.stringify(buttonStatus),
+      timetable: convertTableToString(buttonStatus),
       labtable: null,
       id: 0,
       organisation: null,

@@ -115,10 +115,10 @@ const TeachersTable = ({ teachersData, setTeachersData}: { teachersData: Teacher
     },
     {
       title: "",
-      render: () => {
+      render: (record) => {
         return (
           <Tooltip title="Edit">
-            <Button type="primary"  onClick={() => handleEditClick("Arun", "Computer Science and Engineering")}  shape="circle" icon={<MdEdit />} />
+            <Button type="primary"  onClick={() => handleEditClick(record.name, record.department)} shape="circle" icon={<MdEdit />} />
           </Tooltip>
         );
       },
