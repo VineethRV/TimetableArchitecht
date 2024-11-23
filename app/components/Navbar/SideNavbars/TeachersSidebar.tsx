@@ -55,14 +55,14 @@ const TeachersSidebar = () => {
         <div
           onClick={() => handleClick("Modify Attributes", "")}
           className={`flex cursor-pointer relative space-x-2 p-2 ${
-            pathname == "/dashboard/teacher"
+            (pathname == "/dashboard/teacher" || pathname.includes("/dashboard/teacher/edit"))
               ? "text-[#636AE8FF] font-bold"
               : "text-[#565E6C]"
           }`}
         >
           <FaUserPen className="w-5 h-5" />
           <span>Modify Attributes</span>
-          {pathname == "/dashboard/teacher" && (
+          {(pathname == "/dashboard/teacher" || pathname.includes("/dashboard/teacher/edit")) && (
             <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-[4px] h-[70%] bg-[#636AE8FF] rounded-full"></div>
           )}
         </div>
