@@ -69,6 +69,11 @@ export default function EditTeacherpage({
     }
   }, [params.name, params.department]);
 
+  const rewriteUrl = (newName:string,newDepartment:string) => {
+    router.push(`/dashboard/teacher/edit/${encodeURIComponent(newName)}/${encodeURIComponent(newDepartment)}`);
+  };
+
+
   //fetching the details of the teacher
   const fetchTeacherDetails = async (
     name: string,
@@ -124,6 +129,7 @@ export default function EditTeacherpage({
         case statusCodes.OK:
           clearFields();
           toast.success("Teacher updated successfully!");
+          rewriteUrl(name,department)
           break;
         case statusCodes.BAD_REQUEST:
           clearFields();
