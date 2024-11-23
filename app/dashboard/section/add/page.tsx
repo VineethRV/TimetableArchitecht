@@ -2,16 +2,7 @@
 import React from "react";
 import { CiImport } from "react-icons/ci";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-import {
-  Button,
-  message,
-  Form,
-  Input,
-  Select,
-  Tooltip,
-  Upload,
-  InputNumber,
-} from "antd";
+import { Button, message,Form,Input,Select,Tooltip,Upload,InputNumber} from "antd";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { semesterOptions } from "@/app/components/semester/semester";

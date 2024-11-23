@@ -138,7 +138,7 @@ const AddRoomForm: React.FC = () => {
           </Form.Item>
           <label className="flex items-center">
             <span>Schedule</span>
-            <Tooltip title="Click on the timeslots where to the teacher  busy to set them to busy">
+            <Tooltip title="Click on the timeslots where to the teacher is busy to set them to busy">
               <IoIosInformationCircleOutline className="ml-2 text-[#636AE8FF]" />
             </Tooltip>
           </label>
