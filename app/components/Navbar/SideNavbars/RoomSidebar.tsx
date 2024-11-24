@@ -55,14 +55,14 @@ const RoomsSidebar = () => {
         <div
           onClick={() => handleClick("Modify Attributes", "")}
           className={`flex cursor-pointer relative space-x-2 p-2 ${
-            pathname == "/dashboard/rooms"
+            (pathname == "/dashboard/rooms" || pathname.includes("/dashboard/rooms/edit"))
               ? "text-[#636AE8FF] font-bold"
               : "text-[#565E6C]"
           }`}
         >
           <FaPenToSquare className="w-5 h-5" />
           <span>Modify Attributes</span>
-          {pathname == "/dashboard/rooms" && (
+          {(pathname == "/dashboard/rooms" || pathname.includes("/dashboard/rooms/edit"))&& (
             <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-[4px] h-[70%] bg-[#636AE8FF] rounded-full"></div>
           )}
         </div>

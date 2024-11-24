@@ -88,7 +88,6 @@ export default function EditTeacherpage({
       const timetableString = res.teacher.timetable
       ? res.teacher.timetable.split(";").map(row => row.split(","))
       : Array(6).fill(Array(6).fill("Free"));
-      console.log(typeof(res.teacher.timetable))
        setButtonStatus(timetableString);
 
       form.setFieldsValue({
@@ -114,7 +113,6 @@ export default function EditTeacherpage({
     const initials = form.getFieldValue("initials");
     const email = form.getFieldValue("email");
     const department = form.getFieldValue("department");
-    console.log(buttonStatus)
     const teacherData: Teacher = {
       name,
       initials,
@@ -132,14 +130,15 @@ export default function EditTeacherpage({
 
       switch (statusCode) {
         case statusCodes.OK:
-          clearFields();
           toast.success("Teacher updated successfully!");
           rewriteUrl(name,department)
           break;
-        case statusCodes.FORBIDDEN:
-          clearFields();
-          toast.error("Cannot delete the teacher !!");
+        case statusCodes.BAD_REQUEST:
+          toast.error("Teacher Not Found!!");
           break;
+          case statusCodes.FORBIDDEN:
+            toast.error("Cannot update Teacher!");
+            break;
         case statusCodes.INTERNAL_SERVER_ERROR:
           toast.error("Internal server error!");
           break;

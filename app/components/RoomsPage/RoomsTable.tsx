@@ -16,33 +16,9 @@ const colorCombos: Record<string, string>[] = [
   { textColor: "#F2F2F2", backgroundColor: "#424242" },
   { textColor: "#000000", backgroundColor: "#F4E04D" },
   { textColor: "#2F4858", backgroundColor: "#F8B400" },
-  { textColor: "#373737", backgroundColor: "#F2F2F2" },
-  { textColor: "#FFFFFF", backgroundColor: "#37474F" },
-  { textColor: "#212121", backgroundColor: "#EDE7F6" },
-  { textColor: "#000000", backgroundColor: "#C6FF00" },
-  { textColor: "#E65100", backgroundColor: "#FFEB3B" },
-  { textColor: "#FFFFFF", backgroundColor: "#FF7043" },
-  { textColor: "#1A237E", backgroundColor: "#E3F2FD" },
-  { textColor: "#4E342E", backgroundColor: "#FFEBEE" },
-  { textColor: "#FFFFFF", backgroundColor: "#4E342E" },
-  { textColor: "#3E2723", backgroundColor: "#FFCCBC" },
-  { textColor: "#212121", backgroundColor: "#E3F2FD" },
-  { textColor: "#FFFFFF", backgroundColor: "#616161" },
-  { textColor: "#D32F2F", backgroundColor: "#FFCDD2" },
-  { textColor: "#1976D2", backgroundColor: "#BBDEFB" },
-  { textColor: "#880E4F", backgroundColor: "#FCE4EC" },
-  { textColor: "#F57C00", backgroundColor: "#FFF3E0" },
-  { textColor: "#512DA8", backgroundColor: "#D1C4E9" },
-  { textColor: "#00796B", backgroundColor: "#B2DFDB" },
-  { textColor: "#37474F", backgroundColor: "#E0E0E0" },
-  { textColor: "#757575", backgroundColor: "#B0BEC5" },
-  { textColor: "#0D47A1", backgroundColor: "#E3F2FD" },
-  { textColor: "#FF5722", backgroundColor: "#FFF3E0" },
-  { textColor: "#33691E", backgroundColor: "#DCEDC8" },
-  { textColor: "#BF360C", backgroundColor: "#FFCCBC" },
-  { textColor: "#006064", backgroundColor: "#E0F7FA" },
-  { textColor: "#5D4037", backgroundColor: "#D7CCC8" },
 ];
+const deptColors: Record<string, string> = {};
+let cnt = 0;
 
 const rowSelection: TableProps<Room>["rowSelection"] = {
   onChange: (selectedRowKeys: React.Key[], selectedRows: Room[]) => {
