@@ -128,7 +128,7 @@ export async function deleteCourse(JWTtoken: string, courseCode: string, semeste
 export async function updateCourse(
   JWTtoken: string,
   originalName: string,
-  originalDepartment: string,
+  originalDepartment: string|null=null,
   originalSemester: number,
   course: Course
 ): Promise<{ status: number }> {
@@ -138,7 +138,7 @@ export async function updateCourse(
       const existingCourse = await prisma.course.findFirst({
         where: {
           organisation: user.organisation,
-          department: user.role == "admin" ? originalDepartment : user.department,
+          department: user.role == "admin" &&originalDepartment ? originalDepartment : user.department,
           name: originalName,
           semester: originalSemester,
         },
@@ -156,7 +156,7 @@ export async function updateCourse(
           name: course.name,
           code: course.code,
           semester: course.semester,
-          department: user.role == "admin" ? course.department : user.department,
+          department: user.role == "admin" && course.department? course.department : user.department,
         },
       });
       return {

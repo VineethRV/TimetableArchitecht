@@ -70,7 +70,7 @@ export async function createTeachers(JWTtoken: string, name: string, initials: s
     }
   }
 }
-export async function updateTeachers(JWTtoken: string, originalName: string, originalDepartment: string, teacher: Teacher): Promise<{ status: number, teacher: Teacher | null }> {
+export async function updateTeachers(JWTtoken: string, originalName: string, originalDepartment: string|null=null, teacher: Teacher): Promise<{ status: number, teacher: Teacher | null }> {
   try {
     const { status, user } = await auth.getPosition(JWTtoken);
     if (status == statusCodes.OK && user) {
@@ -96,7 +96,7 @@ export async function updateTeachers(JWTtoken: string, originalName: string, ori
             name: teacher.name,
             initials: teacher.initials,
             email: teacher.email,
-            department: teacher.department,
+            department:user.role=='admin' && teacher.department?teacher.department:user.department ,
             alternateDepartments: teacher.alternateDepartments,
             timetable: teacher.timetable,
             labtable: teacher.labtable,

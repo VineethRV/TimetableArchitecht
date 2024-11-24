@@ -71,3 +71,16 @@ model Lab{
   rooms String?
   timetable String?
 }
+
+
+model Elective{
+  id Int @id @default(autoincrement())
+  name String
+  department String?
+  courses String?
+  teachers String?
+  rooms String?
+  semester Int?
+  organisation String?
+  timetable String?
+}
