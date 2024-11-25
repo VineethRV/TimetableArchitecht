@@ -160,7 +160,7 @@ export async function createManyRoom(
 
 
 
-export async function updateRoom(JWTtoken: string, originalName: string, originalDepartment: string, room: Room): Promise<{ status: number }> {
+export async function updateRoom(JWTtoken: string, originalName: string, originalDepartment: string|null=null, room: Room): Promise<{ status: number }> {
   try {
     const { status, user } = await auth.getPosition(JWTtoken);
 
@@ -186,7 +186,7 @@ export async function updateRoom(JWTtoken: string, originalName: string, origina
           },
           data: {
             name: room.name,
-            department: room.department,
+            department: user.role=='admin' && room.department? room.department: user.department,
             lab: room.lab,
             timetable: room.timetable,
           },
@@ -293,14 +293,7 @@ export async function peekRoom(
           name: name,
           department: user.role=='admin'?department?department:user.department:user.department,//if user is admin, refer the department passed in peekRoom(if a department isnt passed, the admins department is used), else use users deparment
           organisation: user.organisation,
-        },
-        select: {
-          name: true,
-          organisation: true,
-          department: true,
-          lab: true,
-          timetable: true,
-        },
+        }
       });
       return {
         status: statusCodes.OK,

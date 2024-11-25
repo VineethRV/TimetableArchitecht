@@ -33,7 +33,7 @@ export type Teacher={
   organisation: string|null
 }
 
-export interface Course {
+export type Course= {
   name: string;
   code: string;
   department: string|null;
@@ -41,7 +41,7 @@ export interface Course {
   semester: number|null;
 }
 
-export interface Lab {
+export type Lab= {
   name: string;
   department: string | null;
   organisation: string | null;
@@ -52,26 +52,13 @@ export interface Lab {
   timetable: string | null;
 }
 
-export interface RoomDetails {
+export type Elective={
   name: string;
-  dept: string;
-  lab: number;
-  timetable: (string | null)[][];
-}
-
-export interface TeacherDetails {
-  name: string;
-  initials: string;
-  email: string;
-  dept: string;
-  timetable: (string | null)[][];
-}
-
-export interface SubjectDetails {
-  name: string;
-  code: string;
-  credits: number;
-  specialRooms: string[];
-  semester: number;
-  dept: string;
+  department: string|null;
+  organisation: string|null;
+  semester: number|null;
+  teachers: string|null;
+  courses: string|null;
+  rooms: string|null;
+  timetable: string|null;
 }
