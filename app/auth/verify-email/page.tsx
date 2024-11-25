@@ -1,19 +1,19 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Loading from "@/app/components/Loading/Loading";
 import Header from "@/app/components/SigninPage/Header";
 import { verifyEmail } from "@/lib/actions/auth";
 
 const VerifyEmail = () => {
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  // const searchParams = useSearchParams();
+  // const token = searchParams.get("token");
   const [loading, setLoading] = useState(true);
   const [verificationStatus, setVerificationStatus] = useState(false);
 
   function verifyEmailHandler() {
-    verifyEmail(token || "").then((res) => {
+    verifyEmail("").then((res) => {
       if (res) {
         setVerificationStatus(true);
       }
