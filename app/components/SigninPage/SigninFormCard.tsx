@@ -76,7 +76,7 @@ const SigninFormCard = () => {
           <Checkbox onClick={() => setKeepLogged(!keepLogged)} />
           <p className="text-sm font-medium">Keep me logged in</p>
         </div>
-        <p className="text-[#636AE8FF] font-medium hover:cursor-pointer text-sm">
+        <p onClick={()=>router.push('/forget-password')} className="text-[#636AE8FF] font-medium hover:cursor-pointer text-sm">
           Forget Password ?
         </p>
       </div>
