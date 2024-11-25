@@ -15,7 +15,7 @@ import {
 } from "antd";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import  LabAddTable from "@/app/components/CoursePage/Labaddtable"
+import LabAddTable from "@/app/components/CoursePage/Labaddtable";
 import Timetable from "@/app/components/timetable";
 const formItemLayout = {
   labelCol: {
@@ -98,75 +98,82 @@ const AddCoursepage: React.FC = () => {
       >
         <Form {...formItemLayout} form={form} layout="vertical" requiredMark>
           <Form.Item label="Batch Set Name" required>
-            <Input placeholder="Name" className=" font-normal" />
+            <Input placeholder="Name" className="w-[70%] font-normal" />
           </Form.Item>
           <Form.Item label="Number of Batches" required>
-            <InputNumber
-              min={1}
-              className="w-full font-normal"
-            />
+            <InputNumber min={1} className="w-[70%] font-normal" />
           </Form.Item>
           <label>
-          <div>
+            <div>
               <span className="inline-flex items-center space-x-10">
                 Lab Courses for the Batch
                 <Tooltip title="Click on Add to add the lab courses applicable for the batch">
                   <IoIosInformationCircleOutline className="ml-2 text-[#636AE8FF]" />
                 </Tooltip>
               </span>
-              <Button color="#636AE8FF" variant="link" onClick={handleOpenModal} className="space-x-4 text-[#636AE8FF]">
-              &#x002B; Add
-            </Button>
-            <Modal
-        title="Enter details for each Batch"
-        visible={isModalOpen}
-        onCancel={handleCloseModal}
-        okText="Submit"
-        cancelText="Cancel"
-      >
-         <Form form={form} layout="vertical" >
-          <Form.Item
-            name="batch1"
-            label="Batch 1"
-            rules={[{ required: true, message: "Please input Field 1!" }]}
-
-          >
-            <div>
-            <label>Subject</label>
-            <Input placeholder="Subject" />
-            <label>Teachers</label>
-            <Select placeholder="teacher"/>
-            <label>Rooms</label>
-            <Select placeholder="rooms"/>
+              <Button
+                color="primary"
+                variant="link"
+                onClick={handleOpenModal}
+                className="text-purple"
+              >
+                &#x002B; Add
+              </Button>
+              <Modal
+                title="Enter details for each Batch"
+                visible={isModalOpen}
+                onCancel={handleCloseModal}
+                okText="Submit"
+                cancelText="Cancel"
+              >
+                <Form form={form} layout="vertical">
+                  <Form.Item
+                    name="batch1"
+                    label="Batch 1"
+                    rules={[
+                      { required: true, message: "Please input Field 1!" },
+                    ]}
+                  >
+                    <div>
+                      <label>Subject</label>
+                      <Input placeholder="Subject" />
+                      <label>Teachers</label>
+                      <Select placeholder="teacher" />
+                      <label>Rooms</label>
+                      <Select placeholder="rooms" />
+                    </div>
+                  </Form.Item>
+                  <Form.Item
+                    name="batch2"
+                    label="Batch 2"
+                    rules={[
+                      { required: true, message: "Please input Field 1!" },
+                    ]}
+                  >
+                    <label>Subject</label>
+                    <Input placeholder="Subject" />
+                    <label>Teachers</label>
+                    <Select placeholder="teacher" />
+                    <label>Rooms</label>
+                    <Select placeholder="rooms" />
+                  </Form.Item>
+                </Form>
+              </Modal>
             </div>
-          </Form.Item>
-          <Form.Item
-            name="batch2"
-            label="Batch 2"
-            rules={[{ required: true, message: "Please input Field 1!" }]}
-
-          >
-            <label>Subject</label>
-            <Input placeholder="Subject" />
-            <label>Teachers</label>
-            <Select placeholder="teacher"/>
-            <label>Rooms</label>
-            <Select placeholder="rooms"/>
-          </Form.Item>
-        </Form>
-      </Modal>
-              </div>
           </label>
-          <LabAddTable
-          />
+          <LabAddTable />
           <br></br>
-          <Form.Item label="Electives and Common time courses">
-            <Select placeholder="Electives" className="font-normal"
-            />
+          <Form.Item
+            label="Electives and Common time courses"
+            className="w-[70%]"
+          >
+            <Select placeholder="Electives" className="font-normal" />
           </Form.Item>
           <label>
             <div className="flex items-center">
-              <span>Click on the slots you do not want the lab to be alloted</span>
+              <span>
+                Click on the slots you do not want the lab to be alloted
+              </span>
             </div>
           </label>
           <Timetable
