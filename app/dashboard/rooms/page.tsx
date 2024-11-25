@@ -1,9 +1,8 @@
 "use client";
-import { Button, ConfigProvider, Input, Select } from "antd";
-import { TbTrash } from "react-icons/tb";
+import { Button} from "antd";
 import RoomsTable from "@/app/components/RoomsPage/RoomsTable";
-import { CiExport, CiImport, CiSearch } from "react-icons/ci";
-import { SetStateAction, useEffect, useState } from "react";
+import { CiExport, CiImport} from "react-icons/ci";
+import { useEffect, useState } from "react";
 import { Room } from "@/app/types/main";
 import Loading from "./loading";
 import { getRooms } from "@/lib/actions/room";

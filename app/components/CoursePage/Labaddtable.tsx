@@ -20,7 +20,7 @@ const columns: TableProps<DataType>['columns'] = [
     render: (_, { teachers }) => (
         <>
           {teachers.map((tag) => {
-            let color = 'blue'
+            const color = 'blue'
             return (
               <Tag color={color} key={tag}>
                 {tag.toUpperCase()}
@@ -36,7 +36,7 @@ const columns: TableProps<DataType>['columns'] = [
     render: (_, { rooms }) => (
         <>
           {rooms.map((tag) => {
-            let color = 'purple'
+            const color = 'purple'
             return (
               <Tag color={color} key={tag}>
                 {tag.toUpperCase()}
