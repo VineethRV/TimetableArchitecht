@@ -1,5 +1,5 @@
 "use server";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import PrismaClientManager from "../pgConnect";
 import bcrypt from "bcryptjs";
 import { statusCodes } from "@/app/types/statusCodes";
@@ -258,7 +258,7 @@ export async function forgetOTP(email: string) {
 
   // generate an otp
   const otpCode = Math.floor(100000 + Math.random() * 900000);
-  console.log(otpCode);
+
   // send a email
   const transport = nodemailer.createTransport({
     service: "gmail",
@@ -375,5 +375,36 @@ export async function forgetOTP(email: string) {
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
     };
+  }
+}
+
+export async function verifyEmail(token: string) {
+  try {
+    jwt.verify(token, secretKey);
+    const payload = jwt.decode(token) as JwtPayload;
+    const email = payload.email as string;
+
+    const user = await prisma.user.findFirst({
+      where: {
+        email,
+      },
+    });
+
+    if (user?.hasAccess) {
+      return false;
+    }
+
+    await prisma.user.update({
+      where: {
+        email,
+      },
+      data: {
+        hasAccess: true,
+      },
+    });
+
+    return true;
+  } catch {
+    return false;
   }
 }
