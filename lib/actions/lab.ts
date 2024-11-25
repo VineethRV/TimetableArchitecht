@@ -103,8 +103,8 @@ export async function updateLab(
     JWTtoken: string,
     originalName: string,
     originalSemester: number,
-    originalDepartment:string,
     lab: Lab,
+    originalDepartment?:string
 ): Promise<{ status: number; data: Lab|null; }> {
     try {
         const { status, user } = await auth.getPosition(JWTtoken);
@@ -131,7 +131,7 @@ export async function updateLab(
                     teachers: lab.teachers,
                     rooms: lab.rooms,
                     timetable: lab.timetable,
-                    department: lab.department,
+                    department: user.role == 'admin' && lab.department ?lab.department:user.department,
                 },
             });
             return { status: statusCodes.OK, data: updatedLab };
