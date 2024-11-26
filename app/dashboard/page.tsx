@@ -3,7 +3,7 @@ import { Button } from "antd"
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-function page() {
+function Page() {
   const router = useRouter();
 
   function logout(){
@@ -19,4 +19,4 @@ function page() {
   )
 }
 
-export default page
+export default Page
