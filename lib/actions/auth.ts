@@ -42,6 +42,13 @@ export const login = async (
       },
     });
 
+    if (!user?.hasAccess) {
+      return {
+        status: statusCodes.NOT_ACCEPTABLE,
+        token: "",
+      };
+    }
+
     if (!user) {
       return {
         status: statusCodes.NOT_FOUND,
@@ -82,7 +89,7 @@ export const register = async (
   name: string,
   email: string,
   password: string
-): Promise<{ status: number; token: string }> => {
+): Promise<{ status: number }> => {
   try {
     const hashedPass = await bcrypt.hash(password, 10);
 
@@ -95,7 +102,6 @@ export const register = async (
     if (duplicateUser) {
       return {
         status: statusCodes.CONFLICT,
-        token: "",
       };
     }
 
@@ -108,14 +114,6 @@ export const register = async (
       },
     });
 
-    const token = jwt.sign(
-      {
-        email: new_user.email,
-        id: new_user.id,
-      },
-      secretKey
-    );
-
     const send = await sendVerificationEmail(
       new_user.name as string,
       new_user.email
@@ -125,12 +123,10 @@ export const register = async (
 
     return {
       status: statusCodes.CREATED,
-      token,
     };
   } catch (e) {
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
-      token: "",
     };
   }
 };

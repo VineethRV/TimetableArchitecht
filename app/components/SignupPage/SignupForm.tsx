@@ -29,8 +29,8 @@ const SignupForm = () => {
           break;
         case statusCodes.CREATED:
           toast.success("User registered successfully");
-          localStorage.setItem("token", res.token);
-          router.push("/dashboard");
+          toast.success("Please verify your email to login !!");
+          router.push("/login");
           break;
       }
     });
