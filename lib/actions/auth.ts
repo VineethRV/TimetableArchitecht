@@ -42,16 +42,16 @@ export const login = async (
       },
     });
 
-    if (!user?.hasAccess) {
+    if (!user) {
       return {
-        status: statusCodes.NOT_ACCEPTABLE,
+        status: statusCodes.NOT_FOUND,
         token: "",
       };
     }
 
-    if (!user) {
+    if (!user?.hasAccess) {
       return {
-        status: statusCodes.NOT_FOUND,
+        status: statusCodes.NOT_ACCEPTABLE,
         token: "",
       };
     }
