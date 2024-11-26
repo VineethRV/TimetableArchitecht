@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import Loading from "@/app/components/Loading/Loading";
 import Header from "@/app/components/SigninPage/Header";
 import { verifyEmail } from "@/lib/actions/auth";
@@ -75,4 +75,10 @@ const VerifyEmail = () => {
   );
 };
 
-export default VerifyEmail;
+export default function Page() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <VerifyEmail />
+    </Suspense>
+  );
+}
