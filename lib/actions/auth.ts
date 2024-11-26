@@ -210,11 +210,10 @@ export async function sendVerificationEmail(username: string, email: string) {
     <div class="content">
       <p>Hi {{USER_NAME}},</p>
       <p>Thank you for signing up! Please click the button below to verify your email address and activate your account:</p>
-<div class="message-box">
-  <button class="verify-button" onclick="window.location.href='{{VERIFICATION_LINK}}';">
-    Verify Email
-  </button>
 </div>
+    <button class="message-box">
+      <p href="{{VERIFICATION_LINK}}" class="verify-button">Verify Email</p>
+    </div>
     <div class="content">
       <p>If you didn’t sign up for this account, please disregard this message.</p>
     </div>

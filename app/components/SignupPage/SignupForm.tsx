@@ -29,8 +29,8 @@ const SignupForm = () => {
           break;
         case statusCodes.CREATED:
           toast.success("User registered successfully");
-          toast.success("Please verify your email to login !!");
-          router.push("/login");
+          toast.error("Please verify your email to login !!");
+          router.push("/signin");
           break;
       }
     });
