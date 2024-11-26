@@ -29,7 +29,7 @@ const SigninFormCard = () => {
           router.push('/dashboard');
           break;
         case statusCodes.NOT_ACCEPTABLE:
-          toast.success("Please verify your email to continue");
+          toast.error("Please verify your email to continue");
           break;
         case statusCodes.NOT_FOUND:
           toast.error("User does not exist");
