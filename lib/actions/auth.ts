@@ -12,6 +12,16 @@ const secretKey = process.env.JWT_SECRET_KEY || "bob";
 const prisma = PrismaClientManager.getInstance().getPrismaClient();
 const OTP_MANAGER: OTP_TYPE[] = [];
 
+const transport = nodemailer.createTransport({
+  service: "gmail",
+  secure: true,
+  port: 465,
+  auth: {
+    user: officialEmail,
+    pass: emailAccessToken,
+  },
+});
+
 export const checkAuthentication = async (token: string): Promise<boolean> => {
   try {
     jwt.verify(token, secretKey); // Verifies the token using the secret key
@@ -106,6 +116,13 @@ export const register = async (
       secretKey
     );
 
+    const send = await sendVerificationEmail(
+      new_user.name as string,
+      new_user.email
+    );
+
+    if (!send) throw new Error("SMTP Failure");
+
     return {
       status: statusCodes.CREATED,
       token,
@@ -117,6 +134,133 @@ export const register = async (
     };
   }
 };
+
+export async function sendVerificationEmail(username: string, email: string) {
+  let emailVerificationHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Verification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 1px solid #ddd;
+    }
+    .header {
+      text-align: center;
+      padding: 20px 0;
+    }
+    .header h1 {
+      color: #333;
+      font-size: 24px;
+      margin: 0;
+    }
+    .message-box {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .message-box h2 {
+      font-size: 20px;
+      color: #007bff;
+      margin: 0 0 10px;
+    }
+    .content {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.5;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+   .verify-button {
+  display: inline-block;
+  background-color: #28a745; /* Green background */
+  color: #fff; /* White text */
+  padding: 12px 24px; /* Padding for the button */
+  font-size: 16px; /* Font size */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor for interactivity */
+  text-align: center; /* Center text */
+  transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+    
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Welcome to Our Platform</h1>
+    </div>
+    <div class="content">
+      <p>Hi {{USER_NAME}},</p>
+      <p>Thank you for signing up! Please click the button below to verify your email address and activate your account:</p>
+<div class="message-box">
+  <button class="verify-button" onclick="window.location.href='{{VERIFICATION_LINK}}';">
+    Verify Email
+  </button>
+</div>
+    <div class="content">
+      <p>If you didn’t sign up for this account, please disregard this message.</p>
+    </div>
+    <div class="footer">
+      <p>&copy; 2024 Your Company. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>
+`;
+
+  emailVerificationHtml = emailVerificationHtml.replace(
+    "{{USER_NAME}}",
+    username
+  );
+
+  const token = jwt.sign(
+    {
+      email,
+    },
+    secretKey
+  );
+
+  emailVerificationHtml = emailVerificationHtml.replace(
+    "{{VERIFICATION_LINK}}",
+    `https://timetablearchitect.vercel.app/auth/verify-email?token=${token}`
+  );
+
+  const receiver = {
+    from: officialEmail,
+    to: email,
+    subject: "Email Verification Link",
+    html: emailVerificationHtml,
+  };
+
+  try {
+    await transport.sendMail(receiver);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 //the following section defines the functions to recieve and verify the positions of users.
 
@@ -258,17 +402,6 @@ export async function forgetOTP(email: string) {
 
   // generate an otp
   const otpCode = Math.floor(100000 + Math.random() * 900000);
-
-  // send a email
-  const transport = nodemailer.createTransport({
-    service: "gmail",
-    secure: true,
-    port: 465,
-    auth: {
-      user: officialEmail,
-      pass: emailAccessToken,
-    },
-  });
 
   const htmlContent = `<!DOCTYPE html>
   <html lang="en">
