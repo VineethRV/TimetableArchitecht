@@ -1,19 +1,19 @@
 "use client";
 
-// import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState, Suspense } from "react";
 import Loading from "@/app/components/Loading/Loading";
 import Header from "@/app/components/SigninPage/Header";
 import { verifyEmail } from "@/lib/actions/auth";
 
 const VerifyEmail = () => {
-  // const searchParams = useSearchParams();
-  // const token = searchParams.get("token");
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
   const [loading, setLoading] = useState(true);
   const [verificationStatus, setVerificationStatus] = useState(false);
 
   function verifyEmailHandler() {
-    verifyEmail("").then((res) => {
+    verifyEmail(token || "").then((res) => {
       if (res) {
         setVerificationStatus(true);
       }
@@ -58,14 +58,14 @@ const VerifyEmail = () => {
                   The verification link is invalid or has expired. Please try
                   verifying your email again.
                 </p>
-                <button
+                {/* <button
                   className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition duration-300 ease-in-out"
                   onClick={() =>
                     (window.location.href = "/resend-verification")
                   }
                 >
                   Resend Verification Email
-                </button>
+                </button> */}
               </>
             )}
           </div>
@@ -75,4 +75,10 @@ const VerifyEmail = () => {
   );
 };
 
-export default VerifyEmail;
+export default function Page() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <VerifyEmail />
+    </Suspense>
+  );
+}
