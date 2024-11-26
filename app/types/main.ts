@@ -62,3 +62,8 @@ export type Elective={
   rooms: string|null;
   timetable: string|null;
 }
+
+export type OTP_TYPE = {
+  otp: number;
+  email: string;
+};
