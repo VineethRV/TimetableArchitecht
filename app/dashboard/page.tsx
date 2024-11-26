@@ -13,8 +13,8 @@ function Page() {
   }
 
   return (
-    <div>
-      <Button onClick={logout}/>
+    <div className="p-8">
+      <Button onClick={logout}>Logout</Button>
     </div>
   )
 }
