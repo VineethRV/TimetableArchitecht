@@ -46,6 +46,12 @@ const TeachersTable = ({ teachersData, setTeachersData}: { teachersData: Teacher
   const handleEditClick = (name: string, department: string) => {
     router.push(`/dashboard/teacher/edit/${encodeURIComponent(name)}/${encodeURIComponent(department)}`);
   };
+
+ const  handleDeleteClick=(teacher:Teacher)=>{
+    setSelectedTeachers([teacher])
+    deleteTeachersHandler()
+ }
+
   const [selectedTeachers, setSelectedTeachers] = useState<Teacher[]>([])
   const [departmentFilter, setDepartmentFilter] = useState("Select a department");
 
@@ -125,13 +131,14 @@ const TeachersTable = ({ teachersData, setTeachersData}: { teachersData: Teacher
     },
     {
       title: "",
-      render: () => {
+      render: (record) => {
         return (
           <Tooltip title="Delete">
             <Button
               className="bg-red-400"
               type="primary"
               shape="circle"
+              onClick={()=>handleDeleteClick(record)}
               icon={<MdDelete />}
             />
           </Tooltip>

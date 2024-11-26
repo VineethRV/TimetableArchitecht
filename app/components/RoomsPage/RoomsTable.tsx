@@ -1,9 +1,16 @@
 "use client";
-import React from "react";
-import { Button, Switch, Table, Tooltip } from "antd";
+import React, { useMemo, useState } from "react";
+import { Button, ConfigProvider, Input, Select, Switch, Table, Tooltip } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { Room } from "@/app/types/main";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { deleteRooms } from "@/lib/actions/room";
+import { statusCodes } from "@/app/types/statusCodes";
+import { TbTrash } from "react-icons/tb";
+import { DEPARTMENTS_OPTIONS } from "@/info";
+import { CiSearch } from "react-icons/ci";
 
 const colorCombos: Record<string, string>[] = [
   { textColor: "#FFFFFF", backgroundColor: "#000000" },
@@ -16,58 +23,41 @@ const colorCombos: Record<string, string>[] = [
   { textColor: "#F2F2F2", backgroundColor: "#424242" },
   { textColor: "#000000", backgroundColor: "#F4E04D" },
   { textColor: "#2F4858", backgroundColor: "#F8B400" },
-  { textColor: "#373737", backgroundColor: "#F2F2F2" },
-  { textColor: "#FFFFFF", backgroundColor: "#37474F" },
-  { textColor: "#212121", backgroundColor: "#EDE7F6" },
-  { textColor: "#000000", backgroundColor: "#C6FF00" },
-  { textColor: "#E65100", backgroundColor: "#FFEB3B" },
-  { textColor: "#FFFFFF", backgroundColor: "#FF7043" },
-  { textColor: "#1A237E", backgroundColor: "#E3F2FD" },
-  { textColor: "#4E342E", backgroundColor: "#FFEBEE" },
-  { textColor: "#FFFFFF", backgroundColor: "#4E342E" },
-  { textColor: "#3E2723", backgroundColor: "#FFCCBC" },
-  { textColor: "#212121", backgroundColor: "#E3F2FD" },
-  { textColor: "#FFFFFF", backgroundColor: "#616161" },
-  { textColor: "#D32F2F", backgroundColor: "#FFCDD2" },
-  { textColor: "#1976D2", backgroundColor: "#BBDEFB" },
-  { textColor: "#880E4F", backgroundColor: "#FCE4EC" },
-  { textColor: "#F57C00", backgroundColor: "#FFF3E0" },
-  { textColor: "#512DA8", backgroundColor: "#D1C4E9" },
-  { textColor: "#00796B", backgroundColor: "#B2DFDB" },
-  { textColor: "#37474F", backgroundColor: "#E0E0E0" },
-  { textColor: "#757575", backgroundColor: "#B0BEC5" },
-  { textColor: "#0D47A1", backgroundColor: "#E3F2FD" },
-  { textColor: "#FF5722", backgroundColor: "#FFF3E0" },
-  { textColor: "#33691E", backgroundColor: "#DCEDC8" },
-  { textColor: "#BF360C", backgroundColor: "#FFCCBC" },
-  { textColor: "#006064", backgroundColor: "#E0F7FA" },
-  { textColor: "#5D4037", backgroundColor: "#D7CCC8" },
 ];
+const deptColors: Record<string, string> = {};
+let cnt = 0;
+
+
+const RoomsTable = ({ roomsData, setRoomsData}: { roomsData: Room[], setRoomsData: React.Dispatch<React.SetStateAction<Room[]>> }) => {
+
+  const router=useRouter();
+
+  const handleEditClick = (name: string, department: string) => {
+    router.push(`/dashboard/rooms/edit/${encodeURIComponent(name)}/${encodeURIComponent(department)}`);
+  };
+
+ const  handleDeleteClick=(Room:Room)=>{
+    setSelectedRooms([Room])
+    deleteRoomsHandler()
+ }
+
+  const [selectedRooms, setSelectedRooms] = useState<Room[]>([])
+  const [departmentFilter, setDepartmentFilter] = useState("Select a department");
+
+  // Function to clear all fliters
+  function clearFilters() {
+    setDepartmentFilter("Select a department");
+  }
 
 const rowSelection: TableProps<Room>["rowSelection"] = {
   onChange: (selectedRowKeys: React.Key[], selectedRows: Room[]) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      "selectedRows: ",
-      selectedRows
-    );
+    setSelectedRooms(selectedRows)
   },
   getCheckboxProps: (record: Room) => ({
     disabled: record.name === "Disabled User",
     name: record.name,
   }),
 };
-
-const RoomsTable = ({ roomsData }: { roomsData: Room[] }) => {
-
-  const deptColors: Record<string, string> = {};
-  let cnt = 0;
-  roomsData.forEach((d: Room) => {
-    if (!deptColors[d.department as string]) {
-      deptColors[d.department as string] = colorCombos[cnt].backgroundColor;
-      cnt++;
-    }
-  });
 
   const columns: TableColumnsType<Room> = [
     {
@@ -102,47 +92,145 @@ const RoomsTable = ({ roomsData }: { roomsData: Room[] }) => {
     },
     {
       title: "",
-      render: () => {
+      render: (record) => {
         return (
           <Tooltip title="Edit">
-            <Button type="primary" shape="circle" icon={<MdEdit />} />
+            <Button type="primary"  onClick={() => handleEditClick(record.name, record.department)} shape="circle" icon={<MdEdit />} />
           </Tooltip>
         );
       },
     },
     {
       title: "",
-      render: () => {
+      render: (record) => {
         return (
           <Tooltip title="Delete">
-            <Button
-              className="bg-red-400 "
-              type="primary"
-              shape="circle"
-              icon={<MdDelete />}
-            />
-          </Tooltip>
+          <Button
+            className="bg-red-400"
+            type="primary"
+            shape="circle"
+            onClick={()=>handleDeleteClick(record)}
+            icon={<MdDelete />}
+          />
+        </Tooltip>
         );
       },
     },
   ];
 
-  roomsData = roomsData.map((room)=>{
-    return {
-      ...room,
-      key: room.name
+  function deleteRoomsHandler() {
+    if (selectedRooms.length == 0) {
+      toast.info("Select Rooms to delete !!");
+      return;
     }
-  })
+    const res = deleteRooms(localStorage.getItem('token') || "", selectedRooms).then((res) => {
+      const statusCode = res.status;
+      switch (statusCode) {
+        case statusCodes.OK:
+          setRoomsData((rooms) => {
+            const newRooms = rooms.filter((t) => {
+              for (let i = 0; i < selectedRooms.length; i++) {
+                if (selectedRooms[i].name == t.name) return false;
+              }
+              return true;
+            })
+            return newRooms
+          })
+          setSelectedRooms([])
+          toast.success("Rooms deleted successfully");
+          break;
+        case statusCodes.BAD_REQUEST:
+          toast.error("Invalid request");
+          break;
+        case statusCodes.INTERNAL_SERVER_ERROR:
+          toast.error("Server error")
+      }
+    })
+
+    toast.promise(res, {
+      loading: "Deleting Rooms ..."
+    })
+  }
+
+  roomsData?.forEach((room) => {
+    if (!deptColors[room.department as string]) {
+      deptColors[room.department as string] =
+        colorCombos[cnt % colorCombos.length].backgroundColor;
+      cnt++;
+    }
+  });
+
+  const filteredRoomsData = useMemo(() => {
+    if (departmentFilter == "Select a department") {
+      return roomsData;
+    }
+
+    const new_Rooms = roomsData.filter((t) => t.department == departmentFilter)
+    return new_Rooms;
+  }, [departmentFilter,roomsData])
+
+  const dataWithKeys = filteredRoomsData.map((room) => ({
+    ...room,
+    key: room.name
+  }));
 
   return (
     <div>
-      <Table<Room>
-        rowSelection={{ type: "checkbox", ...rowSelection }}
-        columns={columns}
-        dataSource={roomsData}
-        pagination={{ pageSize: 5 }}
+    <div className="flex space-x-8 justify-between py-4">
+      <Input
+        className="w-fit"
+        addonBefore={<CiSearch />}
+        placeholder="ClassRoom"
       />
+
+      {/* this config to set background color of the selectors | did as specified in antd docs */}
+      <ConfigProvider
+        theme={{
+          components: {
+            Select: {
+              selectorBg: "#F3F4F6FF",
+            },
+          },
+        }}
+      >
+        <div className="flex space-x-3">
+          <Select
+            defaultValue="Sort By"
+            style={{ width: 120 }}
+            options={[]}
+          />
+          <Select
+            className="w-[250px]"
+            defaultValue="All Departments"
+            value={departmentFilter}
+            options={DEPARTMENTS_OPTIONS}
+            onChange={(e) => setDepartmentFilter(e)}
+          />
+          <Select
+            className="w-[70px]"
+            defaultValue="Labs"
+            options={[{label:"Yes",value:1},{label:"No",value:2}]}
+          />
+        </div>
+      </ConfigProvider>
+      <div className="flex space-x-2">
+        <Button onClick={deleteRoomsHandler} className="bg-red-500 text-white font-bold">
+          <TbTrash />
+          Delete
+        </Button>
+        <Button onClick={clearFilters}>Clear filters</Button>
+      </div>
     </div>
+
+
+
+    <Table<Room>
+      rowSelection={{ type: "checkbox", ...rowSelection }}
+      columns={columns}
+      dataSource={dataWithKeys}
+      pagination={{ pageSize: 5 }}
+    />
+  </div>
   );
 };
 
